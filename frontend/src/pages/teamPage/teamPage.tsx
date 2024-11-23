@@ -3,7 +3,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DropZone from "../../components/dropzone/DropZone";
 import DragZone from "../../components/dragzone/DragZone";
-// import { CardData } from "./App";
 import "./teamPage.css";
 
 export interface CardData {
