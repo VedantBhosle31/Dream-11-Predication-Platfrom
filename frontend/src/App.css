@@ -1,38 +1,55 @@
-.App {
-  text-align: center;
+/* Reset and Base Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  background-color: black;
 }
 
-.App-logo {
-  height: 40vmin;
+.App {
+  position: relative;
+  height: 300vh; /* Total height to allow scrolling */
+}
+
+/* Background Video */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Title Section */
+.title {
+  position: fixed;
+  top: 40%; /* Adjust for central positioning */
+  width: 100%;
+  text-align: center;
+  font-size: 3rem;
+  color: white;
+  z-index: 1;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Box Section */
+.box {
+  position: fixed;
+  top: 60%; /* Initially positioned offscreen for animation */
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.8);
+  color: black;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(50%);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Spacer for Scroll */
+.spacer {
+  height: 300vh; /* Adjust the scrollable area */
 }
