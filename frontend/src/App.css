@@ -1,7 +1,9 @@
+/* fonts */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 /* Reset and Base Styles */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   overflow-x: hidden;
   background-color: black;
 }
@@ -9,6 +11,10 @@ body {
 .App {
   position: relative;
   height: 300vh; /* Total height to allow scrolling */
+  /* Monsterrat font */
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 
 /* Background Video */
@@ -25,31 +31,129 @@ body {
 /* Title Section */
 .title {
   position: fixed;
-  top: 40%; /* Adjust for central positioning */
+  top: 30%; /* Adjust for central positioning */
   width: 100%;
   text-align: center;
-  font-size: 3rem;
+  font-size: 1.5rem;
   color: white;
   z-index: 1;
-  pointer-events: none;
+}
+
+.title h1 {
+  margin: 0.4rem;
+}
+
+.down_arrow_svg {
+  position: fixed;
+  bottom: 5%;
+  left: calc(50% - 25px);
+  transform: translateX(-50%);
+  fill: white;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.title-special {
+  /* color: #ff4141; */
+  font-size: 5rem;
+  color: white;
 }
 
 /* Box Section */
 .box {
   position: fixed;
-  top: 60%; /* Initially positioned offscreen for animation */
+  top: 15%; /* Initially positioned offscreen for animation */
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
-  background: rgba(255, 255, 255, 0.8);
-  color: black;
+  background: transparent;
+  color: white;
   z-index: 1;
-  pointer-events: none;
+  /* pointer-events: none; */
   opacity: 0;
   transform: translateY(50%);
+}
+
+.top-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+input {
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  color: white;
+  padding: 8px 12px;
+  margin: 8px 0;
+  width: 500px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+label {
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+}
+
+/* Team Logo */
+.select-team-img {
+  object-fit: contain;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+/* AnimatedButton.css */
+.animated-button {
+  position: relative;
+  padding: 20px;
+  margin: 12px 0;
+  width: 500px;
+  border-radius: 45px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+}
+
+.button-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, #ad0000 0%, #ff5d6b 100%);
+}
+
+/* Optional: Add these styles if you want the button to maintain its semi-transparent look when not hovered */
+.animated-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -2;
 }
 
 /* Spacer for Scroll */
 .spacer {
   height: 300vh; /* Adjust the scrollable area */
+  background: rgba(255, 255, 255, 0.01); /* Semi-transparent white */
+  backdrop-filter: blur(2px); /* Frosted glass effect */
 }
