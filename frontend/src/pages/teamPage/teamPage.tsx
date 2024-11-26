@@ -4,14 +4,16 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import DropZone from "../../components/dropzone/DropZone";
 import DragZone from "../../components/dragzone/DragZone";
 import "./teamPage.css";
+
 import { useNavigate } from "react-router-dom";
+
 
 export interface CardData {
   id: string;
   name: string;
   type: string;
   team: string;
-  points: string;
+  points:  string;
   cost: string;
   score: string;
 }
@@ -227,6 +229,7 @@ const TeamPage: React.FC = () => {
   const [dragZoneCards, setDragZoneCards] =
     useState<CardData[]>(initialDragZoneCards);
 
+
   const moveToDropZone = (card: CardData) => {
     if (dropZoneCards.length >= 11) {
       // If DropZone is full, swap the last card back to DragZone
@@ -234,10 +237,8 @@ const TeamPage: React.FC = () => {
       const updatedDropZone = [...dropZoneCards.slice(0, -1), card]; // Replace last card with new card
 
       setDropZoneCards(updatedDropZone);
-      setDragZoneCards([
-        ...dragZoneCards.filter((c) => c.id !== card.id),
-        cardToSwap,
-      ]);
+
+      setDragZoneCards([...dragZoneCards.filter((c) => c.id !== card.id), cardToSwap]);
     } else {
       // If DropZone is not full, simply add the card
       setDropZoneCards([...dropZoneCards, card]);
@@ -258,6 +259,7 @@ const TeamPage: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
+
       <div
         style={{
           display: "flex",
@@ -322,13 +324,8 @@ const TeamPage: React.FC = () => {
           // <div className={`side-container ${showContainer ? "visible" : ""}`}>
           <div className="side-container">
             {/* <div style={{
-          // position: "relative",
-          // display: "flex",
-          // backgroundColor: "darkgrey",
-          width: "90px",
-          height: "110px",
-          borderRadius: 5
-          }}></div> */}
+
+
 
             <DragZone
               cards={dragZoneCards}
@@ -354,5 +351,6 @@ const TeamPage: React.FC = () => {
     </DndProvider>
   );
 };
+
 
 export default TeamPage;
