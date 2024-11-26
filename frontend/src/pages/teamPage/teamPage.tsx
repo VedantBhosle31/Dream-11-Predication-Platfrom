@@ -323,7 +323,7 @@ const TeamPage: React.FC = () => {
         {showContainer && (
           // <div className={`side-container ${showContainer ? "visible" : ""}`}>
           <div className="side-container">
-            {/* <div style={{
+            
 
 
 
