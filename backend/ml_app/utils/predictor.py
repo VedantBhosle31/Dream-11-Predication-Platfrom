@@ -48,13 +48,13 @@ class CricketPerformancePredictor:
 
     def create_model(self, model_type, params):
         if model_type == 'xgboost':
-            return XGBRegressor(tree_method='gpu_hist', **params)
+            return XGBRegressor(tree_method='hist', **params)
         elif model_type == 'random_forest':
             return RandomForestRegressor(**params)
         elif model_type == 'gradient_boosting':
             return GradientBoostingRegressor(**params)
         elif model_type == 'lightgbm':
-            return LGBMRegressor(device='gpu', **params)
+            return LGBMRegressor(device='cuda', **params)
         elif model_type == 'catboost':
             return CatBoostRegressor(task_type="GPU", verbose=0, **params)
         else:

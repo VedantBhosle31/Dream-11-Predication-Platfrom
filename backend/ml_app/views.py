@@ -34,8 +34,13 @@ def predict(request):
             if not names or not date:
                 return JsonResponse({"error": "Missing 'names' or 'date' in request body"}, status=400)
             names = names.split(',')
+            for i in range(len(names)):
+                names[i]=names[i].strip(" ")
             # Assuming `model.predict()` returns a pandas DataFrame or an array
-            result = model.predict(names, date)
+            try :
+                result = model.predict(names, date)
+            except Exception as e:
+                return JsonResponse({"error": f"{str(e)}"}, status=500)
 
             # Process result based on its type
             if isinstance(result, pd.DataFrame):
