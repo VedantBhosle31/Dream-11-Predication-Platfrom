@@ -1,9 +1,11 @@
 // Loading.jsx
-import React from "react";
 import { motion } from "framer-motion";
-import "../styles/Loading.css";
+import "./Loading.css";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Loading = () => {
+  const navigation = useNavigate();
   // Fade in with stagger
   const container = {
     hidden: { opacity: 0, y: 25 },
@@ -16,6 +18,13 @@ const Loading = () => {
       },
     },
   };
+
+  useEffect(() => {
+    // Navigate to team page after 3 seconds
+    setTimeout(() => {
+      navigation("/team");
+    }, 3000);
+  }, [navigation]);
 
   return (
     <motion.div

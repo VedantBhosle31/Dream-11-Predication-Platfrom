@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
-import "../App.css";
-import Heading from "../components/Heading";
-import ChooseTeam from "../components/ChooseTeam";
+import "./Home.css";
+import Heading from "../../components/Heading";
+import ChooseTeam from "../../components/ChooseTeam";
 
-import DownArrowSvg from "../assets/down_arrow.svg";
+import DownArrowSvg from "../../assets/down_arrow.svg";
 
 const Home: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
