@@ -19,16 +19,20 @@
     "framer-motion": "^11.11.17",
     "gsap": "^3.12.5",
     "lucide-react": "^0.460.0",
+    "papaparse": "^5.4.1",
     "react": "^18.3.1",
     "react-apexcharts": "^1.6.0",
     "react-autosuggest": "^10.1.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.0.1",
     "react-scripts": "5.0.1",
+    "react-select": "^5.8.3",
     "recharts": "^2.13.3",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",
