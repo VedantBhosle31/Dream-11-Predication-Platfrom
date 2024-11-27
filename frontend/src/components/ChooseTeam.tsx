@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 type InputContainerProps = {
   label: string;
@@ -34,7 +35,7 @@ const ChooseTeam = () => {
         <FloatingImage src="/rcb.png" alt="team_logo" />
       </motion.div>
       {/* AI button */}
-      <div>
+      <div className="btn-cont">
         <AnimatedButton />
       </div>
     </div>
@@ -112,6 +113,7 @@ const AnimatedButton = () => {
           ease: "easeOut",
         }}
       />
+      <AutoAwesomeIcon style={{ fontSize: 30 }} />
       Generate your Dream Team
     </motion.button>
   );
