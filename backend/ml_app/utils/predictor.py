@@ -297,7 +297,7 @@ class CricketPerformancePredictor:
         preds ={}
         for target in self.target_columns:
             model = self.predictions_data['xgboost']['models'][target]
-            preds[target] = model.predict(X_scaled)
+            preds[target]  = model.predict(X_scaled)
         return pd.DataFrame(preds)
 
     def get_feature_by_name(self,playerName,date):
