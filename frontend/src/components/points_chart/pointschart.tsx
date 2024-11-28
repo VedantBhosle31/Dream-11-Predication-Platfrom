@@ -1,6 +1,11 @@
-// FantasyPointsChart.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart, Label } from "recharts";
+
+
+type RunData = {
+  Date: string; // ISO 8601 date string
+  Previous_Runs: number; // Integer representing runs
+};
 
 interface ChartData {
     match: string;
@@ -40,10 +45,10 @@ const data: ChartData[] = [
 const FantasyPointsChart: React.FC = () => {
     const [selectedQuery, setSelectedQuery] = useState<string>("fantasyPoints");
 
-    // Handle query change
-    const handleQueryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedQuery(event.target.value);
-    };
+    // // Handle query change
+    // const handleQueryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //   setSelectedQuery(event.target.value);
+    // };
 
     const queryColors: { [key: string]: string } = {
         fantasyPoints: "#3498db", // Blue for Fantasy Points
@@ -51,59 +56,57 @@ const FantasyPointsChart: React.FC = () => {
         runRate: "#e74c3c",       // Red for Run Rate
     };
 
+
+    const fetchData = async (): Promise<RunData[]> => {
+      const response = await fetch("http://127.0.0.1:8000/graphs/get_player_points/1/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      console.log(response);
+      return response.json();
+    };
+  
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const data = await fetchData();
+          console.log("data: ",data);
+        } catch (err: any) {
+          console.log(err.message);
+        }
+      };
+  
+      getData();
+    }, []);
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "62%", height: "70%", marginTop: "20px", alignContent: "space-between" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "95%", alignContent: "space-between" }}>
 
-        {/* Dropdown for selecting the query */}
-      <div style={{ display: "flex", marginBottom: "20px", width: "100%", height: "20px", fontSize: "20px", alignItems: "center", color: "black"}}>
-        <select 
-        value={selectedQuery} 
-        onChange={handleQueryChange} 
-        style={{
-            width: "100%",
-            height: "50px",
-            fontSize: "35px",
-            padding: "5px",
-            borderRadius: "5px",
-            backgroundColor: "transparent",
-            border: "none",
-            color: "white", // Selected value color
-            appearance: "none", // Optional: For consistent cross-browser styling
-            WebkitAppearance: "none",
-            MozAppearance: "none",
-            textAlign: "center",
-            fontFamily: "Montserrat"
-          }}
-        >
-          <option value="fantasyPoints" style={{color: "black",backgroundColor: "white",}}>Fantasy Points</option>
-          <option value="playerScore" style={{color: "black",backgroundColor: "white",}}>Player Score</option>
-          <option value="runRate" style={{color: "black",backgroundColor: "white",}}>Run Rate</option>
-        </select>
-      </div>
-
-      <div style={{display: "flex", width: "100%", height: "65%", justifyContent: "center", alignItems: "center", marginTop: "20px"}}>
+      <div style={{display: "flex", width: "100%", height: "80%", justifyContent: "center", alignItems: "center", marginTop: "20px"}}>
       <ResponsiveContainer width={"80%"} height={"100%"}>
         <AreaChart data={data}>
           <CartesianGrid stroke="none" strokeDasharray="0" />
           <XAxis dataKey="match" style={{fontSize: "8px"}}>
             <Label
             color="white"
-            value="MATCHES"
+            value="NUMBER OF MATCHES"
             offset={-1}
             position="insideBottom"
             style={{ fontSize: "10px", fontWeight: "bold", color: "white", fontFamily: "Montserrat" }}
             />
           </XAxis>
 
-          <YAxis style={{fontSize: "8px"}}>
+          <YAxis style={{fontSize: "8px"}} axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "grey", fontSize: 7 }}
+                      minTickGap={10}>
             <Label
-            value="FANTASY POINTS"
+            value="VPI"
             angle={-90}
-            // position="insideLeft"
             style={{ fontSize: "10px", fontWeight: "bold", color: "white", fontFamily: "Montserrat" }}
             />
           </YAxis>
-          <Tooltip />
+          <Tooltip contentStyle={{color:"red", fontSize:"10px", backgroundColor:"black"}}/>
           {/* <Legend /> */}
           {/* <Line
             type="linear"
@@ -116,11 +119,11 @@ const FantasyPointsChart: React.FC = () => {
           /> */}
           <Area
             type="linear"
-            dataKey={selectedQuery} // Dynamically change the dataKey based on selected query
-            stroke={queryColors[selectedQuery]} // Line color
-            fill="#3498db" // Area fill color
-            fillOpacity={0.3} // Make the fill slightly transparent
-            dot={true} // Show dots at data points
+            dataKey={selectedQuery}
+            stroke={"#9A89FF"}
+            fill="#FA2433"
+            fillOpacity={0.3}
+            dot={true}
           />
         </AreaChart>
       </ResponsiveContainer>

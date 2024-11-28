@@ -1,28 +1,28 @@
 .form-bar-container {
-    width: 100%; /* Adjust based on your layout */
+    width: 100%;
     position: relative;
-    height: 20px; /* Height of the gradient bar */
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   
   .form-bar {
-    width: 90%; /* Adjust based on your layout */
+    width: 90%;
     height: 10px;
-    background: linear-gradient(to right, red, orange, green); /* Gradient colors */
+    background: linear-gradient(to right, red, orange, green);
     border-radius: 5px;
     position: relative;
   }
   
   .form-indicator {
     position: absolute;
-    top: 12px; /* Adjust to position the triangle above the bar */
+    top: 12px;
     width: 0;
     height: 0;
-    border-left: 8px solid transparent; /* Adjust triangle size */
+    border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 10px solid red; /* Color of the triangle */
-    transform: translateX(-50%); /* Center the triangle */
+    border-bottom: 10px solid red;
+    transform: translateX(-50%);
   }
   

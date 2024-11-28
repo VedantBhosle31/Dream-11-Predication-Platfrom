@@ -2,7 +2,7 @@ import React from "react";
 import "./formbar.css";
 
 interface FormBarProps {
-  hotness: number; // hotness should be a value between 0 and 100
+  hotness: number;
 }
 
 const FormBar: React.FC<FormBarProps> = ({ hotness }) => {
@@ -13,7 +13,7 @@ const FormBar: React.FC<FormBarProps> = ({ hotness }) => {
         {/* Floating Triangle */}
         <div
           className="form-indicator"
-          style={{ left: `${hotness}%` }} // Position the triangle based on the hotness value
+          style={{ left: `${hotness}%` }}
         />
       </div>
     </div>

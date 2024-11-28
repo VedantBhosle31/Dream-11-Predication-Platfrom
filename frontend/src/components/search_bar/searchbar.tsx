@@ -1,113 +1,108 @@
 import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import { IconButton, InputAdornment, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import "./SearchBar.css";
+import { IconButton, InputBase, Paper, List, ListItem } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import geminiicon from "../../assets/icons/gemini.png";
+import SparklesIcon from "@mui/icons-material/AutoAwesome";
 
 interface SearchBarProps {
-  suggestions: string[]; // Array of suggestions for auto-complete
-  onSearch: (query: string) => void; // Callback for handling search
+  suggestions: string[];
+  onSearch: (query: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ suggestions, onSearch }) => {
-  const [query, setQuery] = useState<string>("");
-  const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setQuery(inputValue);
-
-    // Filter suggestions based on input
-    if (inputValue) {
-      const matches = suggestions.filter((sug) =>
-        sug.toLowerCase().startsWith(inputValue.toLowerCase())
-      );
-      setFilteredSuggestions(matches);
-    } else {
-      setFilteredSuggestions([]);
-    }
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    setShowSuggestions(event.target.value.length > 0);
   };
 
   const handleSearch = () => {
-    onSearch(query);
-    setQuery("");
-    setFilteredSuggestions([]);
+    if (searchTerm.trim() !== "") {
+      onSearch(searchTerm);
+      setSearchTerm("");
+      setShowSuggestions(false);
+    }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    setQuery(suggestion);
+    setSearchTerm(suggestion);
+    setShowSuggestions(false);
     onSearch(suggestion);
-    setFilteredSuggestions([]);
   };
 
-
   return (
-    <div style={{ width: "70%", minHeight: "50px", backgroundColor: "white", borderRadius: "25px", marginTop: "20px", justifyItems: "center" }}>
-      <div style={{ width: "100%", minHeight: "50px", backgroundColor: "white", borderRadius: "25px", marginTop: "20px", justifyItems: "center"}}>
-      <TextField
-      fullWidth
-        // variant="outlined"
-        value={query}
-        onChange={handleInputChange}
-        placeholder="Recent form of virat kohli"
-        style={{
-            height: "20px",
-            textAlign: "center",
-            fontSize: "2px",
-            width: "100%",
-            border: "none",
-            borderRadius: "25px",
-            fontFamily: "Montserrat"
-        }}
-        InputProps={{
-            startAdornment:(
-                <InputAdornment position="start">
-                    <IconButton onClick={handleSearch}>
-                        <SearchIcon />
-                    </IconButton>
-                </InputAdornment>
-            ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={handleSearch}>
-                <SearchIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-        sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                border: "none", // Remove outer border
-              },
-              "&:hover fieldset": {
-                border: "none", // No border on hover
-              },
-              "&.Mui-focused fieldset": {
-                border: "none", // Remove focus border
-              },
-            },
-        }}
-      />
-      </div>
+    <Paper
+      component="form"
+      elevation={3}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        borderRadius: "25px",
+        backgroundColor: "#333",
+        color: "white",
+        width: "400px",
+      }}
+    >
+      <SearchIcon style={{ margin: "0 8px", color: "#bbb" }} />
 
-      <div>
-      {filteredSuggestions.length > 0 && (
-        <List style={{ width: "100%", borderRadius: "4px", marginTop: "8px", fontFamily: "Montserrat" }}>
-          {filteredSuggestions.map((suggestion, index) => (
-            <ListItem key={index} disablePadding>
-              <ListItemButton onClick={() => handleSuggestionClick(suggestion)}>
-                <ListItemText primary={suggestion} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+      {/* Search Input */}
+      <InputBase
+        placeholder="Search for player stats or recent form..."
+        style={{ color: "white", flex: 1, fontFamily: "Montserrat" }}
+        value={searchTerm}
+        onChange={handleInputChange}
+        onFocus={() => setShowSuggestions(true)}
+      />
+
+      <IconButton
+        type="button"
+        style={{ marginLeft: "8px", color: "red", fillOpacity: "0.5" }}
+        onClick={() => alert("Example: Recent Form of Virat Kohli")}
+      >
+        <SparklesIcon />
+      </IconButton>
+
+      {/* Suggestions Dropdown */}
+      {showSuggestions && (
+        <List
+          style={{
+            position: "absolute",
+            bottom: "60px",
+            left: "0",
+            width: "31%",
+            backgroundColor: "#444",
+            color: "white",
+            borderRadius: "10px",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+            zIndex: 1000,
+            fontFamily: "Montserrat",
+          }}
+        >
+          {suggestions
+            .filter((suggestion) =>
+              suggestion.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((suggestion, index) => (
+              <ListItem
+                key={index}
+                // button
+                onClick={() => handleSuggestionClick(suggestion)}
+                style={{
+                  padding: "10px",
+                  borderBottom: "1px solid #555",
+                  color: "white",
+                  fontFamily: "Montserrat",
+
+                }}
+              >
+                {suggestion}
+              </ListItem>
+            ))}
         </List>
       )}
-      </div>
-      
-
-      
-    </div>
+    </Paper>
   );
 };
 

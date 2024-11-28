@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+.filterbutton {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 15%;
+    right: 10px;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    z-index: 10;
+    width: 100px; 
+}
+  
+  .hamburger-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .MuiMenu-root {
+    width: 250px;
+  }
+  
+  .dropdown-menu {
+    background-color: black;
+  }
+  
+  .filter-section,
+  .type-section {
+    font-family: "Montserrat";
+  }
+  
+  h4 {
+    font-size: 14px;
+    font-family: "Montserrat";
+
+  }
+  

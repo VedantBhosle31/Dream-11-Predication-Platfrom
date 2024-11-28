@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import Loading from "./pages/Loading/Loading";
 import TeamPage from "./pages/teamPage/teamPage";
 import PlayerInfo from "./pages/player_display_card/displayCard";
+import SlidingPanels from "./SlidingPanels";
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/loading" element={<Loading />} />
-        <Route path="/team" element={<TeamPage />} />
+        <Route path="/team" element={<SlidingPanels />} />
         <Route path="/player-info" element={<PlayerInfo />} />
       </Routes>
     </BrowserRouter>

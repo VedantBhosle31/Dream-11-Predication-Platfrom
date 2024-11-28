@@ -1,13 +1,7 @@
 .dragzone-container {
-  /* border: 2px solid #6c757d; */
-  border-radius: 35px;
-  background-color: #CD3939;
   padding: 5px;
-  min-width: 320px;
-  max-width: 400px;
-  height: 350px;
-  margin: auto;
-  /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
+  width: 100%;
+  background-color: #191919;
   overflow-y: auto;
 }
 
@@ -21,25 +15,20 @@
 }
 
 .dragzone-cards {
-  /* display: flex; */
-  /* flex-wrap: wrap; */
-  /* gap: 10px; */
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   align-items: center;
+  width: 100%;
 }
 
 .draggable-card {
-  background-color: #CD3939;
-  /* border: 1px solid #d1d5db; */
-  border-radius: 8px;
-  /* padding: 10px; */
-  /* text-align: center; */
-  /* width: 300px; */
-  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); */
-  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  height: 80px;
   width: 100%;
   cursor: grab;
-  flex-direction: row;
   color: #d1d5db;
   font-size: 14px;
   font-family: "Montserrat";
@@ -48,39 +37,42 @@
 
 .draggable-card-name {
   height: 100%;
+  width: 35%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: left;
-}
+} 
 
 .card-image-drag {
-  width: 18%;
-  /* height: 8%; */
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   float: left;
 }
 
 .card-image-container {
-  bottom: 0;
-  left: 0;
+  align-items: center;
+  width: 15%;
+  height: 90%;
+  bottom: 0px;
+  left: 0px;
 }
 
 /* width */
-::-webkit-scrollbar {
+.dragzone-container::-webkit-scrollbar {
   width: 10px;
   border-radius: 25px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+.dragzone-container::-webkit-scrollbar-track {
   background: #000000;
   border-radius: 25px;
   margin: 25px;
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+.dragzone-container::-webkit-scrollbar-thumb {
   background: #ffffff;
   border-radius: 25px;
   margin: 20px;
@@ -88,7 +80,7 @@
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.dragzone-container::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
@@ -100,18 +92,37 @@
 }
 
 .cost-filter-button {
-  padding:"10px";
-  background-color: #CD3939;
+  display: flex;
+  margin-left: 10px;
+  background-color: #1f1f1f;
   border: none;
   border-radius: 10px;
   color: white;
   cursor: pointer;
   font-family: "Montserrat";
+  font-size: 10px;
+  align-items: center;
 }
 
-.score-filter-button{
-  padding:"10px";
-  background-color: #CD3939;
+.score-filter-button {
+  display: flex;
+  margin-left: 10px;
+  background-color: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-size: 10px;
+  align-items: center;
+}
+
+.selected {
+  color: red;
+}
+
+.add-button{
+  background-color: #1f1f1f;
   border: none;
   border-radius: 10px;
   color: white;
