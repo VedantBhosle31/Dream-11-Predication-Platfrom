@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ml_app',
     'players',
     'corsheaders',
+    'graphs',
 ]
 
 MIDDLEWARE = [
