@@ -89,7 +89,7 @@ const Home: React.FC = () => {
       </motion.div>
 
       <motion.div
-        className="down_arrow_svg"
+        className="flex justify-center w-full fixed z-20 bottom-6 cursor-pointer"
         initial={{ opacity: 1, y: 0 }}
         animate={titleControls}
       >
@@ -97,9 +97,10 @@ const Home: React.FC = () => {
           whileTap={{ scale: 0.9 }}
           whileHover={{ scale: 1.2 }}
           src={DownArrowSvg}
-          height={50}
+          height={30}
           alt=""
           onClick={scrollDown}
+          className="h-12 w-12"
         />
       </motion.div>
 
