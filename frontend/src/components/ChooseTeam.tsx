@@ -93,7 +93,7 @@ const ChooseTeam = () => {
       data.every(
         (row) =>
           row["Player Name"] &&
-          row[""] &&
+          row["Squad"] &&
           row["Match Date"] &&
           row["Format"]
       );

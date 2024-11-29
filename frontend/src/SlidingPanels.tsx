@@ -120,7 +120,10 @@ const SlidingPanels = () => {
       score: "89",
       cvc: "",
     },
-    // { id: "11", name: "ALZARRI JOSEPH", type: "BOWL", team: "RCB", points: "207", cost: "12", score: "89" }
+    {
+      id: "11", name: "ALZARRI JOSEPH", type: "BOWL", team: "RCB", points: "207", cost: "12", score: "89",
+      cvc: ""
+    }
   ];
 
   const initialDragZoneCards: CardData[] = [
@@ -305,32 +308,65 @@ const SlidingPanels = () => {
     setShowContainer((prev) => !prev);
   };
 
+
+
+  const handleSetCVC = (id: string, role: "C" | "VC") => {
+    setDropZoneCards((prevCards) =>
+      prevCards.map((card) => {
+        if (card.id === id) {
+          // Set the new Captain or Vice-Captain
+          return { ...card, cvc: role };
+        }
+
+        // Reset the previously selected Captain or Vice-Captain
+        if ((role === "C" && card.cvc === "C") || (role === "VC" && card.cvc === "VC")) {
+          return { ...card, cvc: "" };
+        }
+
+        return card;
+      })
+    );
+  };
+
+  const addToDropZone = (card: CardData) => {
+    if (dropZoneCards.length < 11) {
+      setDropZoneCards([...dropZoneCards, card]);
+      setDragZoneCards(dragZoneCards.filter((c) => c.id !== card.id));
+    } else {
+      alert("DropZone is already full!");
+    }
+  };
+
+
+
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Button with higher z-index and clear positioning */}
       { showContainer && <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed -left-4 top-1/2 transform -translate-y-1/2 z-50 px-2 bg-[#88000A] 
-        text-white rounded-lg shadow-lg transition-colors duration-200  -rotate-90 uppercase
+        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
+        text-white rounded-l-3xl shadow-lg transition-colors duration-200 -rotate-180 uppercase
         font-semibold text-lg"
+        style={{ writingMode: 'vertical-rl'}}
       >
-        {isOpen ? "<" : "compare players"}
+        {isOpen ? "^" : "compare players"}
       </button>}
 
       <div className="flex h-full">
         <div
           className={`fixed top-0 w-[45%] h-full bg-black-100 shadow-lg transition-transform 
           duration-500 ease-in-out  ${
-            isOpen ? "translate-x-20" : "-translate-x-full"
+            isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           <Comparision />
         </div>
 
         <div
-          className={`fixed top-0 h-full bg-black-200 transition-transform duration-500 
+          className={`fixed top-0 h-full bg-white transition-transform duration-500 
           ease-in-out ${
-            isOpen ? "w-[58%] translate-x-[81.8%]" : "w-[58%] translate-x-0"
+            isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[58%] translate-x-0"
           }`}
         >
           {/* <div className="p-6">Component 2</div> */}
@@ -345,11 +381,12 @@ const SlidingPanels = () => {
             dropZoneCards={dropZoneCards}
             removeFromDropZone={removeFromDropZone}
             handleSelectCard={handleSelectCard}
+            // handleSetCVC={handleSetCVC}
           />
         </div>
 
         <div
-          className={`fixed right-0 w-[50%] h-full bg-black transition-transform 
+          className={`fixed right-0 w-[45%] h-full bg-black transition-transform 
           duration-500 ease-in-out ${
             isOpen ? "translate-x-full" : "translate-x-0"
           }`}
@@ -363,6 +400,7 @@ const SlidingPanels = () => {
             applyFilter={applyFilter}
             handleSwapCards={handleSwapCards}
             selectedCard={selectedCard}
+            addToDropZone={addToDropZone}
           />
         </div>
       </div>
