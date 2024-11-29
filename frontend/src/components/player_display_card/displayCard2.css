@@ -1,0 +1,121 @@
+.display-card-expanded {
+    width: 70%;
+    height: 90%;
+    background-color:#c80000 transparent;
+    background:linear-gradient(to top, black 30%, #c80000 50%);
+    z-index: 100;
+    transition: all 0.5s ease;
+    border:3px solid black;
+}
+
+.dream11bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.display-card-expanded-player-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    bottom: 0px;
+    z-index: 1;
+}
+
+.display-expanded-card-team-logo {
+    height: 70%;
+    object-fit: cover;
+}
+
+.display-card-overlay-section{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 45%;
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    font-size:40px;
+    font-weight: 900;
+    font-family: "Montserrat";
+    background:linear-gradient(to top,black 20%,rgba(22, 0, 0, 0.7) 70%, transparent);
+    background-color:#c80000 transparent;
+    z-index: 4;
+}
+.card-overlay-row-display {
+    display: flex;
+    height: 30%;
+    width: 90%;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
+.overlay-section {
+    font-size: 25px;
+    font-weight: 900;
+    width: 33%;
+    align-content: center;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-items: center;
+}
+
+.quote-card {
+    background-color:#000000 transparent;
+    background:linear-gradient(to right, black, #787878);
+    border-radius: 10px;
+    border: 1px solid red;
+}
+
+.stats-div {
+    font-size: 45px;
+    font-weight: 900;
+    font-family: "Montserrat";
+    opacity: 0.9;
+    background-color: #787878;
+}
+
+.stats-div-header{
+    border: 2px solid white; 
+    background-color: #000000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stats-div-screen{
+    width: 100%;
+    height: 100%;
+    background-color: #1b1b1b;
+}
+
+
+.type-stats{
+    width: 35%;
+    height: 90%;
+    background-color: #1A1A1A;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
+    color: red;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+
+

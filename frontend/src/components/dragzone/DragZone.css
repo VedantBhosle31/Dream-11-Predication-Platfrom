@@ -1,0 +1,131 @@
+.dragzone-container {
+  padding: 5px;
+  width: 100%;
+  background-color: #191919;
+  overflow-y: auto;
+}
+
+.dragzone-title {
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Montserrat";
+}
+
+.dragzone-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  width: 100%;
+}
+
+.draggable-card {
+  display: flex;
+  align-items: center;
+  background-color: #000000;
+  height: 80px;
+  width: 100%;
+  cursor: grab;
+  color: #d1d5db;
+  font-size: 14px;
+  font-family: "Montserrat";
+  font-weight: bold;
+}
+
+.draggable-card-name {
+  height: 100%;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} 
+
+.card-image-drag {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  float: left;
+}
+
+.card-image-container {
+  align-items: center;
+  width: 15%;
+  height: 90%;
+  bottom: 0px;
+  left: 0px;
+}
+
+/* width */
+.dragzone-container::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 25px;
+}
+
+/* Track */
+.dragzone-container::-webkit-scrollbar-track {
+  background: #000000;
+  border-radius: 25px;
+  margin: 25px;
+}
+
+/* Handle */
+.dragzone-container::-webkit-scrollbar-thumb {
+  background: #ffffff;
+  border-radius: 25px;
+  margin: 20px;
+
+}
+
+/* Handle on hover */
+.dragzone-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+
+/* Visible State */
+.side-container.visible {
+  transform: translateX(-300px); /* Slide into view */
+}
+
+.cost-filter-button {
+  display: flex;
+  margin-left: 10px;
+  background-color: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-size: 10px;
+  align-items: center;
+}
+
+.score-filter-button {
+  display: flex;
+  margin-left: 10px;
+  background-color: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-family: "Montserrat";
+  font-size: 10px;
+  align-items: center;
+}
+
+.selected {
+  color: red;
+}
+
+.add-button{
+  background-color: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-family: "Montserrat";
+}

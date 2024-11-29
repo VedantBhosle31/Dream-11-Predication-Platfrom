@@ -1,0 +1,244 @@
+/* Background Video */
+.background-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Title Section */
+.title {
+  position: fixed;
+  top: 25%; /* Adjust for central positioning */
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  color: white;
+  z-index: 1;
+}
+
+.title h1 {
+  margin: 0.4rem;
+}
+
+.down_arrow_svg {
+  position: fixed;
+  bottom: 5%;
+  left: calc(50% - 25px);
+  transform: translateX(-50%);
+  fill: white;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.title-special {
+  /* color: #ff4141; */
+  font-size: 5rem;
+  color: white;
+}
+
+/* Box Section */
+.box {
+  position: fixed;
+  top: 5%; /* Initially positioned offscreen for animation */
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  background: transparent;
+  color: white;
+  z-index: 1;
+  /* pointer-events: none; */
+  opacity: 0;
+  transform: translateY(50%);
+}
+
+.top-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+input {
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  color: white;
+  padding: 8px 12px;
+  margin: 8px 0;
+  width: 500px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+label {
+  font-weight: bold;
+  text-align: left;
+  width: 100%;
+}
+
+/* Team Logo */
+.select-team-img {
+  object-fit: contain;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.btn-cont {
+  display: flex;
+  justify-content: center;
+}
+
+/* AnimatedButton.css */
+.animated-button {
+  position: relative;
+  padding: 20px;
+  margin: 20px 0;
+  width: 500px;
+  border-radius: 45px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.button-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, #ad0000 0%, #ff5d6b 100%);
+}
+
+/* Optional: Add these styles if you want the button to maintain its semi-transparent look when not hovered */
+.animated-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -2;
+}
+
+.animated-button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: -3;
+}
+
+.animated-button:disabled {
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.25) !important;
+}
+
+.animated-button:disabled .button-gradient {
+  display: none;
+}
+
+/* Spacer for Scroll */
+.spacer {
+  height: 300vh; /* Adjust the scrollable area */
+  background: rgba(255, 255, 255, 0.01); /* Semi-transparent white */
+  backdrop-filter: blur(2px); /* Frosted glass effect */
+}
+
+/* Layout */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: transparent; /* Tailwind: bg-gray-100 */
+  padding: 1rem; /* Tailwind: p-4 */
+}
+
+.card {
+  width: 50%;
+  max-width: 1024px; /* Tailwind: max-w-4xl */
+  background-color: transparent; /* Tailwind: bg-white */
+  border-radius: 0.75rem; /* Tailwind: rounded-xl */
+  padding: 1.5rem; /* Tailwind: p-6 */
+}
+
+/* File Upload Section */
+.upload-box {
+  border: 2px dashed #d1d5db; /* Tailwind: border-gray-300 */
+  border-radius: 0.5rem; /* Tailwind: rounded-lg */
+  padding: 2.5rem; /* Tailwind: p-12 */
+  text-align: center;
+  transition: border-color 0.3s; /* Tailwind: transition-colors duration-300 */
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.upload-box:hover {
+  border-color: #ff5d6b; /* Tailwind: hover:border-blue-500 */
+}
+
+.upload-box input {
+  display: none; /* Tailwind: hidden */
+}
+
+.upload-box-icon {
+  margin: 0 auto 1rem; /* Tailwind: mx-auto mb-4 */
+  color: white; /* Tailwind: text-gray-400 */
+}
+
+.upload-box-text {
+  color: white; /* Tailwind: text-gray-600 */
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+}
+
+.upload-box-subtext {
+  color: #ececff; /* Tailwind: text-gray-500 */
+  font-size: 0.875rem; /* Tailwind: text-sm */
+  margin-top: 0.5rem; /* Tailwind: mt-2 */
+}
+
+.error-box {
+  background-color: #fef2f2; /* Tailwind: bg-red-50 */
+  border: 1px solid #fecaca; /* Tailwind: border-red-200 */
+  color: #b91c1c; /* Tailwind: text-red-700 */
+  padding: 0.75rem; /* Tailwind: p-3 */
+  border-radius: 0.5rem; /* Tailwind: rounded-lg */
+  margin-bottom: 1rem; /* Tailwind: mb-4 */
+}
+
+/* Logos */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem; /* Tailwind: mt-6 */
+  gap: 1rem; /* Tailwind: space-x-4 */
+}
+
+.logo {
+  width: 6rem; /* Tailwind: w-24 */
+  height: 6rem; /* Tailwind: h-24 */
+  object-fit: contain; /* Tailwind: object-contain */
+}
