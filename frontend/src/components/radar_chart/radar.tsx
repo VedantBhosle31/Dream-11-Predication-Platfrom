@@ -1,46 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { fetchData } from "../../api/fetchData";
+import { getSessionData, setSessionData } from "../../utils/sessionStorageUtils";
 
-type RunData = {
-  Date: string; // ISO 8601 date string
-  Previous_Runs: number; // Integer representing runs
-};
+
 
 const RadarChart: React.FC = () => {
   const [numbers, setNumbers] = useState<number[]>([]);
 
-  const fetchData = async (): Promise<RunData[]> => {
-    const response = await fetch(
-      "http://127.0.0.1:8000/graphs/get_player_radar_chart/1/"
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    console.log(response);
+  // const fetchData = async (): Promise<RunData[]> => {
+  //   const response = await fetch(
+  //     "http://127.0.0.1:8000/graphs/get_player_radar_chart/1/"
+  //   );
+  //   if (!response.ok) {
+  //     throw new Error("Failed to fetch data");
+  //   }
+  //   console.log(response);
 
-    const jsonData = await response.json();
+  //   const jsonData = await response.json();
 
-    // Extracting only values from the JSON
-    const values = Object.values(jsonData) as number[];
+  //   // Extracting only values from the JSON
+  //   const values = Object.values(jsonData) as number[];
 
-    setNumbers(values);
+  //   setNumbers(values);
 
-    return response.json();
-  };
+  //   return response.json();
+  // };
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const data = await fetchData();
-        console.log("data: ", data);
-      } catch (err: any) {
-        console.log(err.message);
-      }
-    };
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const data = await fetchData();
+  //       console.log("data: ", data);
+  //     } catch (err: any) {
+  //       console.log(err.message);
+  //     }
+  //   };
 
-    getData();
-  }, []);
+  //   getData();
+  // }, []);
 
   const chartOptions: ApexOptions = {
     chart: {

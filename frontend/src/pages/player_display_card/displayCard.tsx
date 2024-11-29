@@ -322,6 +322,8 @@ const DisplayCard: React.FC<{
     setSelectedFilter(filter); // Update the selected filter
   };
 
+  
+
     return (
       
       !isExpanded ? 

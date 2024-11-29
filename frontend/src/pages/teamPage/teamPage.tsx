@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DropZone from "../../components/dropzone/DropZone";
 import DragZone from "../../components/dragzone/DragZone";
 import "./teamPage.css";
 import EditComponent from "./EditComponent";
+import { getSessionData } from "../../utils/sessionStorageUtils";
+import { BackendData } from "../../api/fetchData";
 
 export interface CardData {
   id: string;
@@ -28,7 +30,14 @@ export interface TeamPageProps {
   selectedCard: CardData | null;
   removeFromDropZone: (card: CardData) => void;
   handleSelectCard: (card: CardData) => void;
+  // handleSetCVC: (card: CardData) => void;
+
 }
+
+type DataType = {
+  Date: string;
+  Previous_Runs: number;
+};
 
 const TeamPage: React.FC<TeamPageProps> = ({
   showContainer,
@@ -41,7 +50,32 @@ const TeamPage: React.FC<TeamPageProps> = ({
   selectedCard,
   removeFromDropZone,
   handleSelectCard,
+  // handleSetCVC, 
 }) => {
+
+
+
+
+  const [fetchedData, setData] = useState<DataType[] | null>(null);
+
+
+  useEffect(() => {
+    const cachedData = getSessionData<BackendData[]>('runsData');
+    console.log(cachedData);
+    if (cachedData) {
+      setData(cachedData);
+    }
+  }, []);
+
+  
+
+  // if (!fetchedData) return <div>No data available. Go back to the home page to fetch data.</div>;
+
+
+
+
+  
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div
@@ -61,7 +95,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
             <div
               style={{
                 color: "red",
-                fontSize: "60px",
+                fontSize: "280%",
                 alignContent: "center",
                 justifyItems: "center",
                 fontWeight: "700",
@@ -69,7 +103,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
               }}
             >
               688
-              <div style={{ color: "white", fontSize: "10px" }}>
+              <div style={{ color: "white", fontSize: "20%" }}>
                 EXPECTED TEAM SCORE
               </div>
             </div>
@@ -77,7 +111,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
             <div
               style={{
                 color: "red",
-                fontSize: "60px",
+                fontSize: "280%",
                 alignContent: "center",
                 justifyItems: "center",
                 fontWeight: "700",
@@ -85,7 +119,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
               }}
             >
               132
-              <div style={{ color: "white", fontSize: "10px" }}>TEAM COST</div>
+              <div style={{ color: "white", fontSize: "20%" }}>TEAM COST</div>
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import Loading from "./pages/Loading/Loading";
 import TeamPage from "./pages/teamPage/teamPage";
 import PlayerInfo from "./pages/player_display_card/displayCard";
 import SlidingPanels from "./SlidingPanels";
+import VideoPage from "./components/video_player/videopage";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/loading" element={<Loading />} />
         <Route path="/team" element={<SlidingPanels />} />
         <Route path="/player-info" element={<PlayerInfo />} />
+        <Route path="/videopage" element={<VideoPage />} />
       </Routes>
     </BrowserRouter>
   );

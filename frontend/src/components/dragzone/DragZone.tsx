@@ -13,10 +13,11 @@ interface DragZoneProps {
   onDrag: (card: CardData) => void;
   applyFilter: (filter: "points" | "cost") => void;
   onSwap: (card: CardData) => void;
-  selectedCard: CardData | null
+  selectedCard: CardData | null;
+  addToDropZone: (card: CardData) => void;
 }
 
-const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFilter, onSwap  }) => {
+const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFilter, onSwap, addToDropZone  }) => {
 
   const [ascending, setAscending] = useState(true);
 
@@ -39,13 +40,13 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
   
   
   return (
-    <div style={{backgroundColor: "#1f1f1f", padding: "20px", borderRadius: "15px", height: "88%",  width: "100%"}}>
+    <div style={{display: "flex", flexDirection: "column", backgroundColor: "#1f1f1f", padding: "15px", borderRadius: "5px", height: "85%",  width: "100%"}}>
       
       <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
         
         <h3 className="dragzone-title">Player</h3>
 
-        <div style={{display: "flex", alignContent: "center", justifyContent: "space-between", width: "50%"}}>
+        <div style={{display: "flex", alignContent: "center", justifyContent: "space-between", width: "55%"}}>
           
           <button className={`score-filter-button ${filterType === "points" ? "selected" : ""}`} onClick={() => handleFilterClick("points")}>
             EXPT SCORE
@@ -77,7 +78,7 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
 
       </div>
 
-      <div className="dragzone-container" style={{height: "95%", width: "100%"}}>
+      <div className="dragzone-container" style={{width: "100%"}}>
         <div className="dragzone-cards">
           {filteredCards.map((card) => (
             <DraggableCard 
@@ -86,7 +87,9 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
               onDrag={onDrag}
               handleSwap={function (card: CardData): void {
                 onSwap(card);
-              } } />
+              } }
+              addToDropZone={addToDropZone}
+              />
           ))}
         </div>
       </div>
@@ -102,7 +105,8 @@ const DraggableCard: React.FC<{
   onDrag: (card: CardData) => void;
   // handleClickCard: (card: CardData) => void;
   handleSwap: (card: CardData) => void;
-}> = ({ card, onDrag, handleSwap }) => {
+  addToDropZone: (card: CardData) => void;
+}> = ({ card, onDrag, handleSwap, addToDropZone }) => {
   const [{ isDragging }, dragRef] = useDrag({
     type: "CARD",
     item: { card },
@@ -132,26 +136,26 @@ const DraggableCard: React.FC<{
 
       <div className="draggable-card-name" style={{display: "flex",left: "0px"}}>
         
-        <div style={{fontSize: "15px"}}>
+        <div style={{fontSize: "70%"}}>
           {card.name}
         </div>
 
-        <div style={{fontSize: "10px", fontWeight: "100"}}>
+        <div style={{fontSize: "65%", fontWeight: "100"}}>
           {card.type}
         </div>
 
       </div>
 
-      <div style={{display: "flex", width: "48%", height: "100%", backgroundColor: "black", justifyContent: "space-around"}}>
-        <div style={{width: "33%", alignContent:"center", color: "red", fontSize: "20px", fontWeight: "15px"}}>
+      <div style={{display: "flex", width: "50%", height: "100%", backgroundColor: "black", justifyContent: "space-around"}}>
+        <div style={{alignContent:"center", color: "red", fontSize: "100%", fontWeight: "800"}}>
           {card.points}
         </div>
 
-        <div style={{width: "33%", alignContent:"center", color: "white", fontSize: "20px", fontWeight: "15px"}}>
+        <div style={{alignContent:"center", color: "white", fontSize: "100%", fontWeight: "15px"}}>
           {card.cost}
         </div>
 
-        <IconButton onClick={() => {}} style={{width: "33%"}}>
+        <IconButton onClick={() => addToDropZone(card)} style={{}}>
           <AddCircleOutline style={{color: "red"}}/>
         </IconButton>
 
