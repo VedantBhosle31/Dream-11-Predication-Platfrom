@@ -1,11 +1,12 @@
 .dropzone-container {
   display: grid;
   grid-template-rows: auto auto auto;
-  gap: 15px;
+  /* gap: 10px; */
   background-color: #191919;
   width: 100%;
-  height: 80%;
+  height: 85%;
   box-shadow: 0px 4px 6px rgba(37, 37, 37, 0.1);
+  border-radius: 5px;
 }
 
 .dropzone-title {
@@ -26,7 +27,7 @@
   position: relative;
   text-align: center;
   width: 20%;
-  height: 170px;
+  height: 90%;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   cursor: grab;
   margin: 10px;
@@ -44,7 +45,7 @@
   height:40%;
   width:25%;
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 950;
   font-family: "Montserrat";
 }
@@ -86,8 +87,8 @@
   justify-content: space-evenly;
   align-items: center;
   transition: opacity 0.3s ease;
-  font-size:9px;
-  font-weight: 900;
+  font-size:80%;
+  font-weight: 700;
   font-family: "Montserrat";
   background:linear-gradient(to top,black 40%,rgba(22, 0, 0, 0.7) 70%, transparent);
   background-color:#c80000 transparent;
@@ -128,15 +129,15 @@
 
 
 .placeholder-card {
-  width: 120px;
-  height: 150px;
+  width: 20%;
+  height: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: transparent;
   border: 2px dashed grey;
   border-radius: 8px;
-  margin: auto;
+  margin: 10px;
 }
 
 .placeholder-border {

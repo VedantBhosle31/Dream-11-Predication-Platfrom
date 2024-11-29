@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDrop } from "react-dnd";
 import "./DropZone.css";
 import MyImage from "../../assets/images/virat_kohli.png";
@@ -93,8 +93,12 @@ const DroppableCard: React.FC<{
   isedit: boolean;
   selectedCard: CardData | null;
 }> = ({ card, onRemove, isedit, onSelectCard, selectedCard }) => {
+
+  const [ishovered, setShowButtons] = useState(false);
+
+
   return (
-    <div className="droppable-card" onClick={() => {}} style={{border: selectedCard === card ? "2px solid white": "none"}} onDropCapture={() => onSelectCard(card)}>
+    <div className="droppable-card" onClick={() => {}} style={{border: selectedCard === card ? "2px solid white": "none"}} onDropCapture={() => onSelectCard(card)} >
       <div className="left-half"></div>
       <div className="right-half"></div>
 
@@ -111,7 +115,7 @@ const DroppableCard: React.FC<{
 
       </div>
       
-      <div className="card-overlay">
+      <div className="card-overlay" >
         {card.name}
         <div className="card-overlay-row">
         <div style={{fontSize: "9px", display: "flex"}}>

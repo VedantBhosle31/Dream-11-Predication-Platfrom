@@ -81,7 +81,7 @@ const CustomDropdown: React.FC<{
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex flex-col gap-2 items-center py-2 bg-black font-bold uppercase text-white w-full text-left"
+        className="flex flex-col gap-2 items-center py-2 bg-black font-semibold uppercase text-xs text-white w-full h-[90%] text-left"
       >
         <div className="flex gap-2">
           <span>{isOpen ? "▲" : "▼"}</span>
@@ -132,7 +132,7 @@ const StatRow: React.FC<{
         {leftValue}
       </span>
 
-      <div className="w-[160px] h-3 relative mx-2">
+      <div className="w-[160px] h-2 relative mx-2">
         <div
           className="h-full bg-[#FA2433] absolute right-0"
           style={{
@@ -143,11 +143,11 @@ const StatRow: React.FC<{
         />
       </div>
 
-      <span className="w-32 text-center text-white font-semibold uppercase">
+      <span className="w-32 text-center text-xs text-white font-semibold uppercase">
         {label}
       </span>
 
-      <div className="w-[160px] h-3 relative mx-2">
+      <div className="w-[160px] h-2 relative mx-2">
         <div
           className="h-full bg-[#8B24FA] absolute left-0"
           style={{
@@ -261,19 +261,19 @@ const Comparision: React.FC = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center h-full p-4">
-      <div className="min-h-[80%] w-full bg-[#1A1A1A] rounded-3xl p-3 flex flex-col">
-        <div className="flex w-full bg-black px-2">
+    <div className="flex items-center justify-center h-[100%] pl-4 bg-black">
+      <div className="h-[90%] w-full bg-[#1A1A1A] rounded-sm p-3 flex flex-col">
+        <div className="flex w-full bg-black px-2 h-[12%]">
           {/* Left Card */}
           <div className="flex-1 flex items-center py-2 justify-between">
-            <div className="flex items-center h-full">
+            <div className="flex items-center h-full bg-black">
               <div className="h-full w-6 bg-red-600"></div>
               {/* Increased the width of the gap container */}
               <div className="w-6"></div>
               <img
                 src={leftPlayer.imageUrl}
                 alt={leftPlayer.name}
-                className="w-24 h-24"
+                className="h-full"
               />
             </div>
             <div className="flex h-full justify-center items-end flex-col text-white w-full  pr-4">
@@ -301,11 +301,11 @@ const Comparision: React.FC = () => {
               />
               {/* <div className="font-semibold uppercase">{rightPlayer.role}</div> */}
             </div>
-            <div className="flex items-center h-full">
+            <div className="flex items-center h-full bg-black">
               <img
                 src={rightPlayer.imageUrl}
                 alt={rightPlayer.name}
-                className="w-24 h-24"
+                className="h-full"
               />
               {/* Increased the width of the gap container */}
               <div className="w-6"></div>
@@ -324,13 +324,13 @@ const Comparision: React.FC = () => {
         </div>
 
         {/* Radar Chart */}
-        <div className="w-full ">
+        <div className="w-[65%]">
           <ReactApexChart
             options={chartOptions}
             series={chartSeries}
             type="radar"
-            height={280}
-            width="100%"
+            // height={150}
+            // width="100%"
           />
         </div>
 
@@ -343,7 +343,7 @@ const Comparision: React.FC = () => {
           <div className="flex-1 h-[1px] bg-white"></div>
         </div>
 
-        <div className="flex flex-col  px-8">
+        <div className="flex flex-col px-8">
           <StatRow
             label="Runs"
             leftValue={leftPlayer.stats.runs}
