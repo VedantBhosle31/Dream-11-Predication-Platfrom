@@ -4,6 +4,8 @@ import pandas as pd
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+import pandas as pd
+
 def hello(request):
     return HttpResponse('Hello, World!')
 
@@ -185,3 +187,54 @@ def get_player_radar_chart(request, player_id):
 #                 result[col] = round(normalized_value, 2)  # Add normalized value to result
 
 #         return JsonResponse(result, safe=False)
+
+def process_player_stats(input_csv_path, reference_csv_path):
+    # Load input and reference CSVs
+    input_df = pd.read_csv(input_csv_path)
+    reference_df = pd.read_csv(reference_csv_path)
+
+    # Initialize a dictionary to store results
+    player_stats = {}
+
+    # Iterate over each player in the input CSV
+    for _, player_row in input_df.iterrows():
+        player_name = player_row['Player Name']
+        player_team = player_row['Squad']
+
+        # Initialize stats for this player
+        player_stats[player_name] = {"batting": {}, "bowling": {}}
+
+        ### Process Batting ###
+        batting_rows = reference_df[
+            (reference_df['batsman'] == player_name) &
+            (reference_df['batsman team'] == player_team)
+        ]
+
+        # Group by opposition bowler and team
+        for (bowler, bowler_team), group in batting_rows.groupby(['bowler', 'bowler team']):
+            last_10_rows = group.tail(10).drop(columns=['date']).to_dict(orient='records')
+            player_stats[player_name]["batting"][f"{bowler} ({bowler_team})"] = last_10_rows
+
+        ### Process Bowling ###
+        bowling_rows = reference_df[
+            (reference_df['bowler'] == player_name) &
+            (reference_df['bowler team'] == player_team)
+        ]
+
+        # Group by opposition batsman and team
+        for (batsman, batsman_team), group in bowling_rows.groupby(['batsman', 'batsman team']):
+            last_10_rows = group.tail(10).drop(columns=['date']).to_dict(orient='records')
+            player_stats[player_name]["bowling"][f"{batsman} ({batsman_team})"] = last_10_rows
+
+    return player_stats
+
+# Example Usage
+input_csv_path = "input.csv"
+reference_csv_path = "reference.csv"
+
+player_stats = process_player_stats(input_csv_path, reference_csv_path)
+
+# Save results to JSON for inspection
+import json
+with open("player_stats.json", "w") as json_file:
+    json.dump(player_stats, json_file, indent=4)

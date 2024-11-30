@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'players',
     'graphs',
     "corsheaders",
+    'video_generetor',
+
 ]
 
 MIDDLEWARE = [
