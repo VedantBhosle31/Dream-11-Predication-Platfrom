@@ -3,3 +3,5 @@ temp
 **.csv 
 venv/
 **/__pycache__/
+
+graphsml_app

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'graphs'
     'ml_app',
     'players',
+    'video_generetor',
 ]
 
 MIDDLEWARE = [
