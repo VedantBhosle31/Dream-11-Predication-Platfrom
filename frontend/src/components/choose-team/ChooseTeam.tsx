@@ -17,7 +17,7 @@ const ChooseTeam = () => {
   const [fileData, setFileData] = useState<any[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [teamLogos, setTeamLogos] = useState<any>(null);
-  const [manualSelection, setManualSelection] = useState(true);
+  const [manualSelection, setManualSelection] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateCSV = (data: any[]) => {
@@ -213,17 +213,36 @@ const ChooseTeamManually = () => {
   ];
   return (
     <div className="flex-center flex-col">
-      <motion.div animate={{}} className="top-container">
+      <motion.div animate={{}} className="top-container gap-x-10">
         <FloatingImage first src="/mi.png" alt="team_logo" />
         <div className="inputs-container">
-          <InputContainer label="Choose Team 1" id="team1">
-            <CustomSelect/>
-          </InputContainer>
-          <InputContainer label="Choose Team 2" id="team2">
-            <input type="search" />
-          </InputContainer>
+          <div className="flex gap-4 w-[500px] justify-between">
+            <CustomSelect
+              data={cricketTeams}
+              isMulti={false}
+              label="Team 1"
+              placeholder="Select Team 1"
+              widthString="w-[240px]"
+            />
+            <CustomSelect
+              data={cricketTeams}
+              isMulti={false}
+              label="Team 2"
+              placeholder="Select Team 2"
+              widthString="w-[240px]"
+            />
+          </div>
+
+          <CustomSelect
+            data={players}
+            isMulti={true}
+            label="Select Players"
+            placeholder="Select Players"
+            widthString="w-[500px]"
+          />
+
           <InputContainer label="Choose Match Date" id="matchDate">
-            <input type="date" style={{ width: 476 }} />
+            <input type="date" style={{ width: 500 }} className="px-2" />
           </InputContainer>
         </div>
         <FloatingImage src="/rcb.png" alt="team_logo" />

@@ -28,6 +28,28 @@ def verify_csv(request):
                 return JsonResponse({"status": "error", "errors": errors}, status=400)
             return JsonResponse({"status": "success", "message": "File is valid."})
         return JsonResponse({"status": "error", "message": "No file provided or invalid request method."}, status=400)
+    
+@csrf_exempt
+def get_players(request):
+    if request.method == "GET":
+        user_input = request.GET.get('user_input')
+        # If user_input is greater than 3 characters, search for player names
+        if len(user_input) > 3:
+            player_names = pd.read_csv(PLAYER_NAMES_PATH)
+            player_names = player_names[player_names['full_name'].str.contains(user_input, case=False)]
+            player_names = player_names['Player Name'].tolist()
+            return JsonResponse({'player_names': player_names})
+        
+@csrf_exempt
+def get_teams(request):
+    if request.method == "GET":
+        user_input = request.GET.get('user_input')
+        # If user_input is greater than 3 characters, search for team names
+        if len(user_input) > 3:
+            team_names = pd.read_csv(TEAM_NAMES_PATH)
+            team_names = team_names[team_names['name'].str.contains(user_input, case=False)]
+            team_names = team_names['name'].tolist()
+            return JsonResponse({'team_names': team_names})
 
 @csrf_exempt
 def get_player_data(request):

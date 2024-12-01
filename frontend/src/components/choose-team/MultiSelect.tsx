@@ -6,6 +6,7 @@ interface CustomSelectProps {
   data: any[];
   isMulti: boolean;
   placeholder: string;
+  widthString?: string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -13,36 +14,37 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   data,
   isMulti,
   placeholder,
+  widthString,
 }) => {
   const customStyles = {
-    control: (styles) => ({
+    control: (styles: any) => ({
       ...styles,
-      backgroundColor: "rgba(0, 0, 0, 0.8)",
-      borderColor: "transparent",
+      backgroundColor: "rgba(0, 0, 0, 0.25)",
+      border: "2px solid rgba(255, 255, 255, 0.7)",
       color: "white",
     }),
-    menu: (styles) => ({
+    menu: (styles: any) => ({
       ...styles,
       backgroundColor: "rgba(0, 0, 0, 0.9)",
       color: "white",
     }),
-    singleValue: (styles) => ({
+    singleValue: (styles: any) => ({
       ...styles,
       color: "white",
     }),
-    placeholder: (styles) => ({
+    placeholder: (styles: any) => ({
       ...styles,
       color: "rgba(255, 255, 255, 0.7)",
     }),
-    multiValue: (styles) => ({
+    multiValue: (styles: any) => ({
       ...styles,
       backgroundColor: "rgba(255, 255, 255, 0.2)",
     }),
-    multiValueLabel: (styles) => ({
+    multiValueLabel: (styles: any) => ({
       ...styles,
       color: "white",
     }),
-    multiValueRemove: (styles) => ({
+    multiValueRemove: (styles: any) => ({
       ...styles,
       color: "white",
       ":hover": {
@@ -61,6 +63,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         styles={customStyles}
         placeholder={placeholder}
         classNamePrefix="custom-select"
+        className={widthString}
       />
     </div>
   );
