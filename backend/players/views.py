@@ -2,6 +2,7 @@ from django.shortcuts import render
 import pandas as pd
 from django.http import HttpResponse
 from django.http import JsonResponse
+# from services.player_service import get_player_stats
 
 
 # Create your views here.
@@ -27,7 +28,9 @@ def verify_csv(request):
 
 def get_player_data(request):
     if request.method == "GET":
-        player_id = request.GET.get("player_id")
-        if not player_id:
-            return JsonResponse({"status": "error", "message": "No player ID provided."}, status=400)
+        player_name = request.GET.get('player_name')
+        date = request.Get.get('date')
+        # stats = get_player_stats(player_name,date)
+        return JsonResponse({'stats':"stats"})
+        
         
