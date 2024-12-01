@@ -5,7 +5,7 @@ import { CloudUpload } from "lucide-react";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
-import { Select } from "@mui/material";
+import CustomSelect from "./MultiSelect";
 
 const serverTeamLogos = {
   India: "/mi.png",
@@ -17,6 +17,7 @@ const ChooseTeam = () => {
   const [fileData, setFileData] = useState<any[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [teamLogos, setTeamLogos] = useState<any>(null);
+  const [manualSelection, setManualSelection] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateCSV = (data: any[]) => {
@@ -106,64 +107,68 @@ const ChooseTeam = () => {
     }
   };
 
-  return (
-    <div className="flex-center">
-      {teamLogos && (
-        <FloatingImage src={teamLogos.India} alt="team_logo" first />
-      )}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="card"
-      >
-        {/* File Upload Section */}
-        <div
-          className="upload-box"
-          onClick={() => fileInputRef.current?.click()}
+  if (manualSelection) {
+    return <ChooseTeamManually />;
+  } else {
+    return (
+      <div className="flex-center">
+        {teamLogos && (
+          <FloatingImage src={teamLogos.India} alt="team_logo" first />
+        )}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="card"
         >
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileUpload}
-            accept=".csv,.xlsx,.xls"
-          />
-          {!file && !fileData.length && (
-            <>
-              <CloudUpload className="upload-box-icon" size={48} />
-              <p className="upload-box-text">
-                Drag and drop your Excel or CSV file here, or click to select
-              </p>
-              <p className="upload-box-subtext">
-                Supported formats: .csv, .xlsx, .xls
-              </p>
-            </>
-          )}
+          {/* File Upload Section */}
+          <div
+            className="upload-box"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              accept=".csv,.xlsx,.xls"
+            />
+            {!file && !fileData.length && (
+              <>
+                <CloudUpload className="upload-box-icon" size={48} />
+                <p className="upload-box-text">
+                  Drag and drop your Excel or CSV file here, or click to select
+                </p>
+                <p className="upload-box-subtext">
+                  Supported formats: .csv, .xlsx, .xls
+                </p>
+              </>
+            )}
 
-          {file && (
-            <div className="file-preview">
-              <p className="file-name">{file.name}</p>
+            {file && (
+              <div className="file-preview">
+                <p className="file-name">{file.name}</p>
 
-              {uploadError && <p className="error-box">{uploadError}</p>}
+                {uploadError && <p className="error-box">{uploadError}</p>}
 
-              {!uploadError && !teamLogos && (
-                <p className="file-preview-loading">Loading team logos...</p>
-              )}
-            </div>
-          )}
-        </div>
+                {!uploadError && !teamLogos && (
+                  <p className="file-preview-loading">Loading team logos...</p>
+                )}
+              </div>
+            )}
+          </div>
 
-        {/* AI button */}
+          {/* AI button */}
 
-        <div className="btn-cont">
-          <AnimatedButton
-            disabled={(!file || !fileData || uploadError) as boolean}
-          />
-        </div>
-      </motion.div>
-      {teamLogos && <FloatingImage src={teamLogos.SA} alt="team_logo" />}
-    </div>
-  );
+          <div className="btn-cont">
+            <AnimatedButton
+              disabled={(!file || !fileData || uploadError) as boolean}
+            />
+          </div>
+        </motion.div>
+        {teamLogos && <FloatingImage src={teamLogos.SA} alt="team_logo" />}
+      </div>
+    );
+  }
 };
 
 type InputContainerProps = {
@@ -187,18 +192,32 @@ const InputContainer: React.FC<InputContainerProps> = ({
 
 const ChooseTeamManually = () => {
   // Choose team manually using react-select
+  const cricketTeams = [
+    { value: "india", label: "India" },
+    { value: "australia", label: "Australia" },
+    { value: "england", label: "England" },
+    { value: "south_africa", label: "South Africa" },
+  ];
+
+  const players = [
+    { value: "player1", label: "Player 1" },
+    { value: "player2", label: "Player 2" },
+    { value: "player3", label: "Player 3" },
+    { value: "player4", label: "Player 4" },
+    { value: "player5", label: "Player 5" },
+    { value: "player6", label: "Player 6" },
+    { value: "player7", label: "Player 7" },
+    { value: "player8", label: "Player 8" },
+    { value: "player9", label: "Player 9" },
+    { value: "player10", label: "Player 10" },
+  ];
   return (
-    <div>
+    <div className="flex-center flex-col">
       <motion.div animate={{}} className="top-container">
         <FloatingImage first src="/mi.png" alt="team_logo" />
         <div className="inputs-container">
           <InputContainer label="Choose Team 1" id="team1">
-           <Select
-              options={[
-                { value: "India", label: "India" },
-                { value: "SA", label: "SA" },
-              ]}
-            />
+            <CustomSelect/>
           </InputContainer>
           <InputContainer label="Choose Team 2" id="team2">
             <input type="search" />

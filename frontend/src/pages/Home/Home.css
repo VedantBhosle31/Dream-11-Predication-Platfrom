@@ -242,3 +242,37 @@ label {
   height: 6rem; /* Tailwind: h-24 */
   object-fit: contain; /* Tailwind: object-contain */
 }
+
+.custom-select-container {
+  margin: 20px 0;
+}
+
+.custom-select-label {
+  display: block;
+  margin-bottom: 8px;
+  color: white;
+  font-size: 16px;
+}
+
+.custom-select__menu-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.custom-select__multi-value-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.custom-select__multi-value-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.custom-select__multi-value-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+

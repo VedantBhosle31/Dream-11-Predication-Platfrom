@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import "./Home.css";
 import Heading from "../../components/Heading";
-import ChooseTeam from "../../components/ChooseTeam";
+import ChooseTeam from "../../components/choose-team/ChooseTeam";
 
 import DownArrowSvg from "../../assets/down_arrow.svg";
 
