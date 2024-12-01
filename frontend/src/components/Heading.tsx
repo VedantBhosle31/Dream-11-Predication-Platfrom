@@ -1,6 +1,6 @@
 import React from "react";
 
-const Heading = () => {
+const Heading: React.FC = () => {
   return (
     <div className="gap-y-5 flex flex-col">
       <h1 className="text-4xl font-bold">Build your</h1>

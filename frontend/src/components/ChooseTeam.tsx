@@ -1,62 +1,3 @@
-// import React from "react";
-// import { motion } from "framer-motion";
-// import { useNavigate } from "react-router-dom";
-// import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-
-// type InputContainerProps = {
-//   label: string;
-//   children: React.ReactNode;
-//   id: string;
-// };
-
-// type FloatingImageProps = {
-//   src: string;
-//   alt: string;
-//   width?: number;
-//   first?: boolean;
-// };
-
-// const ChooseTeam = () => {
-//   return (
-//     <div>
-//       <motion.div animate={{}} className="top-container">
-//         <FloatingImage first src="/mi.png" alt="team_logo" />
-//         <div className="inputs-container">
-//           <InputContainer label="Choose Team 1" id="team1">
-//             <input type="search" />
-//           </InputContainer>
-//           <InputContainer label="Choose Team 2" id="team2">
-//             <input type="search" />
-//           </InputContainer>
-//           <InputContainer label="Choose Match Date" id="matchDate">
-//             <input type="date" style={{ width: 476 }} />
-//           </InputContainer>
-//         </div>
-//         <FloatingImage src="/rcb.png" alt="team_logo" />
-//       </motion.div>
-//       {/* AI button */}
-//       <div className="btn-cont">
-//         <AnimatedButton />
-//       </div>
-//     </div>
-//   );
-// };
-
-// const InputContainer: React.FC<InputContainerProps> = ({
-//   children,
-//   label,
-//   id,
-// }) => {
-//   return (
-//     <div className="input-container">
-//       <label htmlFor={id}>{label}</label>
-//       {children}
-//     </div>
-//   );
-// };
-
-// export default ChooseTeam;
-
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -64,6 +5,7 @@ import { CloudUpload } from "lucide-react";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
+import { Select } from "@mui/material";
 
 const serverTeamLogos = {
   India: "/mi.png",
@@ -220,6 +162,57 @@ const ChooseTeam = () => {
         </div>
       </motion.div>
       {teamLogos && <FloatingImage src={teamLogos.SA} alt="team_logo" />}
+    </div>
+  );
+};
+
+type InputContainerProps = {
+  label: string;
+  children: React.ReactNode;
+  id: string;
+};
+
+const InputContainer: React.FC<InputContainerProps> = ({
+  children,
+  label,
+  id,
+}) => {
+  return (
+    <div className="input-container">
+      <label htmlFor={id}>{label}</label>
+      {children}
+    </div>
+  );
+};
+
+const ChooseTeamManually = () => {
+  // Choose team manually using react-select
+  return (
+    <div>
+      <motion.div animate={{}} className="top-container">
+        <FloatingImage first src="/mi.png" alt="team_logo" />
+        <div className="inputs-container">
+          <InputContainer label="Choose Team 1" id="team1">
+           <Select
+              options={[
+                { value: "India", label: "India" },
+                { value: "SA", label: "SA" },
+              ]}
+            />
+          </InputContainer>
+          <InputContainer label="Choose Team 2" id="team2">
+            <input type="search" />
+          </InputContainer>
+          <InputContainer label="Choose Match Date" id="matchDate">
+            <input type="date" style={{ width: 476 }} />
+          </InputContainer>
+        </div>
+        <FloatingImage src="/rcb.png" alt="team_logo" />
+      </motion.div>
+      {/* AI button */}
+      <div className="btn-cont">
+        <AnimatedButton disabled={false} />
+      </div>
     </div>
   );
 };
