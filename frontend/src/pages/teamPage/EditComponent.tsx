@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import DragZone from "../../components/dragzone/DragZone";
 
-import { CardData } from "./teamPage";
 
 import "../teamPage/teamPage.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
 import VideoPlayer from "../../components/video_player/videoplayer";
+import { CardData } from "../../SlidingPanels";
 
 export interface EditComponentProps {
   showContainer: boolean;
   toggleContainer: () => void;
   dragZoneCards: CardData[];
+  dropZoneCards: CardData[];
   filterType: "points" | "cost";
   applyFilter: (filter: "points" | "cost") => void;
   handleSwapCards: (card: CardData) => void;
@@ -24,6 +25,7 @@ const EditComponent: React.FC<EditComponentProps> = ({
   showContainer,
   toggleContainer,
   dragZoneCards,
+  dropZoneCards,
   filterType,
   applyFilter,
   handleSwapCards,
@@ -36,6 +38,26 @@ const EditComponent: React.FC<EditComponentProps> = ({
 
   // Replace this with the actual URL of your Django backend
   const backendUrl = "http://127.0.0.1:8000/video/stream/stream_video.mp4";
+
+  const handleButtonClick = () => {
+    // Check if Captain and Vice-Captain are assigned
+    const hasCaptain = dropZoneCards.some((card) => card.cvc === "C");
+    const hasViceCaptain = dropZoneCards.some((card) => card.cvc === "VC");
+  
+    if (!hasCaptain || !hasViceCaptain) {
+      alert("Assign a Captain and Vice-Captain to your dream team!");
+      return;
+    }
+  
+    // Check if 11 players are selected in the drag zone
+    if (dragZoneCards.length > 11) {
+      alert("Complete 11 players of your dream team!");
+      return;
+    }
+  
+    // Navigate to the player-info page if both conditions are satisfied
+    navigation("/player-info");
+  };
 
   if (!showContainer) {
     return (
@@ -65,9 +87,7 @@ const EditComponent: React.FC<EditComponentProps> = ({
           />
           <button
             className="complete-team"
-            onClick={() => {
-              navigation("/player-info");
-            }}
+            onClick={handleButtonClick}
           >
             COMPLETE TEAM
           </button>

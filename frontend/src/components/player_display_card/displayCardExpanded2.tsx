@@ -6,7 +6,7 @@ import "./displayCard2.css";
 import RadarChart from "../radar_chart/radar";
 import FormBar from "../player_form/formbar";
 import SearchBar from "../search_bar/searchbar";
-import FantasyPointsChart from "../points_chart/pointschart";
+import VenueGraph from "../points_chart/pointschart";
 import { Box, Modal, Skeleton, Typography } from "@mui/material";
 import { ChartContainer } from "@mui/x-charts/ChartContainer";
 // import { BarChart, BarPlot } from "@mui/x-charts/BarChart";
@@ -27,6 +27,9 @@ import {
 import CircularProgress from "../circular_preformance/circularBar";
 import FilterButton from "../filterButton/filterButton";
 import FilterBar from "../filterBar/filterBar";
+import ImpactChart from "../impactindexchart/impactchart";
+import { BarPlot } from "@mui/x-charts/BarChart";
+import ExplainGraphButton from "../explain_graph/explaingraph";
 
 const piedata = [
   { name: "0", value: 400 },
@@ -97,6 +100,25 @@ const graphdata = [
   { date: "27 Nov", value: 34 },
 ];
 
+const uData = [50, 30, 20, 27, 18, 23, 34, 50, 30, 20, 27, 18, 23, 34];
+const xLabels = [
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+  "13 Nov",
+];
+
 const yValues = graphdata.map((data) => data.value);
 
 yValues.sort((a, b) => a - b);
@@ -131,6 +153,19 @@ const MatchupsData: Matchups[] = [
     out: "3",
     strikerate: "115",
   },
+  {
+    name: "JOfra Archer",
+    balls: "150",
+    runs: "60",
+    out: "3",
+    strikerate: "115",
+  },{
+    name: "JOfra Archer",
+    balls: "150",
+    runs: "60",
+    out: "3",
+    strikerate: "115",
+  },
 ];
 
 interface DisplayCardExpandedProps {
@@ -150,7 +185,7 @@ interface DisplayCardExpandedProps {
   handleLeftClickTypes: () => void;
   data: {
     title: string;
-    stats: { key: string; value: string }[];
+    description: string
   }[];
   typeData: {
     title: string;
@@ -167,8 +202,14 @@ interface DisplayCardExpandedProps {
   handleClose: (search: string) => void;
   open: boolean;
   selectedFilter: string;
+  selectedFilter2: string;
+  selectedFilter3: string;
   filters: string[];
+  filters2: string[];
+  filters3: string[];
   handleFilterChange: (filter: string) => void;
+  handleFilterChange2: (filter: string) => void;
+  handleFilterChange3: (filter: string) => void;
 }
 
 const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
@@ -191,8 +232,14 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   open,
   handleClose,
   selectedFilter,
+  selectedFilter2,
+  selectedFilter3,
   filters,
+  filters2,
+  filters3,
   handleFilterChange,
+  handleFilterChange2,
+  handleFilterChange3,
 }) => (
   <Modal
     open={open}
@@ -219,7 +266,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
             width: "100%",
           }}
         >
-
           <div
             style={{
               flex: 1,
@@ -505,8 +551,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 transition: "all 0.5s ease",
               }}
             >
-              
-
               <button
                 className="closeButton"
                 onClick={() => setExpanded(false)}
@@ -514,15 +558,69 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 &times;
               </button>
 
+              {(currentIndex === 0 ||
+                currentIndex === 1 ||
+                currentIndex === 2 ||
+                currentIndex === 3) && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "30px",
+                    top: "10px",
+                    right: "15px",
+                    display: "flex",
+                    position: "relative",
+                  }}
+                >
+                  <FilterBar
+                    filters={filters}
+                    selected={selectedFilter}
+                    onFilterChange={handleFilterChange}
+                  />
+                </div>
+              )}
 
-              
-              <div style={{width:"100%", height:"30px", top: "10px", right: "15px",display:"flex", position: "relative"}}>
-              <FilterBar
-                filters={filters}
-                selected={selectedFilter}
-                onFilterChange={handleFilterChange}
-              />
-              </div>
+              {currentIndex === 4 && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "30px",
+                    top: "10px",
+                    right: "15px",
+                    display: "flex",
+                    position: "relative",
+                  }}
+                >
+                  <FilterBar
+                    filters={filters3}
+                    selected={selectedFilter3}
+                    onFilterChange={handleFilterChange3}
+                  />
+                </div>
+              )}
+
+              {currentIndex === 5 && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "30px",
+                    top: "10px",
+                    right: "15px",
+                    display: "flex",
+                    position: "relative",
+                  }}
+                >
+                  <FilterBar
+                    filters={filters2}
+                    selected={selectedFilter2}
+                    onFilterChange={handleFilterChange2}
+                  />
+                </div>
+              )}
+
+
+
+
 
               {currentIndex === 0 && (
                 <ResponsiveContainer width="90%" height={250}>
@@ -532,7 +630,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     //   height={30}
                     // margin={{ top: 20, right: 30, bottom: 50, left: 50 }}
                   >
-
                     <XAxis
                       dataKey="date"
                       tick={{ fill: "grey", fontSize: 5 }}
@@ -572,7 +669,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 <div
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: "85%",
                     display: "flex",
                     justifyContent: "space-around",
                     alignItems: "center",
@@ -633,21 +730,26 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     justifyContent: "center",
                     alignItems: "center",
                     justifyItems: "center",
+                    alignContent:"center",
                     width: "100%",
-                    height: "100%",
+                    height: "70%",
+                    overflow:"auto",
+                    overflowY: 'auto',
+                    marginTop:"10px"
                   }}
                 >
                   {MatchupsData.map((player, index) => (
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "space-evenly",
+                        justifyContent: "center",
                         fontSize: "10px",
                         backgroundColor: "#333333",
                         width: "90%",
-                        height: "20%",
+                        height: "25%",
                         borderRadius: "10px",
-                        marginTop: "5px",
+                        marginTop: "15px",
+                        
                       }}
                     >
                       <div
@@ -771,6 +873,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                           {player.strikerate}
                         </div>
                       </div>
+
                     </div>
                   ))}
 
@@ -782,7 +885,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 <div
                   style={{
                     width: "100%",
-                    height: "90%",
+                    height: "85%",
                     backgroundColor: "#1A1A1A",
                   }}
                 >
@@ -822,28 +925,57 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 <div
                   style={{
                     width: "100%",
-                    height: "90%",
+                    height: "85%",
                     backgroundColor: "#1A1A1A",
                   }}
                 >
-                  <FantasyPointsChart />
+                  <VenueGraph 
+                  selected={selectedFilter3}
+                  />
                 </div>
               )}
+
+              {/* {currentIndex === 5 && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "85%",
+                    backgroundColor: "#1A1A1A",
+                  }}
+                >
+                  <VenueGraph />
+                </div>
+              )} */}
 
               {currentIndex === 5 && (
                 <div
                   style={{
                     width: "100%",
-                    height: "90%",
+                    height: "85%",
                     backgroundColor: "#1A1A1A",
                   }}
                 >
-                  <FantasyPointsChart />
+                  <ImpactChart />
                 </div>
               )}
 
-
-
+              <div
+                style={{
+                  width: "100%",
+                  height: "25px",
+                  bottom: "10px",
+                  // right: "15px",
+                  display: "flex",
+                  position: "relative",
+                  zIndex: "10",
+                  // backgroundColor:"white",
+                  justifyContent: "end",
+                  paddingRight: "10px",
+                  paddingBottom: "2px",
+                }}
+              >
+                <ExplainGraphButton  title={data[currentIndex].title} description={data[currentIndex].description}/>
+              </div>
             </div>
           </div>
         </div>
@@ -905,7 +1037,10 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
             </div>
 
             {/* Stats Column */}
-            <div className="grid-container" style={{ width: "100%", height: "20%" }}>
+            <div
+              className="grid-container"
+              style={{ width: "100%", height: "20%" }}
+            >
               {typeData_2[currentIndexTypes].stats.map((stat, index) => (
                 <div className="grid-item" key={index}>
                   {stat.value}
@@ -945,7 +1080,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
               }}
             >
               <RadarChart />
-
             </div>
           </div>
         </div>

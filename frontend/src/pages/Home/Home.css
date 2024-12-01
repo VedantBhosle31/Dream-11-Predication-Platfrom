@@ -242,3 +242,17 @@ label {
   height: 6rem; /* Tailwind: h-24 */
   object-fit: contain; /* Tailwind: object-contain */
 }
+
+
+.devtools {
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  bottom: 100px; /* Adjust this value to control vertical position */
+  /* right: 50%; / Adjust this value to control horizontal position */
+  padding: 10px;
+  border-radius: 5px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  z-index: 100;
+  justify-items: center;
+}

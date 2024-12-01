@@ -6,7 +6,7 @@ import "./displayCard.css";
 import RadarChart from "../radar_chart/radar";
 import FormBar from "../player_form/formbar";
 import SearchBar from "../search_bar/searchbar";
-import FantasyPointsChart from "../points_chart/pointschart";
+import VenueGraph from "../points_chart/pointschart";
 
 interface DisplayCardExpandedProps {
     containerRef: React.RefObject<HTMLDivElement>;
@@ -211,7 +211,7 @@ const DisplayCardExpanded : React.FC<DisplayCardExpandedProps> = ({
 
     <div className="display-card-top-right">
       <SearchBar suggestions={suggestions} onSearch={handleSearch} />
-      <FantasyPointsChart />
+      {/* <VenueGraph /> */}
       <div
         style={{
           width: "80%",

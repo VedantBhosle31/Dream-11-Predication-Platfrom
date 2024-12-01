@@ -1,0 +1,33 @@
+.ask-ai-button {
+    background-color: #333333;
+    /* background: linear-gradient(90deg, #333333, #56a3ff); */
+    border: 1px solid #56a3ff;
+    border-radius: 20px;
+    padding: 3px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+  }
+  
+  .ask-ai-button:hover {
+    background: linear-gradient(90deg, #56a3ff, #7a2cff);
+  }
+  
+  .ask-ai-button .icon {
+    margin-right: 8px;
+    font-size: 2px;
+  }
+  
+  .ask-ai-button .text {
+    font-size: 18px;
+  }
+  
+
+
+  
