@@ -18,7 +18,7 @@ const ChooseTeamManually = () => {
     debounce(async (input: string) => {
       if (input.trim().length > 3) {
         const response = await fetch(
-          `http://localhost:8000/players/get-teams?user_input=${input}`
+          `${process.env.REACT_APP_BACKEND_URL}/players/get-teams?user_input=${input}`
         );
         const data = await response.json();
         if (data.team_names) {
@@ -38,7 +38,7 @@ const ChooseTeamManually = () => {
     debounce(async (input: string) => {
       if (input.trim().length > 3) {
         const response = await fetch(
-          `http://localhost:8000/players/get-players?user_input=${input}`
+          `${process.env.REACT_APP_BACKEND_URL}/players/get-players?user_input=${input}`
         );
         const data = await response.json();
         if (data.player_names) {

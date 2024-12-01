@@ -4,6 +4,9 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 # from services.player_service import get_player_stats
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import parser_classes
+
 import json
 
 
@@ -16,17 +19,21 @@ def home(request):
     return HttpResponse('hello world!')
 
 @csrf_exempt
+@parser_classes([MultiPartParser, FormParser])
 def verify_csv(request):
-    if request.method == "POST" and request.FILES.get("file"):
+    if request.method == "POST":
+        print("request", request.body)
+        print("request", request.FILES)
         from .utils.validators import validate_uploaded_csv
-        # return JsonResponse({"status": "success", "message": "File is valid."})
 
         if request.method == "POST" and request.FILES.get("file"):
             file = request.FILES["file"]
-            errors = validate_uploaded_csv(file, PLAYER_NAMES_PATH, TEAM_NAMES_PATH)
+            result = validate_uploaded_csv(file, PLAYER_NAMES_PATH, TEAM_NAMES_PATH)
+            errors = result["errors"]
+            logos = result["team_logos"]
             if errors:
                 return JsonResponse({"status": "error", "errors": errors}, status=400)
-            return JsonResponse({"status": "success", "message": "File is valid."})
+            return JsonResponse({"status": "success", "message": "File is valid.", "team_logos": logos})
         return JsonResponse({"status": "error", "message": "No file provided or invalid request method."}, status=400)
     
 @csrf_exempt
@@ -36,8 +43,8 @@ def get_players(request):
         # If user_input is greater than 3 characters, search for player names
         if len(user_input) > 3:
             player_names = pd.read_csv(PLAYER_NAMES_PATH)
-            player_names = player_names[player_names['cricsheet_unique_name'].str.contains(user_input, case=False)]
-            player_names = player_names['cricsheet_unique_name'].tolist()
+            player_names = player_names[player_names['cricsheet_name'].str.contains(user_input, case=False)]
+            player_names = player_names['cricsheet_name'].tolist()
             return JsonResponse({'player_names': player_names})
         
 @csrf_exempt

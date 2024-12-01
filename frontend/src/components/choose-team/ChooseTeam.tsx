@@ -7,17 +7,12 @@ import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import ChooseTeamManually from "./ChooseTeamManually";
 
-const serverTeamLogos = {
-  India: "/mi.png",
-  SA: "/rcb.png",
-};
-
 const ChooseTeam = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileData, setFileData] = useState<any[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [teamLogos, setTeamLogos] = useState<any>(null);
-  const [manualSelection, setManualSelection] = useState(true);
+  const [manualSelection, setManualSelection] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateCSV = (data: any[]) => {
@@ -43,15 +38,13 @@ const ChooseTeam = () => {
     return isValid;
   };
 
-  // Handle file upload
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0];
-    if (!uploadedFile) return;
     setTeamLogos(null);
-    setFile(uploadedFile);
     setUploadError(null);
 
-    // Determine file type and parse accordingly
+    if (!uploadedFile) return;
+
     const fileExtension = uploadedFile.name.split(".").pop()?.toLowerCase();
 
     const reader = new FileReader();
@@ -67,7 +60,7 @@ const ChooseTeam = () => {
             header: true,
             complete: (results: any) => {
               parsedData = results.data;
-              processUploadedData(parsedData);
+              processUploadedData(parsedData, uploadedFile); // Pass file here
             },
           });
         } else if (["xlsx", "xls"].includes(fileExtension || "")) {
@@ -75,7 +68,7 @@ const ChooseTeam = () => {
           const workbook = XLSX.read(content, { type: "binary" });
           const sheetName = workbook.SheetNames[0];
           parsedData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-          processUploadedData(parsedData);
+          processUploadedData(parsedData, uploadedFile); // Pass file here
         } else {
           throw new Error("Unsupported file type");
         }
@@ -91,15 +84,27 @@ const ChooseTeam = () => {
     }
   };
 
-  // Process and validate uploaded data
-  const processUploadedData = (data: any[]) => {
+  const processUploadedData = async (data: any[], uploadedFile: File) => {
+    console.log(data, validateCSV(data));
     if (validateCSV(data)) {
-      setFileData(data);
+      setFileData(data); // First, set parsed data
+      setFile(uploadedFile); // Only then, set the file
 
-      // // Simulate API call
-      setTimeout(() => {
-        setTeamLogos(serverTeamLogos);
-      }, 1000);
+      const formData = new FormData();
+      formData.append("file", uploadedFile);
+
+      // Load team logos
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/players/verify-csv/`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const logoData = await res.json();
+      if (logoData.status === "success") {
+        setTeamLogos(logoData.team_logos);
+      }
     } else {
       setUploadError(
         "Invalid file format. Please upload a file with the correct structure."
@@ -113,7 +118,7 @@ const ChooseTeam = () => {
     return (
       <div className="flex-center">
         {teamLogos && (
-          <FloatingImage src={teamLogos.India} alt="team_logo" first />
+          <FloatingImage src={teamLogos[0]} alt="team_logo" first />
         )}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -132,7 +137,7 @@ const ChooseTeam = () => {
               onChange={handleFileUpload}
               accept=".csv,.xlsx,.xls"
             />
-            {!file && !fileData.length && (
+            {!file && !fileData.length && !uploadError && (
               <>
                 <CloudUpload className="upload-box-icon" size={48} />
                 <p className="upload-box-text">
@@ -143,12 +148,10 @@ const ChooseTeam = () => {
                 </p>
               </>
             )}
-
+            {uploadError && <p className="error-box">{uploadError}</p>}
             {file && (
               <div className="file-preview">
                 <p className="file-name">{file.name}</p>
-
-                {uploadError && <p className="error-box">{uploadError}</p>}
 
                 {!uploadError && !teamLogos && (
                   <p className="file-preview-loading">Loading team logos...</p>
@@ -156,6 +159,19 @@ const ChooseTeam = () => {
               </div>
             )}
           </div>
+
+          {uploadError && (
+            <>
+              <div
+                onClick={() => {
+                  setManualSelection(true);
+                }}
+                className="py-2 px-4 bg-black text-white rounded-md"
+              >
+                Choose Manually
+              </div>
+            </>
+          )}
 
           {/* AI button */}
 
@@ -165,7 +181,7 @@ const ChooseTeam = () => {
             />
           </div>
         </motion.div>
-        {teamLogos && <FloatingImage src={teamLogos.SA} alt="team_logo" />}
+        {teamLogos && <FloatingImage src={teamLogos[1]} alt="team_logo" />}
       </div>
     );
   }
