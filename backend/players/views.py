@@ -36,8 +36,8 @@ def get_players(request):
         # If user_input is greater than 3 characters, search for player names
         if len(user_input) > 3:
             player_names = pd.read_csv(PLAYER_NAMES_PATH)
-            player_names = player_names[player_names['full_name'].str.contains(user_input, case=False)]
-            player_names = player_names['Player Name'].tolist()
+            player_names = player_names[player_names['cricsheet_unique_name'].str.contains(user_input, case=False)]
+            player_names = player_names['cricsheet_unique_name'].tolist()
             return JsonResponse({'player_names': player_names})
         
 @csrf_exempt

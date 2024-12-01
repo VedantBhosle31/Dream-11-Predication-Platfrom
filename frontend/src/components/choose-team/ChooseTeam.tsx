@@ -5,7 +5,7 @@ import { CloudUpload } from "lucide-react";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
-import CustomSelect from "./MultiSelect";
+import ChooseTeamManually from "./ChooseTeamManually";
 
 const serverTeamLogos = {
   India: "/mi.png",
@@ -17,7 +17,7 @@ const ChooseTeam = () => {
   const [fileData, setFileData] = useState<any[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [teamLogos, setTeamLogos] = useState<any>(null);
-  const [manualSelection, setManualSelection] = useState(false);
+  const [manualSelection, setManualSelection] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateCSV = (data: any[]) => {
@@ -177,7 +177,7 @@ type InputContainerProps = {
   id: string;
 };
 
-const InputContainer: React.FC<InputContainerProps> = ({
+export const InputContainer: React.FC<InputContainerProps> = ({
   children,
   label,
   id,
@@ -190,71 +190,6 @@ const InputContainer: React.FC<InputContainerProps> = ({
   );
 };
 
-const ChooseTeamManually = () => {
-  // Choose team manually using react-select
-  const cricketTeams = [
-    { value: "india", label: "India" },
-    { value: "australia", label: "Australia" },
-    { value: "england", label: "England" },
-    { value: "south_africa", label: "South Africa" },
-  ];
-
-  const players = [
-    { value: "player1", label: "Player 1" },
-    { value: "player2", label: "Player 2" },
-    { value: "player3", label: "Player 3" },
-    { value: "player4", label: "Player 4" },
-    { value: "player5", label: "Player 5" },
-    { value: "player6", label: "Player 6" },
-    { value: "player7", label: "Player 7" },
-    { value: "player8", label: "Player 8" },
-    { value: "player9", label: "Player 9" },
-    { value: "player10", label: "Player 10" },
-  ];
-  return (
-    <div className="flex-center flex-col">
-      <motion.div animate={{}} className="top-container gap-x-10">
-        <FloatingImage first src="/mi.png" alt="team_logo" />
-        <div className="inputs-container">
-          <div className="flex gap-4 w-[500px] justify-between">
-            <CustomSelect
-              data={cricketTeams}
-              isMulti={false}
-              label="Team 1"
-              placeholder="Select Team 1"
-              widthString="w-[240px]"
-            />
-            <CustomSelect
-              data={cricketTeams}
-              isMulti={false}
-              label="Team 2"
-              placeholder="Select Team 2"
-              widthString="w-[240px]"
-            />
-          </div>
-
-          <CustomSelect
-            data={players}
-            isMulti={true}
-            label="Select Players"
-            placeholder="Select Players"
-            widthString="w-[500px]"
-          />
-
-          <InputContainer label="Choose Match Date" id="matchDate">
-            <input type="date" style={{ width: 500 }} className="px-2" />
-          </InputContainer>
-        </div>
-        <FloatingImage src="/rcb.png" alt="team_logo" />
-      </motion.div>
-      {/* AI button */}
-      <div className="btn-cont">
-        <AnimatedButton disabled={false} />
-      </div>
-    </div>
-  );
-};
-
 interface FloatingImageProps {
   src: string;
   alt: string;
@@ -262,7 +197,7 @@ interface FloatingImageProps {
   first?: boolean;
 }
 
-const FloatingImage: React.FC<FloatingImageProps> = ({
+export const FloatingImage: React.FC<FloatingImageProps> = ({
   src,
   alt,
   width = 250,
@@ -311,7 +246,7 @@ const FloatingImage: React.FC<FloatingImageProps> = ({
   );
 };
 
-const AnimatedButton = ({ disabled }: { disabled: boolean }) => {
+export const AnimatedButton = ({ disabled }: { disabled: boolean }) => {
   const navigate = useNavigate();
 
   return (

@@ -7,6 +7,8 @@ interface CustomSelectProps {
   isMulti: boolean;
   placeholder: string;
   widthString?: string;
+  onInputChange?: (inputValue: string) => void;
+  onChange?: (inputValue: any) => void;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -15,6 +17,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   isMulti,
   placeholder,
   widthString,
+  onInputChange,
+  onChange,
 }) => {
   const customStyles = {
     control: (styles: any) => ({
@@ -52,6 +56,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         color: "black",
       },
     }),
+    input: (styles: any) => ({
+      ...styles,
+      color: "white",
+    }),
   };
 
   return (
@@ -64,6 +72,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         placeholder={placeholder}
         classNamePrefix="custom-select"
         className={widthString}
+        onInputChange={onInputChange}
+        onChange={onChange}
       />
     </div>
   );
