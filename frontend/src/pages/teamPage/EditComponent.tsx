@@ -8,6 +8,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
 import VideoPlayer from "../../components/video_player/videoplayer";
+import Slideshow from "../../components/slide-show/SlideShow";
 
 export interface EditComponentProps {
   showContainer: boolean;
@@ -17,7 +18,7 @@ export interface EditComponentProps {
   applyFilter: (filter: "points" | "cost") => void;
   handleSwapCards: (card: CardData) => void;
   selectedCard: CardData | null;
-  addToDropZone:(card: CardData) => void;
+  addToDropZone: (card: CardData) => void;
 }
 
 const EditComponent: React.FC<EditComponentProps> = ({
@@ -41,7 +42,8 @@ const EditComponent: React.FC<EditComponentProps> = ({
     return (
       <div className="video-card">
         <div className="video-section">
-          {<VideoPlayer videoUrl={backendUrl} />}
+          {/* {<VideoPlayer videoUrl={backendUrl} />} */}
+          <Slideshow />
         </div>
         <button className="edit-team" onClick={toggleContainer}>
           EDIT TEAM

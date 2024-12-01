@@ -7,6 +7,7 @@ urlpatterns = [
     path("get-player-data",views.get_player_data,name="get_player_data"),
     path("get-players",views.get_players,name="get_players"),
     path("get-teams",views.get_teams,name="get_teams"),
+    path("get-team-logos",views.get_team_logos_from_team_names,name="get_team_logos"),
     # path("predict",views.predict,name="predict"),
     # path('form', lambda request: render(request, 'predict.html'), name='predict_form'),
 ]

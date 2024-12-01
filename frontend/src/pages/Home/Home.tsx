@@ -89,7 +89,7 @@ const Home: React.FC = () => {
       </motion.div>
 
       <motion.div
-        className="flex justify-center w-full fixed z-20 bottom-6 cursor-pointer"
+        className="flex justify-center w-full fixed z-20 bottom-20 cursor-pointer"
         initial={{ opacity: 1, y: 0 }}
         animate={titleControls}
       >

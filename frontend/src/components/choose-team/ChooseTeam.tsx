@@ -104,6 +104,12 @@ const ChooseTeam = () => {
       const logoData = await res.json();
       if (logoData.status === "success") {
         setTeamLogos(logoData.team_logos);
+      } else {
+        const fullError = logoData.errors.join(", ");
+        setUploadError(
+          fullError ||
+            "Some teams or players are not found in the database. Please check the file and try again."
+        );
       }
     } else {
       setUploadError(
@@ -128,7 +134,7 @@ const ChooseTeam = () => {
         >
           {/* File Upload Section */}
           <div
-            className="upload-box"
+            className={"upload-box"}
             onClick={() => fileInputRef.current?.click()}
           >
             <input
@@ -162,14 +168,14 @@ const ChooseTeam = () => {
 
           {uploadError && (
             <>
-              <div
+              <button
                 onClick={() => {
                   setManualSelection(true);
                 }}
-                className="py-2 px-4 bg-black text-white rounded-md"
+                className="py-2 px-4 bg-red-600 text-white rounded-md cursor-pointer"
               >
                 Choose Manually
-              </div>
+              </button>
             </>
           )}
 
@@ -256,7 +262,6 @@ export const FloatingImage: React.FC<FloatingImageProps> = ({
       className="select-team-img"
       style={{
         width: width,
-        height: "auto",
       }}
     />
   );
@@ -285,7 +290,7 @@ export const AnimatedButton = ({ disabled }: { disabled: boolean }) => {
         // delay the navigation by 1s
         setTimeout(() => {
           navigate("/loading");
-        }, 400);
+        }, 1000);
       }}
       disabled={disabled}
     >

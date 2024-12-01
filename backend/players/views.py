@@ -57,6 +57,16 @@ def get_teams(request):
             team_names = team_names[team_names['name'].str.contains(user_input, case=False)]
             team_names = team_names['name'].tolist()
             return JsonResponse({'team_names': team_names})
+        
+@csrf_exempt
+def get_team_logos_from_team_names(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        team_names = data['team_names']
+        team_details = pd.read_csv(TEAM_NAMES_PATH)
+        team_logos = team_details[team_details['name'].isin(team_names)]
+        team_logos = team_logos[['name', 'logo']].to_dict(orient='records')
+        return JsonResponse({'team_logos': team_logos})
 
 @csrf_exempt
 def get_player_data(request):

@@ -26,7 +26,7 @@
 
 .down_arrow_svg {
   position: fixed;
-  bottom: 5%;
+  bottom: 10%;
   left: calc(50% - 25px);
   transform: translateX(-50%);
   fill: white;
@@ -35,7 +35,7 @@
 }
 
 .title-special {
-  /* color: #ff4141; */
+  color: #ff4141;
   font-size: 5rem;
   color: white;
 }
@@ -98,7 +98,7 @@ label {
 /* Team Logo */
 .select-team-img {
   object-fit: contain;
-  border-radius: 50%;
+  border-radius: 1rem;
   margin: 0 auto;
 }
 
@@ -162,7 +162,7 @@ label {
 /* Spacer for Scroll */
 .spacer {
   height: 300vh; /* Adjust the scrollable area */
-  background: rgba(255, 255, 255, 0.01); /* Semi-transparent white */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent white */
   backdrop-filter: blur(2px); /* Frosted glass effect */
 }
 
@@ -187,6 +187,16 @@ label {
 /* File Upload Section */
 .upload-box {
   border: 2px dashed #d1d5db; /* Tailwind: border-gray-300 */
+  border-radius: 0.5rem; /* Tailwind: rounded-lg */
+  padding: 2.5rem; /* Tailwind: p-12 */
+  text-align: center;
+  transition: border-color 0.3s; /* Tailwind: transition-colors duration-300 */
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+.upload-box-file-selected {
+  border: 2px solid #ff5d6b; /* Tailwind: border-blue-500 */
   border-radius: 0.5rem; /* Tailwind: rounded-lg */
   padding: 2.5rem; /* Tailwind: p-12 */
   text-align: center;

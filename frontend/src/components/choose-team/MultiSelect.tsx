@@ -1,5 +1,5 @@
-import React from "react";
-import Select from "react-select";
+import React, { useState } from "react";
+import Select, { MultiValue } from "react-select";
 
 interface CustomSelectProps {
   label: string;
@@ -20,12 +20,29 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   onInputChange,
   onChange,
 }) => {
+  const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
+  const maxSelections = 22; // Maximum number of selections allowed
+
+  const handleChange = (selected: MultiValue<any>) => {
+    if (isMulti) {
+      // Enforce the selection limit
+      if (selected.length > maxSelections) return;
+      setSelectedOptions(selected as any[]);
+    } else {
+      setSelectedOptions(selected ? [selected] : []);
+    }
+    onChange?.(selected);
+  };
+
   const customStyles = {
     control: (styles: any) => ({
       ...styles,
       backgroundColor: "rgba(0, 0, 0, 0.25)",
       border: "2px solid rgba(255, 255, 255, 0.7)",
       color: "white",
+      display: "flex",
+      overflowY: isMulti ? "auto" : "visible", // Allow horizontal scrolling for multi-select
+      maxHeight: isMulti && "100px",
     }),
     menu: (styles: any) => ({
       ...styles,
@@ -64,7 +81,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
 
   return (
     <div className="custom-select-container">
-      <label className="custom-select-label">{label}</label>
+      <label className="custom-select-label">
+        {label} {isMulti && `(${selectedOptions.length}/${maxSelections})`}
+      </label>
       <Select
         options={data}
         isMulti={isMulti}
@@ -73,7 +92,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         classNamePrefix="custom-select"
         className={widthString}
         onInputChange={onInputChange}
-        onChange={onChange}
+        onChange={handleChange}
       />
     </div>
   );
