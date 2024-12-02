@@ -5,12 +5,19 @@ import Heading from "../../components/Heading";
 import ChooseTeam from "../../components/choose-team/ChooseTeam";
 
 import DownArrowSvg from "../../assets/down_arrow.svg";
+import DevTools from "../../components/devtools/devtools";
+import { Button } from "@mui/material";
 
 const Home: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const titleControls = useAnimation();
   const boxControls = useAnimation();
   const [lastScrollY, setLastScrollY] = useState(0);
+
+  var [devexpanded, setDevExpanded] = useState(false);
+  const handleDevOpen = () => setDevExpanded(true);
+
+  const handleDevClose = () => setDevExpanded(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,7 +83,7 @@ const Home: React.FC = () => {
         className="background-video"
         loop
         muted
-        src="bg_video.mp4"
+        src="bg_video_2.mp4"
       ></video>
 
       {/* Title Section */}
@@ -115,6 +122,12 @@ const Home: React.FC = () => {
 
       {/* Spacer for Scrolling */}
       <div className="spacer" />
+
+      {/* dev tools */}
+      <motion.div className="devtools">
+        <Button onClick={handleDevOpen}>Dev Tools</Button>
+        <DevTools open={devexpanded} handleDevClose={handleDevClose} />
+      </motion.div>
     </div>
   );
 };

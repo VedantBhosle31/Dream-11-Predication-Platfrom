@@ -7,17 +7,18 @@ import "./teamPage.css";
 import EditComponent from "./EditComponent";
 import { getSessionData } from "../../utils/sessionStorageUtils";
 import { BackendData } from "../../api/fetchData";
+import { CardData } from "../../SlidingPanels";
 
-export interface CardData {
-  id: string;
-  name: string;
-  type: string;
-  team: string;
-  points: string;
-  cost: string;
-  score: string;
-  cvc: string;
-}
+// export interface CardData {
+//   id: string;
+//   name: string;
+//   type: string;
+//   team: string;
+//   points: string;
+//   cost: string;
+//   score: string;
+//   cvc: string;
+// }
 
 export interface TeamPageProps {
   showContainer: boolean;
@@ -30,7 +31,7 @@ export interface TeamPageProps {
   selectedCard: CardData | null;
   removeFromDropZone: (card: CardData) => void;
   handleSelectCard: (card: CardData) => void;
-  // handleSetCVC: (card: CardData) => void;
+  handleSetCVC: (id: string, role: "C" | "VC") => void;
 
 }
 
@@ -50,7 +51,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
   selectedCard,
   removeFromDropZone,
   handleSelectCard,
-  // handleSetCVC, 
+  handleSetCVC, 
 }) => {
 
 
@@ -89,6 +90,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
             isedit={showContainer}
             handleSelectCard={handleSelectCard}
             selectedCard={selectedCard}
+            handleSetCVC={handleSetCVC}
           />
 
           <div className="bottom-stats">
