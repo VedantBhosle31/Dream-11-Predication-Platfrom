@@ -16,7 +16,7 @@ def generate_completion(prompt):
       model="llama3-8b-8192",
   )
   if hasattr(chat_completion, 'content'):
-    return str(chat_completion.content)
+    return str(chat_completion.content.strip().replace(''))
   elif hasattr(chat_completion, 'choices'):
       return str(chat_completion.choices[0].message.content)
   else:
