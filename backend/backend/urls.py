@@ -24,4 +24,5 @@ urlpatterns = [
     path("model/", include("ml_app.urls")),
     path("players/", include("players.urls")),
     path("video/", include("video_generetor.urls")),
+    path("genai/", include("genai.urls")),
 ]
