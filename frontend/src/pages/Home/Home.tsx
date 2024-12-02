@@ -49,6 +49,7 @@ const Home: React.FC = () => {
         const totalHeight = document.body.scrollHeight - window.innerHeight;
         const scrollFraction = currentScrollY / totalHeight;
         video.currentTime = scrollFraction * (video.duration || 1);
+        console.log(video.currentTime);
       }
 
       setLastScrollY(currentScrollY);
@@ -76,7 +77,7 @@ const Home: React.FC = () => {
         className="background-video"
         loop
         muted
-        src="bg_video.mp4"
+        src="loading2.MP4"
       ></video>
 
       {/* Title Section */}

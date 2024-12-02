@@ -161,7 +161,7 @@ label {
 
 /* Spacer for Scroll */
 .spacer {
-  height: 300vh; /* Adjust the scrollable area */
+  height: 700vh; /* Adjust the scrollable area */
   background: rgba(0, 0, 0, 0.5); /* Semi-transparent white */
   backdrop-filter: blur(2px); /* Frosted glass effect */
 }
