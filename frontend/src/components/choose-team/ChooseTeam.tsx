@@ -1,62 +1,3 @@
-// import React from "react";
-// import { motion } from "framer-motion";
-// import { useNavigate } from "react-router-dom";
-// import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-
-// type InputContainerProps = {
-//   label: string;
-//   children: React.ReactNode;
-//   id: string;
-// };
-
-// type FloatingImageProps = {
-//   src: string;
-//   alt: string;
-//   width?: number;
-//   first?: boolean;
-// };
-
-// const ChooseTeam = () => {
-//   return (
-//     <div>
-//       <motion.div animate={{}} className="top-container">
-//         <FloatingImage first src="/mi.png" alt="team_logo" />
-//         <div className="inputs-container">
-//           <InputContainer label="Choose Team 1" id="team1">
-//             <input type="search" />
-//           </InputContainer>
-//           <InputContainer label="Choose Team 2" id="team2">
-//             <input type="search" />
-//           </InputContainer>
-//           <InputContainer label="Choose Match Date" id="matchDate">
-//             <input type="date" style={{ width: 476 }} />
-//           </InputContainer>
-//         </div>
-//         <FloatingImage src="/rcb.png" alt="team_logo" />
-//       </motion.div>
-//       {/* AI button */}
-//       <div className="btn-cont">
-//         <AnimatedButton />
-//       </div>
-//     </div>
-//   );
-// };
-
-// const InputContainer: React.FC<InputContainerProps> = ({
-//   children,
-//   label,
-//   id,
-// }) => {
-//   return (
-//     <div className="input-container">
-//       <label htmlFor={id}>{label}</label>
-//       {children}
-//     </div>
-//   );
-// };
-
-// export default ChooseTeam;
-
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -64,17 +5,14 @@ import { CloudUpload } from "lucide-react";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
-
-const serverTeamLogos = {
-  India: "/mi.png",
-  SA: "/rcb.png",
-};
+import ChooseTeamManually from "./ChooseTeamManually";
 
 const ChooseTeam = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileData, setFileData] = useState<any[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [teamLogos, setTeamLogos] = useState<any>(null);
+  const [manualSelection, setManualSelection] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const validateCSV = (data: any[]) => {
@@ -100,15 +38,13 @@ const ChooseTeam = () => {
     return isValid;
   };
 
-  // Handle file upload
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0];
-    if (!uploadedFile) return;
     setTeamLogos(null);
-    setFile(uploadedFile);
     setUploadError(null);
 
-    // Determine file type and parse accordingly
+    if (!uploadedFile) return;
+
     const fileExtension = uploadedFile.name.split(".").pop()?.toLowerCase();
 
     const reader = new FileReader();
@@ -124,7 +60,7 @@ const ChooseTeam = () => {
             header: true,
             complete: (results: any) => {
               parsedData = results.data;
-              processUploadedData(parsedData);
+              processUploadedData(parsedData, uploadedFile); // Pass file here
             },
           });
         } else if (["xlsx", "xls"].includes(fileExtension || "")) {
@@ -132,7 +68,7 @@ const ChooseTeam = () => {
           const workbook = XLSX.read(content, { type: "binary" });
           const sheetName = workbook.SheetNames[0];
           parsedData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-          processUploadedData(parsedData);
+          processUploadedData(parsedData, uploadedFile); // Pass file here
         } else {
           throw new Error("Unsupported file type");
         }
@@ -148,15 +84,33 @@ const ChooseTeam = () => {
     }
   };
 
-  // Process and validate uploaded data
-  const processUploadedData = (data: any[]) => {
+  const processUploadedData = async (data: any[], uploadedFile: File) => {
+    console.log(data, validateCSV(data));
     if (validateCSV(data)) {
-      setFileData(data);
+      setFileData(data); // First, set parsed data
+      setFile(uploadedFile); // Only then, set the file
 
-      // // Simulate API call
-      setTimeout(() => {
-        setTeamLogos(serverTeamLogos);
-      }, 1000);
+      const formData = new FormData();
+      formData.append("file", uploadedFile);
+
+      // Load team logos
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/players/verify-csv/`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const logoData = await res.json();
+      if (logoData.status === "success") {
+        setTeamLogos(logoData.team_logos);
+      } else {
+        const fullError = logoData.errors.join(", ");
+        setUploadError(
+          fullError ||
+            "Some teams or players are not found in the database. Please check the file and try again."
+        );
+      }
     } else {
       setUploadError(
         "Invalid file format. Please upload a file with the correct structure."
@@ -164,62 +118,96 @@ const ChooseTeam = () => {
     }
   };
 
-  return (
-    <div className="flex-center">
-      {teamLogos && (
-        <FloatingImage src={teamLogos.India} alt="team_logo" first />
-      )}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="card"
-      >
-        {/* File Upload Section */}
-        <div
-          className="upload-box"
-          onClick={() => fileInputRef.current?.click()}
+  if (manualSelection) {
+    return <ChooseTeamManually />;
+  } else {
+    return (
+      <div className="flex-center">
+        {teamLogos && (
+          <FloatingImage src={teamLogos[0]} alt="team_logo" first />
+        )}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="card"
         >
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileUpload}
-            accept=".csv,.xlsx,.xls"
-          />
-          {!file && !fileData.length && (
+          {/* File Upload Section */}
+          <div
+            className={"upload-box"}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+              accept=".csv,.xlsx,.xls"
+            />
+            {!file && !fileData.length && !uploadError && (
+              <>
+                <CloudUpload className="upload-box-icon" size={48} />
+                <p className="upload-box-text">
+                  Drag and drop your Excel or CSV file here, or click to select
+                </p>
+                <p className="upload-box-subtext">
+                  Supported formats: .csv, .xlsx, .xls
+                </p>
+              </>
+            )}
+            {uploadError && <p className="error-box">{uploadError}</p>}
+            {file && (
+              <div className="file-preview">
+                <p className="file-name">{file.name}</p>
+
+                {!uploadError && !teamLogos && (
+                  <p className="file-preview-loading">Loading team logos...</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {uploadError && (
             <>
-              <CloudUpload className="upload-box-icon" size={48} />
-              <p className="upload-box-text">
-                Drag and drop your Excel or CSV file here, or click to select
-              </p>
-              <p className="upload-box-subtext">
-                Supported formats: .csv, .xlsx, .xls
-              </p>
+              <button
+                onClick={() => {
+                  setManualSelection(true);
+                }}
+                className="py-2 px-4 bg-red-600 text-white rounded-md cursor-pointer"
+              >
+                Choose Manually
+              </button>
             </>
           )}
 
-          {file && (
-            <div className="file-preview">
-              <p className="file-name">{file.name}</p>
+          {/* AI button */}
 
-              {uploadError && <p className="error-box">{uploadError}</p>}
+          <div className="btn-cont">
+            <AnimatedButton
+              disabled={(!file || !fileData || uploadError) as boolean}
+            />
+          </div>
+        </motion.div>
+        {teamLogos && <FloatingImage src={teamLogos[1]} alt="team_logo" />}
+      </div>
+    );
+  }
+};
 
-              {!uploadError && !teamLogos && (
-                <p className="file-preview-loading">Loading team logos...</p>
-              )}
-            </div>
-          )}
-        </div>
+type InputContainerProps = {
+  label: string;
+  children: React.ReactNode;
+  id: string;
+};
 
-        {/* AI button */}
-
-        <div className="btn-cont">
-          <AnimatedButton
-            disabled={(!file || !fileData || uploadError) as boolean}
-          />
-        </div>
-      </motion.div>
-      {teamLogos && <FloatingImage src={teamLogos.SA} alt="team_logo" />}
+export const InputContainer: React.FC<InputContainerProps> = ({
+  children,
+  label,
+  id,
+}) => {
+  return (
+    <div className="input-container">
+      <label htmlFor={id}>{label}</label>
+      {children}
     </div>
   );
 };
@@ -231,7 +219,7 @@ interface FloatingImageProps {
   first?: boolean;
 }
 
-const FloatingImage: React.FC<FloatingImageProps> = ({
+export const FloatingImage: React.FC<FloatingImageProps> = ({
   src,
   alt,
   width = 250,
@@ -274,13 +262,12 @@ const FloatingImage: React.FC<FloatingImageProps> = ({
       className="select-team-img"
       style={{
         width: width,
-        height: "auto",
       }}
     />
   );
 };
 
-const AnimatedButton = ({ disabled }: { disabled: boolean }) => {
+export const AnimatedButton = ({ disabled }: { disabled: boolean }) => {
   const navigate = useNavigate();
 
   return (
@@ -303,7 +290,7 @@ const AnimatedButton = ({ disabled }: { disabled: boolean }) => {
         // delay the navigation by 1s
         setTimeout(() => {
           navigate("/loading");
-        }, 400);
+        }, 1000);
       }}
       disabled={disabled}
     >

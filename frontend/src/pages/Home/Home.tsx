@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import "./Home.css";
 import Heading from "../../components/Heading";
-import ChooseTeam from "../../components/ChooseTeam";
+import ChooseTeam from "../../components/choose-team/ChooseTeam";
 
 import DownArrowSvg from "../../assets/down_arrow.svg";
 import DevTools from "../../components/devtools/devtools";
@@ -96,7 +96,7 @@ const Home: React.FC = () => {
       </motion.div>
 
       <motion.div
-        className="flex justify-center w-full fixed z-20 bottom-6 cursor-pointer"
+        className="flex justify-center w-full fixed z-20 bottom-20 cursor-pointer"
         initial={{ opacity: 1, y: 0 }}
         animate={titleControls}
       >
