@@ -20,3 +20,5 @@ node_modules/
 temp
 **/*.csv
 graphsml_app
+
+db/

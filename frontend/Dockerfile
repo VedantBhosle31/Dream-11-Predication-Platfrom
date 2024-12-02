@@ -6,8 +6,10 @@ COPY package.json /app/package.json
 
 RUN npm install
 
-COPY . /app
+COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+RUN npm run build
+
+CMD ["npm", "run","build"]
