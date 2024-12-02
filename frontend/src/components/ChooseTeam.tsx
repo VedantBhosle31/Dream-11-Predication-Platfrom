@@ -77,7 +77,6 @@ const ChooseTeam = () => {
   const [teamLogos, setTeamLogos] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Validate CSV structure
   const validateCSV = (data: any[]) => {
     // Check if headers match the required format
     const requiredHeaders = ["Player Name", "Squad", "Match Date", "Format"];

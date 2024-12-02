@@ -42,9 +42,9 @@ const Loading = () => {
         playsInline
         controls={false}
       />
-      <div className="content-container">
+      <div className="flex w-full h-full z-20 absolute top-0 flex-col text-white justify-center items-center gap-y-4">
         <img className="dream11-logo" src="/logo.png" alt="" />
-        <p>
+        <p className="text-xl max-w-[50%] text-center">
           " Virat Kohli is an Indian international cricketer who plays Test and
           ODI cricket for the Indian national team. A former captain in all
           formats of the game in cricket in india and inter.. "

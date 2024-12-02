@@ -49,7 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ml_app',
     'players',
-    'corsheaders',
+    'graphs',
+    "corsheaders",
+    'video_generetor',
+
 ]
 
 MIDDLEWARE = [
