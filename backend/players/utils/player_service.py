@@ -87,8 +87,34 @@ def get_player_stats(name,match_date,format):
     model_bowler = model_mapping("Bowler" + format)
     model_fielder = model_mapping("Fielder"+format) 
     stats ={}
-    stats["batting"] = list(model_batter.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('player_name','previous_average','previous_strike_rate','innings_played','previous_runs','previous_average','previous_4s','previous_6s','previous_runs','previous_fifties','previous_centuries','highest_score','form','venue_avg','opposition','previous_zeros','tbahs_economy_agg', 'tbahs_4s_agg', 'tbahp_dismissals_agg'))
+    stats["batting"] = list(model_batter.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('player_name','previous_average','previous_strike_rate','innings_played','previous_runs','previous_average','previous_4s','previous_6s','previous_runs','previous_fifties','previous_centuries','highest_score','form','venue_avg','opposition','previous_zeros','tbahs_economy_agg', 'tbahs_4s_agg', 'tbahp_dismissals_agg', 'dots', 'venue', 'previous_average', 'odi_match_fantasy_points', 'venue_avg', 'opposition', 'form', 'consistency', 'previous_balls_involved'))
 
-    stats["bowling"] = list(model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('previous_wickets','previous_economy','previous_balls_involved','innings_played','previous_strike_rate','previous_maidens','previous_average'))
-    stats["feilding"] = list(model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('pfa_catches','pfa_stumpings','pfa_runouts'))
+    stats["bowling"] = list(model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('previous_wickets','previous_economy','previous_balls_involved','innings_played','previous_strik(e_rate','previous_maidens','previous_average'))
+    stats["fielding"] = list(model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('pfa_catches','pfa_stumpings','pfa_runouts', 'previous_stumpings', 'previous_runouts', 'previous_catches'))
     return stats
+
+def matchup_stats_two_players(player_1, player_2, format, match_date):
+    matchUp = model_mapping(f"Matchup{format}")
+    
+    def fetch_stats(batsman, bowler):
+        return (
+            matchUp.objects.filter(
+                batsman_name=batsman, bowler_name=bowler, date__lt=match_date
+            )
+            .order_by('-date')
+            .values('previous_runs', 'previous_wickets', 'previous_avg_strike_rate', 'balls_involved')
+            .first()
+        )
+    
+    stats = fetch_stats(player_1, player_2)
+    if not stats:
+        stats = fetch_stats(player_2, player_1)
+    
+    return stats
+
+def matchup_stats(player_name,opponents_list,format,match_date):
+    stats = {}
+    for opponent in opponents_list:
+        stats[opponent] = matchup_stats_two_players(player_1=player_name,player_2=opponent,format=format,match_date=match_date)
+    return stats
+    
