@@ -1,9 +1,12 @@
+import json
 from django.shortcuts import render
 import pandas as pd
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-
+from players.utils.player_service import get_player_stats
+# from services.player_service import get_player_stats
 # Create your views here.
 PLAYER_NAMES_PATH = 'players/utils/player_names.csv'
 TEAM_NAMES_PATH = 'players/utils/team_details.csv'
@@ -25,9 +28,14 @@ def verify_csv(request):
             return JsonResponse({"status": "success", "message": "File is valid."})
         return JsonResponse({"status": "error", "message": "No file provided or invalid request method."}, status=400)
 
+@csrf_exempt
 def get_player_data(request):
-    if request.method == "GET":
-        player_id = request.GET.get("player_id")
-        if not player_id:
-            return JsonResponse({"status": "error", "message": "No player ID provided."}, status=400)
+    if request.method == "POST":
+        body = json.loads(request.body)
+        player_name = body['name']
+        date = body['date']
+        model = body['model']
+        stats = get_player_stats(player_name,date,model)
+        return JsonResponse({'stats':stats})
+        
         

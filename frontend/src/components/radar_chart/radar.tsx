@@ -3,11 +3,15 @@ import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { fetchData } from "../../api/fetchData";
 import { getSessionData, setSessionData } from "../../utils/sessionStorageUtils";
+import { Numbers } from "@mui/icons-material";
 
 
+interface RadarChartProps {
+  numbers: number[];
+}
 
-const RadarChart: React.FC = () => {
-  const [numbers, setNumbers] = useState<number[]>([]);
+const RadarChart: React.FC<RadarChartProps> = ({numbers}) => {
+  // const [numbers, setNumbers] = useState<number[]>([10, 20, 30, 40, 50, 60]);
 
   // const fetchData = async (): Promise<RunData[]> => {
   //   const response = await fetch(
