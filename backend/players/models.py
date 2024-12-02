@@ -2810,7 +2810,7 @@ class FielderWtest(models.Model):
 class MatchupIt20(models.Model):
     date = models.TextField(blank=True, null=True)
     match_id = models.FloatField(blank=True, null=True)
-    batsman_name = models.TextField(blank=True, null=True)
+    batsman_name = models.TextField(blank=True,primary_key=True)
     batsman_id = models.TextField(blank=True, null=True)
     bowler_name = models.TextField(blank=True, null=True)
     bowler_id = models.TextField(blank=True, null=True)
@@ -2843,7 +2843,7 @@ class MatchupIt20(models.Model):
 class MatchupWit20(models.Model):
     date = models.TextField(blank=True, null=True)
     match_id = models.FloatField(blank=True, null=True)
-    batsman_name = models.TextField(blank=True, null=True)
+    batsman_name = models.TextField(blank=True,primary_key=True)
     batsman_id = models.TextField(blank=True, null=True)
     bowler_name = models.TextField(blank=True, null=True)
     bowler_id = models.TextField(blank=True, null=True)
@@ -2876,7 +2876,7 @@ class MatchupWit20(models.Model):
 class MatchupWtest(models.Model):
     date = models.TextField(blank=True, null=True)
     match_id = models.FloatField(blank=True, null=True)
-    batsman_name = models.TextField(blank=True, null=True)
+    batsman_name = models.TextField(blank=True,primary_key=True)
     batsman_id = models.TextField(blank=True, null=True)
     bowler_name = models.TextField(blank=True, null=True)
     bowler_id = models.TextField(blank=True, null=True)
