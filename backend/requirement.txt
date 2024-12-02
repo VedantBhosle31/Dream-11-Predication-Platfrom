@@ -31,6 +31,11 @@ packaging==24.2
 pandas==2.2.3
 pillow==10.4.0
 plotly==5.24.1
+prompt_toolkit==3.0.48
+psutil==6.1.0
+psycopg2-binary
+pure_eval==0.2.3
+Pygments==2.18.0
 plum-dispatch==1.7.4
 proglog==0.1.10
 pyparsing==3.2.0
