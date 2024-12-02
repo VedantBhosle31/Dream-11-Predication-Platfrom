@@ -14,3 +14,9 @@ local_settings.py
 
 .env
 db.sqlite3
+node_modules/
+
+# To be removed later
+temp
+**/*.csv
+graphsml_app
