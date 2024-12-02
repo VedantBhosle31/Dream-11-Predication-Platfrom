@@ -108,6 +108,8 @@ const DropZone: React.FC<DropZoneProps> = ({
   );
 };
 
+var maindata: any = [];
+
 const DroppableCard: React.FC<{
   card: DisplayCardData;
   onRemove: (card: CardData) => void;
@@ -116,50 +118,19 @@ const DroppableCard: React.FC<{
   selectedCard: CardData | null;
   handleSetCVC: (id: string, role: "C" | "VC") => void;
 }> = ({ card, onRemove, isedit, onSelectCard, selectedCard, handleSetCVC }) => {
-
   // const [ishovered, setShowButtons] = useState(false);
   var [isCardExpanded, setCardExpanded] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // var [isExpanded, setExpanded] = useState(false);
   const handleOpen = () => setCardExpanded(true);
   const handleClose = () => setCardExpanded(false);
-
-
 
   interface Stats {
     title: string;
     stats: Stat[];
   }
-
-
 
   interface Graphs {
     title: string;
@@ -167,7 +138,7 @@ const DroppableCard: React.FC<{
   }
 
   // graphs
-  
+
   const data: Graphs[] = [
     {
       title: "FANTASY POINTS VS MATCHES",
@@ -314,9 +285,127 @@ const DroppableCard: React.FC<{
       ],
     },
   };
+  const piedata = [
+    { name: "0", value: 400 },
+    { name: "1", value: 300 },
+    { name: "2", value: 300 },
+    { name: "3", value: 200 },
+    { name: "4", value: 100 },
+    { name: "6", value: 50 },
+  ];
+  const venuedata: ChartData[] = [
+    {
+      match: "vs AUS",
+      id: 1,
+      venue: 120,
+      opposition: 80,
+      form: 169.2,
+    },
+    {
+      match: "vs ENG",
+      venue: 112,
+      opposition: 80,
+      form: 169.2,
+      id: 2,
+    },
+    {
+      match: "vs USA",
+      venue: 120,
+      opposition: 80,
+      form: 169.2,
+      id: 3,
+    },
+    {
+      match: "vs NZ",
+      venue: 120,
+      opposition: 80,
+      form: 169.2,
+      id: 4,
+    },
+    {
+      match: "vs AFG",
+      venue: 120,
+      opposition: 80,
+      form: 169.2,
+      id: 5,
+    },
+    {
+      match: "vs SL",
+      venue: 120,
+      opposition: 80,
+      form: 169.2,
+      id: 5,
+    },
+    {
+      match: "vs SA",
+      venue: 140,
+      opposition: 100,
+      form: 150,
+      id: 7,
+    },
+    {
+      match: "vs BAN",
+      venue: 110,
+      opposition: 90,
+      form: 132.8,
+      id: 8,
+    },
+    {
+      match: "vs WI",
+      venue: 130,
+      opposition: 110,
+      form: 120.8,
+      id: 9,
+    },
+    {
+      match: "vs PAK",
+      venue: 150,
+      opposition: 120,
+      form: 167.9,
+      id: 10,
+    },
+  ];
+
+  const radardata: number[] = [10, 20, 30, 40, 50, 60];
+
+  const fantasygraphdata = [
+    { date: "13 Nov", value: 50 },
+    { date: "14 Nov", value: 30 },
+    { date: "15 Nov", value: 20 },
+    { date: "16 Nov", value: 27 },
+    { date: "17 Nov", value: 18 },
+    { date: "18 Nov", value: 23 },
+    { date: "19 Nov", value: 34 },
+    { date: "21 Nov", value: 50 },
+    { date: "22 Nov", value: 30 },
+    { date: "23 Nov", value: 20 },
+    { date: "24 Nov", value: 27 },
+    { date: "25 Nov", value: 18 },
+    { date: "26 Nov", value: 23 },
+    { date: "27 Nov", value: 34 },
+  ];
+
+  const percentages = [75, 50, 90];
+
+  // State to store fetched data (no specific type)
+  const [mydata, setmyData] =
+    useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>(
+      typesMap
+    );
+  const [newpiedata, setnewpieData] =
+    useState<{ name: string; value: number }[]>(piedata);
+
+  const [newvenuedata, setnewvenueData] = useState<ChartData[]>(venuedata);
+
+  const [newradardata, setnewradarData] = useState<number[]>(radardata);
+
+  const [newfantasygraphdata, setnewfantasygraphData] =
+    useState<{ date: string; value: number }[]>(fantasygraphdata);
+
+  const [newpercentages, setnewpercentages] = useState<number[]>(percentages);
 
   // Prepare data for the `typeData_2` prop
-  const typeData_2 = Object.values(typesMap).map((type) => ({
+  const typeData_2 = Object.values(mydata).map((type) => ({
     title: type.title,
     stats: type.stats,
   }));
@@ -366,7 +455,11 @@ const DroppableCard: React.FC<{
   const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // State for the selected filter
   const [selectedFilter3, setSelectedFilter3] = useState("venue"); // State for the selected filter
 
-  const filters = ["All", "T20I", "T20"]; // Filter options
+  const [format, setformat] = useState("Odi");
+
+
+  // const filters = ["All", "T20I", "T20"]; // Filter options
+  const filters = format === "T20" ? ["All", "T20I", "T20"] : (format === "Odi" ? ["All", "OdiI", "Odi"] : ["All", "TestI", "Test"]); // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
 
@@ -380,48 +473,355 @@ const DroppableCard: React.FC<{
     setSelectedFilter3(filter); // Update the selected filter
   };
 
-  interface somecarddata  {
+  interface somecarddata {
     name: string;
     country: string;
     type: string;
     cvc: string;
   }
 
+  interface ChartData {
+    match: string;
+    venue: number;
+    opposition: number;
+    form: number;
+    id: number;
+  }
+
+  const fetchData = async (url: string) => {
+    setCardExpanded(true);
+
+    const response = await fetch(
+      "http://127.0.0.1:8000/players/get-player-data",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Tell the server it's JSON
+        },
+        body: JSON.stringify({
+          // "name": "V Kohli",
+          name: "F du Plessis",
+          // "name": "GJ Maxwell",/
+          date: "2025-01-01",
+          model: "Odi",
+        }), // Convert the data to a JSON string
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const fetcheddata: [] = await response.json();
+
+    maindata = fetcheddata;
+
+    setmyData({
+      BATTING: {
+        title: "BATTING",
+        stats: [
+          {
+            key: "MATCHES",
+            value: maindata["stats"]["batting"][0]["innings_played"],
+          },
+          {
+            key: "INNINGS",
+            value: maindata["stats"]["batting"][0]["innings_played"],
+          },
+          {
+            key: "RUNS",
+            value: maindata["stats"]["batting"][0]["previous_runs"],
+          },
+          {
+            key: "AVERAGE",
+            value:
+              maindata["stats"]["batting"][0]["previous_average"].toFixed(2),
+          },
+          {
+            key: "STRIKE RATE",
+            value:
+              maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(
+                2
+              ),
+          },
+          {
+            key: "HIGHEST SCORE",
+            value: maindata["stats"]["batting"][0]["highest_score"],
+          },
+          {
+            key: "4s/6s",
+            value: `${maindata["stats"]["batting"][0]["previous_4s"]}/${maindata["stats"]["batting"][0]["previous_6s"]}`,
+          },
+          {
+            key: "50/100",
+            value: `${maindata["stats"]["batting"][0]["previous_fifties"]}/${maindata["stats"]["batting"][0]["previous_centuries"]}`,
+          },
+        ],
+      },
+      BOWLING: {
+        title: "BOWLING",
+        stats: [
+          {
+            key: "MATCHES",
+            value: maindata["stats"]["bowling"][0]["innings_played"],
+          },
+          {
+            key: "BALLS",
+            value: maindata["stats"]["bowling"][0]["previous_balls_involved"],
+          },
+          {
+            key: "WICKETS",
+            value: maindata["stats"]["bowling"][0]["previous_wickets"],
+          },
+          {
+            key: "STRIKE RATE",
+            value:
+              maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(
+                2
+              ),
+          },
+          {
+            key: "MAIDENS",
+            value: maindata["stats"]["bowling"][0]["previous_maidens"],
+          },
+          {
+            key: "ECONOMY",
+            value:
+              maindata["stats"]["bowling"][0]["previous_economy"].toFixed(2),
+          },
+          {
+            key: "AVERAGE",
+            value:
+              maindata["stats"]["bowling"][0]["previous_average"].toFixed(2),
+          },
+          {
+            key: "3/4/5 WICKETS",
+            value: `${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}`,
+          },
+        ],
+      },
+      FIELDING: {
+        title: "FIELDING",
+        stats: [
+          {
+            key: "MATCHES",
+            value: maindata["stats"]["bowling"][0]["innings_played"],
+          },
+          {
+            key: "INNINGS",
+            value: maindata["stats"]["bowling"][0]["innings_played"],
+          },
+          {
+            key: "RUN OUTS",
+            value: maindata["stats"]["fielding"][0]["previous_runouts"],
+          },
+          {
+            key: "CATCHES",
+            value: maindata["stats"]["fielding"][0]["previous_catches"],
+          },
+        ],
+      },
+    });
+
+    let sums = { "0": 0, "4": 0, "6": 0 };
+    // let sumsrecent = { "form": 0, "opposition": 0, "venue": 0 };
+
+    maindata["stats"]["batting"].forEach((battingData: any) => {
+      sums["0"] += battingData["dots"];
+      // sums["4"] += battingData["previous_4s"];
+      // sums["6"] += battingData["sixes"];
+     
+    });
+
+    var formRatio = 0;
+      var oppositionRatio = 0;
+      var venueRatio =  0;
+    
+
+    const processData = (data: any[]) => {
+      // Initialize the variables to track the max values and sums
+      let formMax = -Infinity;
+      let oppositionMax = -Infinity;
+      let venueMax = -Infinity;
+    
+      let formSum = 0;
+      let oppositionSum = 0;
+      let venueSum = 0;
+    
+      // Loop through the data to find max values and sum the corresponding fields
+      data.forEach(item => {
+        // Max value for form
+        if (item.form > formMax) {
+          formMax = item.form;
+        }
+        // Max value for opposition
+        if (item.opposition > oppositionMax) {
+          oppositionMax = item.opposition;
+        }
+        // Max value for venue
+        if (item.venue > venueMax) {
+          venueMax = item.venue;
+        }
+    
+        // Summing values
+        formSum += item.form;
+        oppositionSum += item.opposition;
+        venueSum += item.venue;
+      });
+
+     
+    
+      // Calculate ratios
+      formRatio = formMax !== 0 ? formSum *10/ formMax : 0;
+      oppositionRatio = oppositionMax !== 0 ? oppositionSum *10/ oppositionMax : 0;
+      venueRatio = venueMax !== 0 ? venueSum *10/ venueMax : 0;
+    
+      return {
+        formRatio,
+        oppositionRatio,
+        venueRatio
+      };
+    };
 
 
 
+    processData(maindata["stats"]["batting"]);
+
+    
 
 
 
+    setnewpieData([
+      { name: "0", value: sums["0"] },
+      { name: "4", value: maindata["stats"]["batting"][0]["previous_4s"] },
+      { name: "6", value: maindata["stats"]["batting"][0]["previous_6s"] },
+      { name: "1,2,3", value: ( maindata["stats"]["batting"][0]["previous_balls_involved"] - (maindata["stats"]["batting"][0]["previous_4s"] + maindata["stats"]["batting"][0]["previous_6s"] ) )},
+    ]);
 
+    // setnewpieData([
+    //   { name: "0", value: maindata["stats"]["batting"][0]["dots"] },
+    //   // { name: "1", value: 300 },
+    //   // { name: "2", value: 300 },
+    //   // { name: "3", value: 200 },
+    //   { name: "4", value: 100 },
+    //   { name: "6", value: 50 },
+    // ]);
 
+    setnewradarData([
+      maindata["stats"]["batting"][0]["previous_strike_rate"],
+      maindata["stats"]["bowling"][0]["previous_wickets"],
+      maindata["stats"]["bowling"][0]["previous_economy"],
 
+      maindata["stats"]["batting"][0]["innings_played"],
 
+      maindata["stats"]["fielding"][0]["pfa_catches"],
+      maindata["stats"]["batting"][0]["previous_average"],
+    ]);
 
+    setnewfantasygraphData([
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][0]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][1]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][2]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][2]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][3]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][3]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][4]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][4]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][5]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][5]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][6]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][6]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][7]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][7]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][8]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][8]["odi_match_fantasy_points"],
+      },
+      {
+        date: "13 Nov",
+        value:
+          maindata["stats"]["batting"][9]["odi_match_fantasy_points"] < 0
+            ? 0
+            : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
+      },
+    ]);
 
+    // setnewvenueData([
+    //   maindata["stats"]["batting"].map((index: number) => {
+    //     // Perform operations on each element
+    //     return {
+    //       match: `${index}`,
+    //       id: index,
+    //       venue: maindata["stats"]["batting"][index]["venue_avg"],
+    //       opposition: maindata["stats"]["batting"][index]["opposition"],
+    //       form: maindata["stats"]["batting"][index]["form"],
+    //     };
+    //   }),
+    // ]);
 
+    setnewvenueData(
+      Array.from({ length: 10 }, (_, index) => {
+        return {
+          match: `${index}`,
+          id: index,
+          venue: maindata["stats"]["batting"][index]["venue_avg"],
+          opposition: maindata["stats"]["batting"][index]["opposition"],
+          form: maindata["stats"]["batting"][index]["form"],
+        };
+      })
+    );
 
+    setnewpercentages([
+      Math.round(formRatio * 100) / 100,Math.round(oppositionRatio * 100) / 100, Math.round(venueRatio * 100) / 100
+    ]);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    console.log("maindata", maindata["stats"]);
+  };
 
   return !isCardExpanded ? (
     <div
@@ -461,15 +861,29 @@ const DroppableCard: React.FC<{
         </div>
       </div>
 
-      {(card.cvc === "C" && 
-        <div className="absolute text-white w-10 h-10 px-2 py-2 font-bold" style={{backgroundColor: "rgb(235, 134, 2)", fontFamily:"Montserrat"}}>
+      {card.cvc === "C" && (
+        <div
+          className="absolute text-white w-10 h-10 px-2 py-2 font-bold"
+          style={{
+            backgroundColor: "rgb(235, 134, 2)",
+            fontFamily: "Montserrat",
+          }}
+        >
           C
-        </div>)}
+        </div>
+      )}
 
-        {(card.cvc === "VC" && 
-        <div className="absolute text-white bg-black w-10 h-10 px-2 py-2 font-bold" style={{backgroundColor: "rgb(2, 157, 235)", fontFamily:"Montserrat"}}>
+      {card.cvc === "VC" && (
+        <div
+          className="absolute text-white bg-black w-10 h-10 px-2 py-2 font-bold"
+          style={{
+            backgroundColor: "rgb(2, 157, 235)",
+            fontFamily: "Montserrat",
+          }}
+        >
           VC
-        </div>)}
+        </div>
+      )}
 
       {isedit && (
         <button className="remove-button" onClick={() => onRemove(card)}>
@@ -480,35 +894,51 @@ const DroppableCard: React.FC<{
         //  </button>
       )}
 
-      {isedit && (<div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
-        <button
-          onClick={() => handleSetCVC(card.id, "C")}
-          className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
-          style={{backgroundColor: "rgb(235, 134, 2)", fontFamily:"Montserrat", fontSize:"70%"}}
-        >
-          Make Captain
-        </button>
+      {isedit && (
+        <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
+          <button
+            onClick={() => handleSetCVC(card.id, "C")}
+            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            style={{
+              backgroundColor: "rgb(235, 134, 2)",
+              fontFamily: "Montserrat",
+              fontSize: "70%",
+            }}
+          >
+            Make Captain
+          </button>
 
-        <button
-          onClick={() => handleSetCVC(card.id, "VC")}
-          className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
-          style={{backgroundColor: "rgb(2, 157, 235)", fontFamily:"Montserrat", fontSize:"70%"}}
-        >
-          Make Vice-Captain
-        </button>
+          <button
+            onClick={() => handleSetCVC(card.id, "VC")}
+            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            style={{
+              backgroundColor: "rgb(2, 157, 235)",
+              fontFamily: "Montserrat",
+              fontSize: "70%",
+            }}
+          >
+            Make Vice-Captain
+          </button>
 
-        <button
-          onClick={() => setCardExpanded(true)}
-          className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
-          style={{backgroundColor: "rgb(235, 134, 2)", fontFamily:"Montserrat", fontSize:"70%"}}
-        >
-          Show Info
-        </button>
-      </div>)}
+          <button
+            onClick={() =>
+              fetchData("http://127.0.0.1:8000/players/get-player-data")
+            }
+            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            style={{
+              backgroundColor: "rgb(235, 134, 2)",
+              fontFamily: "Montserrat",
+              fontSize: "70%",
+            }}
+          >
+            Show Info
+          </button>
+        </div>
+      )}
 
       <img className="card-image" src={MyImage} alt="Player" />
     </div>
-  ) :(
+  ) : (
     // <div></div>
     <DisplayCardExpanded
       containerRef={containerRef}
@@ -538,9 +968,13 @@ const DroppableCard: React.FC<{
       handleFilterChange={handleFilterChange}
       handleFilterChange2={handleFilterChange2}
       handleFilterChange3={handleFilterChange3}
+      newpiedata={newpiedata}
+      venuechartdata={newvenuedata}
+      radarnumbers={newradardata}
+      fantasygraphdata={newfantasygraphdata}
+      percentages={newpercentages}
     />
-  )
-  ;
+  );
 };
 
 const Placeholder: React.FC = () => {

@@ -31,14 +31,7 @@ import ImpactChart from "../impactindexchart/impactchart";
 import { BarPlot } from "@mui/x-charts/BarChart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 
-const piedata = [
-  { name: "0", value: 400 },
-  { name: "1", value: 300 },
-  { name: "2", value: 300 },
-  { name: "4", value: 200 },
-  { name: "5", value: 100 },
-  { name: "6", value: 50 },
-];
+
 
 const COLORS = [
   "#0088FE",
@@ -83,22 +76,7 @@ const datatitles = [
   "PLAYER DEMOGRAPHY",
 ];
 
-const graphdata = [
-  { date: "13 Nov", value: 50 },
-  { date: "14 Nov", value: 30 },
-  { date: "15 Nov", value: 20 },
-  { date: "16 Nov", value: 27 },
-  { date: "17 Nov", value: 18 },
-  { date: "18 Nov", value: 23 },
-  { date: "19 Nov", value: 34 },
-  { date: "21 Nov", value: 50 },
-  { date: "22 Nov", value: 30 },
-  { date: "23 Nov", value: 20 },
-  { date: "24 Nov", value: 27 },
-  { date: "25 Nov", value: 18 },
-  { date: "26 Nov", value: 23 },
-  { date: "27 Nov", value: 34 },
-];
+
 
 const uData = [50, 30, 20, 27, 18, 23, 34, 50, 30, 20, 27, 18, 23, 34];
 const xLabels = [
@@ -119,9 +97,9 @@ const xLabels = [
   "13 Nov",
 ];
 
-const yValues = graphdata.map((data) => data.value);
+// const yValues = graphdata.map((data) => data.value);
 
-yValues.sort((a, b) => a - b);
+// yValues.sort((a, b) => a - b);
 
 export interface Matchups {
   name: string;
@@ -168,6 +146,17 @@ const MatchupsData: Matchups[] = [
   },
 ];
 
+interface ChartData {
+  match: string;
+  venue: number;
+  opposition: number;
+  form: number;
+  id: number;
+}
+
+
+
+
 interface DisplayCardExpandedProps {
   containerRef: React.RefObject<HTMLDivElement>;
   isExpanded: boolean;
@@ -210,6 +199,11 @@ interface DisplayCardExpandedProps {
   handleFilterChange: (filter: string) => void;
   handleFilterChange2: (filter: string) => void;
   handleFilterChange3: (filter: string) => void;
+  newpiedata:{ name: string; value: number }[];
+  venuechartdata: ChartData[];
+  radarnumbers: number[];
+  fantasygraphdata: {date:string, value:number}[];
+  percentages: number[]
 }
 
 const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
@@ -240,7 +234,14 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   handleFilterChange,
   handleFilterChange2,
   handleFilterChange3,
+  newpiedata,
+  venuechartdata,
+  radarnumbers,
+  fantasygraphdata,
+  percentages
 }) => (
+
+  
   <Modal
     open={open}
     onClose={handleClose}
@@ -625,7 +626,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
               {currentIndex === 0 && (
                 <ResponsiveContainer width="90%" height={250}>
                   <BarChart
-                    data={graphdata}
+                    data={fantasygraphdata}
                     //   width={600}
                     //   height={30}
                     // margin={{ top: 20, right: 30, bottom: 50, left: 50 }}
@@ -676,7 +677,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   }}
                 >
                   <div style={{ alignItems: "center", alignContent: "center" }}>
-                    <CircularProgress percentage={75} />
+                    <CircularProgress percentage={percentages[0]} />
                     <div
                       style={{
                         display: "flex",
@@ -691,7 +692,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   </div>
 
                   <div>
-                    <CircularProgress percentage={60} />
+                    <CircularProgress percentage={percentages[1]} />
                     <div
                       style={{
                         display: "flex",
@@ -706,7 +707,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   </div>
 
                   <div>
-                    <CircularProgress percentage={85} />
+                    <CircularProgress percentage={percentages[2]} />
                     <div
                       style={{
                         display: "flex",
@@ -891,7 +892,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 >
                   <PieChart width={500} height={200}>
                     <Pie
-                      data={piedata}
+                      data={newpiedata}
                       dataKey="value"
                       nameKey="name"
                       // cx="50%"
@@ -930,7 +931,8 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   }}
                 >
                   <VenueGraph 
-                  selected={selectedFilter3}
+                    selected={selectedFilter3} 
+                    maindata={venuechartdata}                  
                   />
                 </div>
               )}
@@ -1039,12 +1041,12 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
             {/* Stats Column */}
             <div
               className="grid-container"
-              style={{ width: "100%", height: "20%" }}
+              style={{ width: "100%", height: "90%" }}
             >
               {typeData_2[currentIndexTypes].stats.map((stat, index) => (
                 <div className="grid-item" key={index}>
                   {stat.value}
-                  <div style={{ color: "white", fontSize: "10px" }}>
+                  <div style={{ color: "white", fontSize: "9px" }}>
                     {stat.key}
                   </div>
                 </div>
@@ -1079,7 +1081,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 backgroundColor: "#1A1A1A",
               }}
             >
-              <RadarChart />
+              <RadarChart numbers={radarnumbers} />
             </div>
           </div>
         </div>

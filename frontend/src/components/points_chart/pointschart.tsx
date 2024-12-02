@@ -107,18 +107,19 @@ const data: ChartData[] = [
 
 interface VenueGraphProps {
   selected: string;
+  maindata:ChartData[];
 }
 
-const getFillColor = (value: number) => {
-  // If the data point is above the reference line, use green
-  if (value > 70) {
-    return "#4CAF50"; // Green for above reference line
-  }
-  // If the data point is below the reference line, use red
-  return "#FF5722"; // Red for below reference line
-};
+// const getFillColor = (value: number) => {
+//   // If the data point is above the reference line, use green
+//   if (value > 70) {
+//     return "#4CAF50"; // Green for above reference line
+//   }
+//   // If the data point is below the reference line, use red
+//   return "#FF5722"; // Red for below reference line
+// };
 
-const VenueGraph: React.FC<VenueGraphProps> = ({ selected }) => {
+const VenueGraph: React.FC<VenueGraphProps> = ({ selected, maindata }) => {
   // const [selectedQuery, setSelectedQuery] = useState<string>(selected);
 
   // // Handle query change
@@ -132,14 +133,14 @@ const VenueGraph: React.FC<VenueGraphProps> = ({ selected }) => {
     runRate: "#e74c3c", // Red for Run Rate
   };
 
-  const minY = Math.min(
-    ...data.map((item) => item[selected as keyof ChartData] as number)
-  );
-  console.log(minY);
-  const maxY = Math.max(
-    ...data.map((item) => item[selected as keyof ChartData] as number)
-  );
-  console.log(maxY);
+  // const minY = Math.min(
+  //   ...data.map((item) => item[selected as keyof ChartData] as number)
+  // );
+  // console.log(minY);
+  // const maxY = Math.max(
+  //   ...data.map((item) => item[selected as keyof ChartData] as number)
+  // );
+  // console.log(maxY);
 
   // type DataType = {
   //   Date: string;
@@ -177,6 +178,18 @@ const VenueGraph: React.FC<VenueGraphProps> = ({ selected }) => {
   // if (loading) return <div>Loading...</div>;
   // if (error) return <div>Error: {error}</div>;
 
+
+
+  // Calculate the average of the selected filter
+  const calculateAverage = (data: ChartData[], filter: string): number => {
+    const filteredValues = data.map((item) => item[filter as keyof ChartData]);
+    const sum = filteredValues.reduce((acc, val) => (acc as number) + (val as number), 0);
+    return (sum as number/ filteredValues.length);
+  };
+
+  // Get the average for the selected filter
+  const average = calculateAverage(maindata, selected);
+
   return (
     <div
       style={{
@@ -198,7 +211,7 @@ const VenueGraph: React.FC<VenueGraphProps> = ({ selected }) => {
         }}
       >
         <ResponsiveContainer width={"80%"} height={"100%"}>
-          <AreaChart data={data}>
+          <AreaChart data={maindata}>
             {/* <defs>
               {/* Solid color stops for above and below the reference line */}
               {/* Solid color for above and below the reference line */}
@@ -275,13 +288,13 @@ const VenueGraph: React.FC<VenueGraphProps> = ({ selected }) => {
 
             {/* Add Horizontal Line */}
             <ReferenceLine
-              y={70} // Specify the Y-axis value for the line
+              y={average} // Specify the Y-axis value for the line
               stroke="red" // Line color
               // strokeDasharray="3 3" // Optional: Dashed line
               label={{
                 value: "Average",
                 position: "insideTopRight",
-                // fill: "red",
+                fill: "red",
                 fontSize: "10px",
               }} // Optional label for the line
             />

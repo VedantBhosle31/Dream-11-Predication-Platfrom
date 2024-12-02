@@ -30,7 +30,7 @@ def verify_csv(request):
 
 @csrf_exempt
 def get_player_data(request):
-    if request.method == "GET":
+    if request.method == "POST":
         body = json.loads(request.body)
         player_name = body['name']
         date = body['date']

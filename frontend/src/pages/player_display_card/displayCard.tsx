@@ -233,9 +233,6 @@ const DisplayScreen: React.FC = () => {
 };
 
 
-
-
-
 const DisplayCard: React.FC<{
   card: DisplayCardData;
 }> = ({ card }) => {
@@ -383,49 +380,6 @@ const DisplayCard: React.FC<{
     stats: Stat[];
   };
 
-  const typesMap: { [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData } = {
-    BATTING: {
-      title: "BATTING",
-      stats: [
-        { key: "MATCHES", value: "8" },
-        { key: "INNINGS", value: "50.0" },
-        { key: "RUNS", value: "80%" },
-        { key: "AVERAGE", value: "5" },
-        { key: "STRIKE RATE", value: "8" },
-        { key: "HIGHEST SCORE", value: "8" },
-        { key: "4s/6s", value: "8" },
-        { key: "50/100", value: "8" },
-      ],
-    },
-    BOWLING: {
-      title: "BOWLING",
-      stats: [
-        { key: "Average", value: "30.0" },
-        { key: "Economy Rate", value: "5.5" },
-        { key: "Wickets", value: "15" },
-        { key: "Five Wicket Hauls", value: "2" },
-      ],
-    },
-    FIELDING: {
-      title: "FIELDING",
-      stats: [
-        { key: "Catches", value: "10" },
-        { key: "Run Outs", value: "5" },
-        { key: "Stumps", value: "3" },
-      ],
-    },
-  };
-
-  // Prepare data for the `typeData_2` prop
-  const typeData_2 = Object.values(typesMap).map((type) => ({
-    title: type.title,
-    stats: type.stats,
-  }));
-
-  interface DisplayCardExpandedProps {
-    typeData_2: TypeData[];
-  }
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexTypes, setCurrentIndexTypes] = useState(0);
 
@@ -462,12 +416,16 @@ const DisplayCard: React.FC<{
     alert(`You searched for: ${query}`);
   };
 
+  // const format= "";
+  const [format, setformat] = useState("Odi");
+
+
   //for filterBar(All,T20I, T20)
   const [selectedFilter, setSelectedFilter] = useState("All"); // State for the selected filter
   const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // State for the selected filter
   const [selectedFilter3, setSelectedFilter3] = useState("venue"); // State for the selected filter
 
-  const filters = ["All", "T20I", "T20"]; // Filter options
+  const filters = format === "T20" ? ["All", "T20I", "T20"] : (format === "Odi" ? ["All", "OdiI", "Odi"] : ["All", "TestI", "Test"]); // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
 
@@ -480,6 +438,140 @@ const DisplayCard: React.FC<{
   const handleFilterChange3 = (filter: string) => {
     setSelectedFilter3(filter); // Update the selected filter
   };
+
+  //   type BattingStats = {
+  //     player_name: string,
+  //                 previous_average: number,
+  //                 previous_strike_rate: number,
+  //                 innings_played:number,
+  //                 previous_runs: number,
+  //                 previous_4s: number,
+  //                 previous_6s: number,
+  //                 previous_fifties: number,
+  //                 previous_centuries: number,
+  //                 highest_score: number,
+  //                 form: number,
+  //                 venue_avg: number,
+  //                 opposition: number,
+  //                 previous_zeros: number,
+  //                 tbahs_economy_agg: number,
+  //                 tbahs_4s_agg: number,
+  //                 tbahp_dismissals_agg: number
+  // };
+
+  // type StatsData = {
+  //     batting: BattingStats[];
+  // };
+
+  // type ApiResponse = {
+  //     stats: StatsData;
+  // };
+
+  // var maindata: ApiResponse = {
+  //   stats: {
+  //       batting: [], // Example input; replace with real data
+  //   },
+  // };
+
+  const typesMap: { [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData } = {
+    BATTING: {
+      title: "BATTING",
+      stats: [
+        // { key: "MATCHES", value: "56" },
+        // { key: "INNINGS", value: "50.0" },
+        // { key: "RUNS", value: "80%" },
+        // { key: "AVERAGE", value: "8989"},
+        // { key: "STRIKE RATE", value: "8" },
+        // { key: "HIGHEST SCORE", value: "8" },
+        // { key: "4s/6s", value: "8" },
+        // { key: "50/100", value: "8" },
+      ],
+    },
+    BOWLING: {
+      title: "BOWLING",
+      stats: [
+        // { key: "Average", value: "30.0" },
+        // { key: "Economy Rate", value: "5.5" },
+        // { key: "Wickets", value: "15" },
+        // { key: "Five Wicket Hauls", value: "2" },
+      ],
+    },
+    FIELDING: {
+      title: "FIELDING",
+      stats: [
+        // { key: "Catches", value: "10" },
+        // { key: "Run Outs", value: "5" },
+        // { key: "Stumps", value: "3" },
+      ],
+    },
+  };
+
+  
+
+  
+  
+
+
+
+  const piedata = [
+    { name: "0", value: 400 },
+    { name: "1", value: 300 },
+    { name: "2", value: 300 },
+    { name: "3", value: 200 },
+    { name: "4", value: 100 },
+    { name: "6", value: 50 },
+  ];
+
+  
+
+  const [mydata, setmyData] =
+    useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>(
+      typesMap
+    );
+
+  // const [allStats, setAllStats] = useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>({
+  //   BATTING: { title: '', stats: [] },
+  //   BOWLING: { title: '', stats: [] },
+  //   FIELDING: { title: '', stats: [] },
+  // });
+
+  //   const updateTypesMap = (data: any) => {
+  //   typesMap.BATTING.stats = [
+  //     { key: "MATCHES", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "INNINGS", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "RUNS", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "AVERAGE", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "STRIKE RATE", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "HIGHEST SCORE", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "4s/6s", value: `${data["stats"]["batting"][0]["previous_average"]}/${data["stats"]["batting"][0]["previous_average"]}` || "" },
+  //     { key: "50/100", value: `${data["stats"]["batting"][0]["previous_average"]}/${data["stats"]["batting"][0]["previous_average"]}` || "" },
+  //   ];
+
+  //   typesMap.BOWLING.stats = [
+  //     { key: "Average", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "Economy Rate", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "Wickets", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "Five Wicket Hauls", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //   ];
+
+  //   typesMap.FIELDING.stats = [
+  //     { key: "Catches", value:data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "Run Outs", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //     { key: "Stumps", value: data["stats"]["batting"][0]["previous_average"] || "" },
+  //   ];
+
+  //   console.log("Updated typesMap:", typesMap);
+  // };
+
+  // Prepare data for the `typeData_2` prop
+  const typeData_2 = Object.values(mydata).map((type) => ({
+    title: type.title,
+    stats: type.stats,
+  }));
+
+  interface DisplayCardExpandedProps {
+    typeData_2: TypeData[];
+  }
 
   return !isExpanded ? (
     <div
@@ -551,7 +643,9 @@ const DisplayCard: React.FC<{
 
       <button
         className="info-button"
-        onClick={() => setExpanded(true)}
+        onClick={() =>{}
+          // fetchData("http://127.0.0.1:8000/players/get-player-data")
+        }
         aria-label="Info Button"
       >
         i
@@ -569,34 +663,39 @@ const DisplayCard: React.FC<{
     </div>
   ) : (
     <DisplayCardExpanded
-      containerRef={containerRef}
-      isExpanded={isExpanded}
-      setExpanded={setExpanded}
-      playerImage={playerImage}
-      card={card}
-      handleLeftClick={handleLeftClick}
-      handleRightClick={handleRightClick}
-      handleLeftClickTypes={handleLeftClickTypes}
-      handleRightClickTypes={handleRightClickTypes}
-      data={data}
-      typeData={typeData}
-      typeData_2={typeData_2}
-      currentIndex={currentIndex}
-      currentIndexTypes={currentIndexTypes}
-      suggestions={suggestions}
-      handleSearch={handleSearch}
-      handleClose={handleClose}
-      open={isExpanded}
-      selectedFilter={selectedFilter}
-      selectedFilter2={selectedFilter2}
-      selectedFilter3={selectedFilter3}
-      filters={filters}
-      filters2={filters2}
-      filters3={filters3}
-      handleFilterChange={handleFilterChange}
-      handleFilterChange2={handleFilterChange2}
-      handleFilterChange3={handleFilterChange3}
-    />
+        containerRef={containerRef}
+        isExpanded={isExpanded}
+        setExpanded={setExpanded}
+        playerImage={playerImage}
+        card={card}
+        handleLeftClick={handleLeftClick}
+        handleRightClick={handleRightClick}
+        handleLeftClickTypes={handleLeftClickTypes}
+        handleRightClickTypes={handleRightClickTypes}
+        data={data}
+        typeData={typeData}
+        typeData_2={typeData_2}
+        newpiedata={piedata}
+        currentIndex={currentIndex}
+        currentIndexTypes={currentIndexTypes}
+        suggestions={suggestions}
+        handleSearch={handleSearch}
+        handleClose={handleClose}
+        open={isExpanded}
+        selectedFilter={selectedFilter}
+        selectedFilter2={selectedFilter2}
+        selectedFilter3={selectedFilter3}
+        filters={filters}
+        filters2={filters2}
+        filters3={filters3}
+        handleFilterChange={handleFilterChange}
+        handleFilterChange2={handleFilterChange2}
+        handleFilterChange3={handleFilterChange3}
+        venuechartdata={[]}
+        radarnumbers={[]}
+        fantasygraphdata={[]} 
+        percentages={[]}     
+       />
   );
 
   // <div ref={containerRef} className="display-card-expanded" style={{position: isExpanded ? 'absolute' : 'relative', transition: 'all 0.5s ease'}}>

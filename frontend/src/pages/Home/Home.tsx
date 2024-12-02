@@ -83,7 +83,7 @@ const Home: React.FC = () => {
         className="background-video"
         loop
         muted
-        src="bg_video.mp4"
+        src="bg_video_2.mp4"
       ></video>
 
       {/* Title Section */}
