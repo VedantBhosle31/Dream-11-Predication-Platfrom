@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from players.utils.player_service import get_player_stats,matchup_stats
+from players.utils.player_service import get_player_stats,matchup_stats,player_features
 # from services.player_service import get_player_stats
 # Create your views here.
 PLAYER_NAMES_PATH = 'players/utils/player_names.csv'
@@ -51,3 +51,12 @@ def get_player_matchups(request):
     else:
         return JsonResponse({'error':'Only POST request allowed'})
         
+@csrf_exempt
+def get_player_features(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        player_name = body['name']
+        date = body['date']
+        model = body['model']
+        stats = player_features(player_name,date,model)
+        return JsonResponse({'stats':stats})
