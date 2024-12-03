@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from players.utils.player_service import get_player_stats
-
 # from services.player_service import get_player_stats
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -67,35 +66,13 @@ def get_players(request):
 
 
 @csrf_exempt
-def get_teams(request):
-    if request.method == "GET":
-        user_input = request.GET.get("user_input")
-        # If user_input is greater than 3 characters, search for team names
-        if len(user_input) > 3:
-            team_names = pd.read_csv(TEAM_NAMES_PATH)
-            team_names = team_names[
-                team_names["name"].str.contains(user_input, case=False)
-            ]
-            team_names = team_names["name"].tolist()
-            return JsonResponse({"team_names": team_names})
-
-
-@csrf_exempt
-def get_team_logos_from_team_names(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        team_names = data["team_names"]
-        team_details = pd.read_csv(TEAM_NAMES_PATH)
-        team_logos = team_details[team_details["name"].isin(team_names)]
-        team_logos = team_logos[["name", "logo"]].to_dict(orient="records")
-        return JsonResponse({"team_logos": team_logos})
-
-
-@csrf_exempt
 def get_player_data(request):
-    if request.method == "POST":
-        # player_name = request.GET.get('player_name')
-        # date = request.Get.get('date')
-        data = json.loads(request.body)
-        # stats = get_player_stats(player_name,date)
-        return JsonResponse({"stats": "stats", "data": data})
+    if request.method == "GET":
+        body = json.loads(request.body)
+        player_name = body['name']
+        date = body['date']
+        model = body['model']
+        stats = get_player_stats(player_name,date,model)
+        return JsonResponse({'stats':stats})
+        
+        
