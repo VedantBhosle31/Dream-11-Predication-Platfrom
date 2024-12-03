@@ -1,4 +1,4 @@
-from players.utils.player_service import player_features
+from players.utils.player_service import fetch_all_player_features, player_features
 import pickle
 import pandas as pd
 from ml_app.utils.predictor import feature_columns_dict
@@ -35,8 +35,8 @@ target_position_dict={
     'catches':'fielding', 
     'stumpings':'fielding'
 }
-def predict_for_one(name,date,format):
-    features = player_features(name,date,format.capitalize())
+def predict_for_one(player_stats,format):
+    features = player_stats
     predictions = {}
     for target in targets:
         s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
@@ -56,13 +56,10 @@ def predict_for_one(name,date,format):
     return predictions
 
 def predict(names,date,format):
-    predictions={}
+    predictions = {}
+    all_player_stats = fetch_all_player_features(names.split(','),date,format)
     for name in names.split(','):
-        predictions[name] = predict_for_one(name,date,format)
+        predictions[name] = predict_for_one(all_player_stats[name],format)
     return predictions
 
-        
-
-
-    
-    
+  
