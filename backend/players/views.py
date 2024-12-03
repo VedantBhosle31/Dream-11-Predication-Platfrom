@@ -119,12 +119,3 @@ def get_player_features(request):
         stats = player_features(player_name,date,model)
         return JsonResponse({'stats':stats})
         
-@csrf_exempt
-def get_22_random_players(request):
-    if request.method == "GET":
-        players = pd.read_csv("players/utils/matchups.csv")
-        players = players["batsman_name"].sample(22)
-        players = players['batsman_name'].tolist()
-        return JsonResponse({'players':players})
-    else:
-        return JsonResponse({'error':'Only GET request allowed'})

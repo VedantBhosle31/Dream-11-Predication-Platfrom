@@ -5,6 +5,19 @@ import pandas as pd
 from ml_app.utils.predictor import feature_columns_dict
 import numpy as np
 
+COST_CSV = "ml_app/utils/cost.csv"
+
+# Function to recursively convert numpy types to Python native types
+def convert_numpy_types(data):
+    if isinstance(data, dict):
+        return {key: convert_numpy_types(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [convert_numpy_types(item) for item in data]
+    elif isinstance(data, (np.int64, np.int32, np.float64, np.float32)):
+        return data.item()  # Convert numpy types to native Python types
+    else:
+        return data
+
 try:
     with open("ml_app/pickles/models.pkl", "rb") as file:
         models = pickle.load(file)
@@ -84,24 +97,49 @@ def predict_for_one(player_stats,format):
         catches = 0
         stumpings = 0
 
-    fantasy_points = points_calculator(format=format, runouts_direct=runouts * 0.58
+    fantasy_points = points_calculator(format=format.upper(), runouts_direct=runouts * 0.58
     ,runouts_indirect=runouts * 0.42, catches=catches, stumpings=stumpings, runs=runs, sixes=sixes, wickets=wickets, bowled_lbw=bowled_lbw, maidens=maidens, economy=economy, strike_rate=strike_rate, boundaries=boundary_runs)
     # fantasy_points = 0
     print(fantasy_points)
     return {"predictions":predictions, "fantasy_points":fantasy_points}
 
 def predict(names,date,format):
-    fantasy_points={}
+    fantasy_points = {}
     predictions = {}
-    all_player_stats = fetch_all_player_features(names.split(','),date,format)
+    all_player_stats = fetch_all_player_features(names, date, format)
+    cost_df = pd.read_csv(COST_CSV)  # Renaming `cost` to `cost_df`
+
     for name in names:
-        fantasy_points[name] = predict_for_one(name,date,format)["fantasy_points"]
-        predictions[name] = predict_for_one(all_player_stats[name],format)["predictions"]
-    
-    # Sort the fantasy points in descending order and send best 11
+        fantasy_points[name] = predict_for_one(all_player_stats[name], format)["fantasy_points"]
+        predictions[name] = predict_for_one(all_player_stats[name], format)["predictions"]
+
+        # Add player_id, cost, position for each player from cost csv
+        player = cost_df[cost_df['cricsheet_name'] == name]
+        if player.empty:
+            raise ValueError(f"Player '{name}' not found in cost CSV.")  # Handle missing players gracefully
+
+        player_id = player['id'].values[0]
+        player_cost = player['cost'].values[0]  # Use `player_cost` to avoid overwriting `cost_df`
+        position = player['position'].values[0]
+
+        if position == "Unknown":
+            position = "Batter"
+
+        predictions[name]["player_id"] = player_id
+        predictions[name]["cost"] = player_cost
+        predictions[name]["position"] = position
+
+    # Sort the fantasy points in descending order and send the best 11
     fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))
     fantasy_points = dict(list(fantasy_points.items())[:11])
-    # return fantasy_points
-    return {"fantasy_points":fantasy_points, "predictions":predictions}
+
+    result = {
+        "fantasy_points": fantasy_points,
+        "predictions": predictions,
+    }
+
+    # Convert all numpy types before returning
+    return convert_numpy_types(result)
+
 
   

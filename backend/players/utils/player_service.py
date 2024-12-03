@@ -137,15 +137,25 @@ def fetch_all_player_features(player_names, match_date, format):
         if entry["player_name"] not in batter_dict:
             batter_dict[entry["player_name"]] = entry
 
+        if len(batter_dict) == len(player_names):
+            break
+
     bowler_dict = {}
     for entry in bowler_data:
         if entry["player_name"] not in bowler_dict:
             bowler_dict[entry["player_name"]] = entry
+        
+        if len(bowler_dict) == len(player_names):
+            break
 
     fielder_dict = {}
     for entry in fielder_data:
         if entry["player_name"] not in fielder_dict:
             fielder_dict[entry["player_name"]] = entry
+
+        if len(fielder_dict) == len(player_names):
+            break
+        
 
     # Combine data for each player
     player_stats = {}

@@ -10,5 +10,4 @@ urlpatterns = [
     path("get-team-logos",views.get_team_logos_from_team_names,name="get_team_logos"),
     path('get-player-matchups',views.get_player_matchups,name='get_player_matchups'),
     path('get-player-features',views.get_player_features,name='get_player_features'),
-    path('get_22_random_players', views.get_22_random_players, name='get_22_random_players'),
 ]
