@@ -1,4 +1,4 @@
-from genai.models import (
+from players.models import (
     BatterIt20, BatterMdm, BatterOdi, BatterOdm, BatterTest, BatterT20,
     BatterWit20, BatterWodi, BatterWodm, BatterWt20, BatterWtest,
     BowlerIt20, BowlerMdm, BowlerOdi, BowlerOdm, BowlerTest, BowlerT20,

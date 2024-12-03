@@ -1,6 +1,6 @@
 from groq_client import generate_completion
 
-def graph_api(graph_name, input_data):
+def graph_explain(graph_name, input_data):
   # 'chart name':['description','input data description','input_data']
   graph_name_list = {'fantasy_points_vs_matches':['Chart plots fantasy points attained by the player in the last 9 matches, with the 10th point being the prediction for the current game.','Input data is fantasy points over time.','[40,70,80,50,20,10,95,60,67,78]'],
                    'spider_chart_bat':['this is a radar chart that shows the player profile of a batter using 6 cricketing metrics which are batting strike rate, batting average, wickets, economy, fielding and matchup','Input data is a score from 0-10 which is  given to all the metrics','[9,3,2,2,7,6]'],

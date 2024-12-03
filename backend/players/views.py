@@ -75,4 +75,14 @@ def get_player_data(request):
         stats = get_player_stats(player_name,date,model)
         return JsonResponse({'stats':stats})
         
-        
+def get_teams():
+    pass
+
+def get_team_logos_from_team_names():
+    pass
+
+def get_player_matchups():
+    pass
+
+def get_player_features():
+    pass
