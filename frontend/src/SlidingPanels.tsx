@@ -32,6 +32,8 @@ export interface CardData {
 }
 
 const SlidingPanels = () => {
+
+
   const [isOpen, setIsOpen] = useState(false);
   // const { best11Players, playerStats } = usePlayerStore();
 
@@ -365,24 +367,24 @@ const SlidingPanels = () => {
     setFilterType(filter);
   };
 
-  const moveToDropZone = (card: CardData) => {
-    if (dropZoneCards.length >= 11) {
-      // If DropZone is full, swap the last card back to DragZone
-      const cardToSwap = dropZoneCards[dropZoneCards.length - 1]; // Get the last card
-      // const cardToSwap = selectedCard;
-      const updatedDropZone = [...dropZoneCards.slice(0, -1), card]; // Replace last card with new card
+  // const moveToDropZone = (card: CardData) => {
+  //   if (dropZoneCards.length >= 11) {
+  //     // If DropZone is full, swap the last card back to DragZone
+  //     const cardToSwap = dropZoneCards[dropZoneCards.length - 1]; // Get the last card
+  //     // const cardToSwap = selectedCard;
+  //     const updatedDropZone = [...dropZoneCards.slice(0, -1), card]; // Replace last card with new card
 
-      setDropZoneCards(updatedDropZone);
-      setDragZoneCards([
-        ...dragZoneCards.filter((c) => c.id !== card.id),
-        cardToSwap,
-      ]);
-    } else {
-      // If DropZone is not full, simply add the card
-      setDropZoneCards([...dropZoneCards, card]);
-      setDragZoneCards(dragZoneCards.filter((c) => c.id !== card.id));
-    }
-  };
+  //     setDropZoneCards(updatedDropZone);
+  //     setDragZoneCards([
+  //       ...dragZoneCards.filter((c) => c.id !== card.id),
+  //       cardToSwap,
+  //     ]);
+  //   } else {
+  //     // If DropZone is not full, simply add the card
+  //     setDropZoneCards([...dropZoneCards, card]);
+  //     setDragZoneCards(dragZoneCards.filter((c) => c.id !== card.id));
+  //   }
+  // };
 
   const removeFromDropZone = (card: CardData) => {
     // Remove the card from the DropZone
@@ -415,22 +417,54 @@ const SlidingPanels = () => {
   };
 
   // handle swap cards
+  // const handleSwapCards = (card: CardData) => {
+  //   if (selectedCard !== null) {
+  //     const updatedDropZone = dropZoneCards.map((c) =>
+  //       c.id === selectedCard.id ? card : c
+  //     );
+  //     const updatedDragZone = dragZoneCards.map((c) =>
+  //       c.id === card.id ? selectedCard : c
+  //     );
+  //     setDropZoneCards(updatedDropZone);
+  //     setDragZoneCards(updatedDragZone);
+  //     setSelectedCard(null);
+  //   } else {
+  //     setSelectedCard(null);
+  //   }
+
+  //   setSelectedCard(null);
+  // };
+
+
   const handleSwapCards = (card: CardData) => {
     if (selectedCard !== null) {
-      const updatedDropZone = dropZoneCards.map((c) =>
-        c.id === selectedCard.id ? card : c
-      );
-      const updatedDragZone = dragZoneCards.map((c) =>
-        c.id === card.id ? selectedCard : c
-      );
+      const updatedDropZone = dropZoneCards.map((c) => {
+        // Replace the selected card in the drop zone with the incoming card
+        if (c.id === selectedCard.id) {
+          // If the selected card was a captain or vice-captain, remove its cvc
+          return { ...card, cvc: "" };
+        }
+        return c;
+      });
+  
+      const updatedDragZone = dragZoneCards.map((c) => {
+        // Replace the dragged card in the drag zone with the selected card
+        if (c.id === card.id) {
+          // If the dragged card was a captain or vice-captain, reset its cvc
+          return { ...selectedCard, cvc: selectedCard.cvc === "C" || selectedCard.cvc === "VC" ? "" : selectedCard.cvc };
+        }
+        return c;
+      });
+  
       setDropZoneCards(updatedDropZone);
       setDragZoneCards(updatedDragZone);
       setSelectedCard(null);
     } else {
       setSelectedCard(null);
     }
-    setSelectedCard(null);
   };
+  
+  
 
   const toggleContainer = () => {
     setShowContainer((prev) => !prev);
@@ -476,73 +510,74 @@ const SlidingPanels = () => {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* Button with higher z-index and clear positioning */}
-      {showContainer && (
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
-        text-white rounded-l-3xl shadow-lg transition-colors duration-200 -rotate-180 uppercase
-        font-semibold text-lg"
-          style={{ writingMode: "vertical-rl" }}
-        >
-          {isOpen ? "^" : "compare players"}
-        </button>
-      )}
-
-      <div className="flex h-full">
-        <div
-          className={`fixed top-0 w-[45%] h-full bg-black-100 shadow-lg transition-transform 
-          duration-500 ease-in-out  ${
-            isOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <Comparision />
-        </div>
-
-        <div
-          className={`fixed top-0 h-full bg-white transition-transform duration-500 
-          ease-in-out ${
-            isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[58%] translate-x-0"
-          }`}
-        >
-          {/* <div className="p-6">Component 2</div> */}
-          <TeamPage
-            showContainer={showContainer}
-            toggleContainer={toggleContainer}
-            dragZoneCards={dragZoneCards}
-            filterType={filterType}
-            applyFilter={applyFilter}
-            handleSwapCards={handleSwapCards}
-            selectedCard={selectedCard}
-            dropZoneCards={dropZoneCards}
-            removeFromDropZone={removeFromDropZone}
-            handleSelectCard={handleSelectCard}
-            handleSetCVC={handleSetCVC}
-          />
-        </div>
-
-        <div
-          className={`fixed right-0 w-[45%] h-full bg-black transition-transform 
-          duration-500 ease-in-out ${
-            isOpen ? "translate-x-full" : "translate-x-0"
-          }`}
-        >
-          {/* <div className="p-6">Component 3</div> */}
-          <EditComponent
-            showContainer={showContainer}
-            toggleContainer={toggleContainer}
-            dragZoneCards={dragZoneCards}
-            dropZoneCards={dropZoneCards}
-            filterType={filterType}
-            applyFilter={applyFilter}
-            handleSwapCards={handleSwapCards}
-            selectedCard={selectedCard}
-            addToDropZone={addToDropZone}
-          />
+        <div className="relative w-full h-screen overflow-hidden">
+        {/* Button with higher z-index and clear positioning */}
+        {showContainer && (
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
+          text-white rounded-l-3xl shadow-lg transition-colors duration-200 -rotate-180 uppercase
+          font-semibold text-lg"
+            style={{ writingMode: "vertical-rl" }}
+          >
+            {isOpen ? "^" : "compare players"}
+          </button>
+        )}
+  
+        <div className="flex h-full">
+          <div
+            className={`fixed top-0 w-[45%] h-full bg-black-100 shadow-lg transition-transform 
+            duration-500 ease-in-out  ${
+              isOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <Comparision />
+          </div>
+  
+          <div
+            className={`fixed top-0 h-full bg-white transition-transform duration-500 
+            ease-in-out ${
+              isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[58%] translate-x-0"
+            }`}
+          >
+            {/* <div className="p-6">Component 2</div> */}
+            <TeamPage
+              showContainer={showContainer}
+              toggleContainer={toggleContainer}
+              dragZoneCards={dragZoneCards}
+              filterType={filterType}
+              applyFilter={applyFilter}
+              handleSwapCards={handleSwapCards}
+              selectedCard={selectedCard}
+              dropZoneCards={dropZoneCards}
+              removeFromDropZone={removeFromDropZone}
+              handleSelectCard={handleSelectCard}
+              handleSetCVC={handleSetCVC}
+            />
+          </div>
+  
+          <div
+            className={`fixed right-0 w-[45%] h-full bg-black transition-transform 
+            duration-500 ease-in-out ${
+              isOpen ? "translate-x-full" : "translate-x-0"
+            }`}
+          >
+            {/* <div className="p-6">Component 3</div> */}
+            <EditComponent
+              showContainer={showContainer}
+              toggleContainer={toggleContainer}
+              dragZoneCards={dragZoneCards}
+              dropZoneCards={dropZoneCards}
+              filterType={filterType}
+              applyFilter={applyFilter}
+              handleSwapCards={handleSwapCards}
+              selectedCard={selectedCard}
+              addToDropZone={addToDropZone}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    
   );
 };
 

@@ -32,7 +32,6 @@ export interface TeamPageProps {
   removeFromDropZone: (card: CardData) => void;
   handleSelectCard: (card: CardData) => void;
   handleSetCVC: (id: string, role: "C" | "VC") => void;
-
 }
 
 type DataType = {
@@ -51,81 +50,73 @@ const TeamPage: React.FC<TeamPageProps> = ({
   selectedCard,
   removeFromDropZone,
   handleSelectCard,
-  handleSetCVC, 
+  handleSetCVC,
 }) => {
-
-
-
-
   const [fetchedData, setData] = useState<DataType[] | null>(null);
 
-
   useEffect(() => {
-    const cachedData = getSessionData<BackendData[]>('runsData');
+    const cachedData = getSessionData<BackendData[]>("runsData");
     console.log(cachedData);
     if (cachedData) {
       setData(cachedData);
     }
   }, []);
 
-  
-
   // if (!fetchedData) return <div>No data available. Go back to the home page to fetch data.</div>;
-
-
-
-
-  
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div
-        className="main-container"
-        style={{ justifyContent: showContainer ? "center" : "center" }}
-      >
-        <div className={`team-container ${showContainer ? "shifted" : ""}`}>
-          <DropZone
-            cards={dropZoneCards}
-            onRemove={removeFromDropZone}
-            isedit={showContainer}
-            handleSelectCard={handleSelectCard}
-            selectedCard={selectedCard}
-            handleSetCVC={handleSetCVC}
-          />
+        {
+          <div
+            className="main-container"
+            style={{ justifyContent: showContainer ? "center" : "center" }}
+          >
+            <div className={`team-container ${showContainer ? "shifted" : ""}`}>
+                <DropZone
+                  cards={dropZoneCards}
+                  onRemove={removeFromDropZone}
+                  isedit={showContainer}
+                  handleSelectCard={handleSelectCard}
+                  selectedCard={selectedCard}
+                  handleSetCVC={handleSetCVC}
+                />
 
-          <div className="bottom-stats">
-            <div
-              style={{
-                color: "red",
-                fontSize: "280%",
-                alignContent: "center",
-                justifyItems: "center",
-                fontWeight: "700",
-                fontFamily: "Montserrat",
-              }}
-            >
-              688
-              <div style={{ color: "white", fontSize: "20%" }}>
-                EXPECTED TEAM SCORE
+              <div className="bottom-stats">
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "280%",
+                    alignContent: "center",
+                    justifyItems: "center",
+                    fontWeight: "700",
+                    fontFamily: "Montserrat",
+                  }}
+                >
+                  688
+                  <div style={{ color: "white", fontSize: "20%" }}>
+                    EXPECTED TEAM SCORE
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    color: "red",
+                    fontSize: "280%",
+                    alignContent: "center",
+                    justifyItems: "center",
+                    fontWeight: "700",
+                    fontFamily: "Montserrat",
+                  }}
+                >
+                  132
+                  <div style={{ color: "white", fontSize: "20%" }}>
+                    TEAM COST
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div
-              style={{
-                color: "red",
-                fontSize: "280%",
-                alignContent: "center",
-                justifyItems: "center",
-                fontWeight: "700",
-                fontFamily: "Montserrat",
-              }}
-            >
-              132
-              <div style={{ color: "white", fontSize: "20%" }}>TEAM COST</div>
-            </div>
           </div>
-        </div>
-      </div>
+        }
     </DndProvider>
   );
 };

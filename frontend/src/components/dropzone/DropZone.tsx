@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import "./DropZone.css";
 import MyImage from "../../assets/images/virat_kohli.png";
@@ -404,6 +404,10 @@ const DroppableCard: React.FC<{
 
   const [newpercentages, setnewpercentages] = useState<number[]>(percentages);
 
+  const [newimpactdata, setnewimpactdata] = useState<any>([]);
+
+  const [newmatchupsdata, setnewmatchupsdata] = useState<any>([]);
+
   // Prepare data for the `typeData_2` prop
   const typeData_2 = Object.values(mydata).map((type) => ({
     title: type.title,
@@ -417,11 +421,66 @@ const DroppableCard: React.FC<{
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexTypes, setCurrentIndexTypes] = useState(0);
 
-  const handleLeftClick = () => {
+  const handleLeftClick = async () => {
+    if (currentIndex === 3) {
+      const response = await fetch(
+        "http://127.0.0.1:8000/players/get-player-matchups",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Tell the server it's JSON
+          },
+          body: JSON.stringify({
+            player_name: "V Kohli",
+            player_opponents:
+              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            date: "2025-01-01",
+            model: "Odi",
+          }), // Convert the data to a JSON string
+        }
+      );
+      
+      const matchupsdata = await response.json();
+
+
+
+
+      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+
+      setnewmatchupsdata(matchupsdata);
+    }
     setCurrentIndex((prev) => (prev === 0 ? data.length - 1 : prev - 1));
   };
 
-  const handleRightClick = () => {
+  const handleRightClick = async () => {
+
+    if (currentIndex === 1) {
+      const response = await fetch(
+        "http://127.0.0.1:8000/players/get-player-matchups",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Tell the server it's JSON
+          },
+          body: JSON.stringify({
+            player_name: "V Kohli",
+            player_opponents:
+              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            date: "2025-01-01",
+            model: "Odi",
+          }), // Convert the data to a JSON string
+        }
+      );
+      
+      const matchupsdata = await response.json();
+
+
+
+
+      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+
+      setnewmatchupsdata(matchupsdata);
+    }
     setCurrentIndex((prev) => (prev === data.length - 1 ? 0 : prev + 1));
   };
 
@@ -457,9 +516,13 @@ const DroppableCard: React.FC<{
 
   const [format, setformat] = useState("Odi");
 
-
   // const filters = ["All", "T20I", "T20"]; // Filter options
-  const filters = format === "T20" ? ["All", "T20I", "T20"] : (format === "Odi" ? ["All", "OdiI", "Odi"] : ["All", "TestI", "Test"]); // Filter options
+  const filters =
+    format === "T20"
+      ? ["All", "T20I", "T20"]
+      : format === "Odi"
+      ? ["All", "OdiI", "Odi"]
+      : ["All", "TestI", "Test"]; // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
 
@@ -488,6 +551,14 @@ const DroppableCard: React.FC<{
     id: number;
   }
 
+  // const { details } = useUserContext();
+
+  // const { setDetails } = useUserContext();
+
+  // const updateDetails = () => {
+  //   setDetails(["newDetail1", "newDetail2"]);
+  // };
+
   const fetchData = async (url: string) => {
     setCardExpanded(true);
 
@@ -499,9 +570,15 @@ const DroppableCard: React.FC<{
           "Content-Type": "application/json", // Tell the server it's JSON
         },
         body: JSON.stringify({
-          // "name": "V Kohli",
-          name: "F du Plessis",
-          // "name": "GJ Maxwell",/
+          // name: "V Kohli",
+          // name: "GJ Maxwell",
+          // name: "MS Dhoni",
+          // name: "G Gambhir",
+          // name: "JJ Bumrah",
+          // name: "RG Sharma",
+          // name: "R Ashwin",
+          name: "SR Tendulkar",
+          // name: "HH Pandya",
           date: "2025-01-01",
           model: "Odi",
         }), // Convert the data to a JSON string
@@ -512,7 +589,7 @@ const DroppableCard: React.FC<{
       throw new Error(`Error: ${response.statusText}`);
     }
 
-    const fetcheddata: [] = await response.json();
+    const fetcheddata = await response.json();
 
     maindata = fetcheddata;
 
@@ -630,26 +707,24 @@ const DroppableCard: React.FC<{
       sums["0"] += battingData["dots"];
       // sums["4"] += battingData["previous_4s"];
       // sums["6"] += battingData["sixes"];
-     
     });
 
     var formRatio = 0;
-      var oppositionRatio = 0;
-      var venueRatio =  0;
-    
+    var oppositionRatio = 0;
+    var venueRatio = 0;
 
     const processData = (data: any[]) => {
       // Initialize the variables to track the max values and sums
       let formMax = -Infinity;
       let oppositionMax = -Infinity;
       let venueMax = -Infinity;
-    
+
       let formSum = 0;
       let oppositionSum = 0;
       let venueSum = 0;
-    
+
       // Loop through the data to find max values and sum the corresponding fields
-      data.forEach(item => {
+      data.forEach((item) => {
         // Max value for form
         if (item.form > formMax) {
           formMax = item.form;
@@ -662,40 +737,39 @@ const DroppableCard: React.FC<{
         if (item.venue > venueMax) {
           venueMax = item.venue;
         }
-    
+
         // Summing values
         formSum += item.form;
         oppositionSum += item.opposition;
         venueSum += item.venue;
       });
 
-     
-    
       // Calculate ratios
-      formRatio = formMax !== 0 ? formSum *10/ formMax : 0;
-      oppositionRatio = oppositionMax !== 0 ? oppositionSum *10/ oppositionMax : 0;
-      venueRatio = venueMax !== 0 ? venueSum *10/ venueMax : 0;
-    
+      formRatio = formMax !== 0 ? (formSum * 10) / formMax : 0;
+      oppositionRatio =
+        oppositionMax !== 0 ? (oppositionSum * 10) / oppositionMax : 0;
+      venueRatio = venueMax !== 0 ? (venueSum * 10) / venueMax : 0;
+
       return {
         formRatio,
         oppositionRatio,
-        venueRatio
+        venueRatio,
       };
     };
 
-
-
     processData(maindata["stats"]["batting"]);
-
-    
-
-
 
     setnewpieData([
       { name: "0", value: sums["0"] },
       { name: "4", value: maindata["stats"]["batting"][0]["previous_4s"] },
       { name: "6", value: maindata["stats"]["batting"][0]["previous_6s"] },
-      { name: "1,2,3", value: ( maindata["stats"]["batting"][0]["previous_balls_involved"] - (maindata["stats"]["batting"][0]["previous_4s"] + maindata["stats"]["batting"][0]["previous_6s"] ) )},
+      {
+        name: "1,2,3",
+        value:
+          maindata["stats"]["batting"][0]["previous_balls_involved"] -
+          (maindata["stats"]["batting"][0]["previous_4s"] +
+            maindata["stats"]["batting"][0]["previous_6s"]),
+      },
     ]);
 
     // setnewpieData([
@@ -712,7 +786,7 @@ const DroppableCard: React.FC<{
       maindata["stats"]["bowling"][0]["previous_wickets"],
       maindata["stats"]["bowling"][0]["previous_economy"],
 
-      maindata["stats"]["batting"][0]["innings_played"],
+      maindata["stats"]["batting"][0]["opposition"],
 
       maindata["stats"]["fielding"][0]["pfa_catches"],
       maindata["stats"]["batting"][0]["previous_average"],
@@ -817,8 +891,15 @@ const DroppableCard: React.FC<{
     );
 
     setnewpercentages([
-      Math.round(formRatio * 100) / 100,Math.round(oppositionRatio * 100) / 100, Math.round(venueRatio * 100) / 100
+      Math.round(formRatio * 100) / 100,
+      Math.round(oppositionRatio * 100) / 100,
+      Math.round(venueRatio * 100) / 100,
     ]);
+
+    // Extract stats from maindata
+    const battingStats = maindata["stats"]["batting"];
+
+    setnewimpactdata(battingStats);
 
     console.log("maindata", maindata["stats"]);
   };
@@ -921,6 +1002,7 @@ const DroppableCard: React.FC<{
           </button>
 
           <button
+            // onClick={updateDetails}
             onClick={() =>
               fetchData("http://127.0.0.1:8000/players/get-player-data")
             }
@@ -941,39 +1023,41 @@ const DroppableCard: React.FC<{
   ) : (
     // <div></div>
     <DisplayCardExpanded
-      containerRef={containerRef}
-      isExpanded={isCardExpanded}
-      setExpanded={setCardExpanded}
-      playerImage={playerImage}
-      card={card}
-      handleLeftClick={handleLeftClick}
-      handleRightClick={handleRightClick}
-      handleLeftClickTypes={handleLeftClickTypes}
-      handleRightClickTypes={handleRightClickTypes}
-      data={data}
-      typeData={typeData}
-      typeData_2={typeData_2}
-      currentIndex={currentIndex}
-      currentIndexTypes={currentIndexTypes}
-      suggestions={suggestions}
-      handleSearch={handleSearch}
-      handleClose={handleClose}
-      open={isCardExpanded}
-      selectedFilter={selectedFilter}
-      selectedFilter2={selectedFilter2}
-      selectedFilter3={selectedFilter3}
-      filters={filters}
-      filters2={filters2}
-      filters3={filters3}
-      handleFilterChange={handleFilterChange}
-      handleFilterChange2={handleFilterChange2}
-      handleFilterChange3={handleFilterChange3}
-      newpiedata={newpiedata}
-      venuechartdata={newvenuedata}
-      radarnumbers={newradardata}
-      fantasygraphdata={newfantasygraphdata}
-      percentages={newpercentages}
-    />
+        containerRef={containerRef}
+        isExpanded={isCardExpanded}
+        setExpanded={setCardExpanded}
+        playerImage={playerImage}
+        card={card}
+        handleLeftClick={handleLeftClick}
+        handleRightClick={handleRightClick}
+        handleLeftClickTypes={handleLeftClickTypes}
+        handleRightClickTypes={handleRightClickTypes}
+        data={data}
+        typeData={typeData}
+        typeData_2={typeData_2}
+        currentIndex={currentIndex}
+        currentIndexTypes={currentIndexTypes}
+        suggestions={suggestions}
+        handleSearch={handleSearch}
+        handleClose={handleClose}
+        open={isCardExpanded}
+        selectedFilter={selectedFilter}
+        selectedFilter2={selectedFilter2}
+        selectedFilter3={selectedFilter3}
+        filters={filters}
+        filters2={filters2}
+        filters3={filters3}
+        handleFilterChange={handleFilterChange}
+        handleFilterChange2={handleFilterChange2}
+        handleFilterChange3={handleFilterChange3}
+        newpiedata={newpiedata}
+        venuechartdata={newvenuedata}
+        radarnumbers={newradardata}
+        fantasygraphdata={newfantasygraphdata}
+        percentages={newpercentages}
+        impactdata={newimpactdata} 
+        matchupsdata={newmatchupsdata}    
+      />
   );
 };
 
