@@ -751,6 +751,9 @@ replacements = {
     "Average":78,
     "50/100":'133/44',
     'graph':{
+       
+    #    'fantasy':{'points':[1,2,3,4,5,6,7,8,9,10],'date':['1','2','3','4','5','6','7','8','9','10']},#[last 10 days of fantasy points]when (n==1)
+
         'fantasy':[1,2,3,4,5,6,7,8,9,10],#[last 10 days of fantasy points]when (n==1)
         'consistancy':[0.5,0.75,0.9],#[overall,against given opp, in given venue]when (n==2)
         'vpi':[1,1.5,0.5,0.4,0.25,6,0.75,1.8,0.1,1.9,0.9],#[last 10 vpi]-------- (n==3)[if current venue data is not possible, skip venue]
@@ -772,6 +775,8 @@ replacements = {
     # "Average":78,
     # "50/100":'133/44'
 #search IMG in fill text to find  player and symbol image path code
+
+# 4 REPLACEMENTS OVERALL, LAST 10 DAYS, VENUE, OPONENT PLAYER
 for i in range (1, 5):
     PPT_GEN(i,replacements,pointer)
 #output_file='/content/file.png' here i store the graphs temporarily. have not written deletion code.(note this file is created automatically by my code)

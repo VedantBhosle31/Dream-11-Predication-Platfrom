@@ -23,6 +23,7 @@ def generate_completion(prompt):
   )
   return chat_completion.choices[0].message.content
 
+# CHECK ROLE FROM PLAYER DATA
 def self_discover(user_task, player_data):
   # if batter or bowler or all-rounder or wicket-keeper choose the relevant modules
   select_prompt = select_template.format(user_task, batter_reasoning_modules)
@@ -50,3 +51,5 @@ user_task = '''Given the stats of a player, give a commentary with deep insights
 
 # implemented_schema = self_discover(user_task, batter_player_data_json)
 # answer = solve_task(user_task, batter_player_data_json, implemented_schema).content
+
+# GOT

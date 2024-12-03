@@ -6,6 +6,8 @@ import os
 from typing import List, Tuple
 from datetime import datetime
 
+
+# GIVE PATH TO PPTX FILES AND SCRIPTS
 def convert_pptx_to_png(pptx_file: str) -> str:
     try:
         presentation = Presentation()
