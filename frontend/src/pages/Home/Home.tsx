@@ -56,7 +56,6 @@ const Home: React.FC = () => {
         const totalHeight = document.body.scrollHeight - window.innerHeight;
         const scrollFraction = currentScrollY / totalHeight;
         video.currentTime = scrollFraction * (video.duration || 1);
-        console.log(video.currentTime);
       }
 
       setLastScrollY(currentScrollY);

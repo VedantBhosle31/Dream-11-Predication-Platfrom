@@ -1,11 +1,14 @@
 // Loading.jsx
 import { motion } from "framer-motion";
 import "./Loading.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import usePlayerStore from "../../store/playerStore";
 
 const Loading = () => {
   const navigation = useNavigate();
+  const { fetchBest11, playerNames } = usePlayerStore();
+  const [playersFetched, setPlayersFetched] = useState(false);
   // Fade in with stagger
   const container = {
     hidden: { opacity: 0, y: 25 },
@@ -19,12 +22,24 @@ const Loading = () => {
     },
   };
 
+  console.log(playerNames);
+
   useEffect(() => {
-    // Navigate to team page after 3 seconds
-    setTimeout(() => {
+    async function fetchData() {
+      await fetchBest11()
+        .then((data) => data)
+        .then(() => setPlayersFetched(true));
+    }
+
+    fetchData();
+  }, [navigation, fetchBest11]);
+
+  // Navigate to the next page if the best 11 players are fetched
+  useEffect(() => {
+    if (playersFetched) {
       navigation("/team");
-    }, 3000);
-  }, [navigation]);
+    }
+  }, [playersFetched]);
 
   return (
     <motion.div

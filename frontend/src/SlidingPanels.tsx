@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Comparision from "./components/comparision_player/Comparision";
 import TeamPage from "./pages/teamPage/teamPage";
 import EditComponent from "./pages/teamPage/EditComponent";
+import usePlayerStore from "./store/playerStore";
 
 // export interface CardData {
 //   id: string;
@@ -32,6 +33,7 @@ export interface CardData {
 
 const SlidingPanels = () => {
   const [isOpen, setIsOpen] = useState(false);
+  // const { best11Players, playerStats } = usePlayerStore();
 
   //   from teamPage.tsx
   const initialDropZoneCards: CardData[] = [
@@ -47,7 +49,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "2",
@@ -61,7 +63,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "3",
@@ -75,7 +77,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "4",
@@ -89,7 +91,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "5",
@@ -103,7 +105,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "6",
@@ -117,7 +119,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "7",
@@ -131,7 +133,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "8",
@@ -145,7 +147,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "9",
@@ -159,7 +161,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "10",
@@ -173,7 +175,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "11",
@@ -187,7 +189,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
   ];
 
@@ -204,7 +206,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "13",
@@ -218,7 +220,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "14",
@@ -232,7 +234,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "15",
@@ -246,7 +248,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "16",
@@ -260,7 +262,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "17",
@@ -274,7 +276,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "18",
@@ -288,7 +290,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "19",
@@ -302,7 +304,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "20",
@@ -316,7 +318,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "21",
@@ -330,7 +332,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
     {
       id: "22",
@@ -344,7 +346,7 @@ const SlidingPanels = () => {
       runs: "",
       average: "",
       strike_rate: "",
-      country: ""
+      country: "",
     },
   ];
 
@@ -448,7 +450,7 @@ const SlidingPanels = () => {
           (role === "VC" && card.cvc === "C") // If the role is being set to "VC", and the card is currently "C"
         ) {
           // Swap the roles
-          return { ...card, cvc: (role === "C" ? "VC" : "C") }; // Set the swapped role
+          return { ...card, cvc: role === "C" ? "VC" : "C" }; // Set the swapped role
         }
 
         // Reset the previously selected Captain or Vice-Captain
