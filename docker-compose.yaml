@@ -9,8 +9,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # - /var/www/frontend:/app/build
-      - ./frontend/build:/app/build
+      - /tmp/build:/app/build
+      # - ./frontend/build:/app/build
     depends_on:
       - backend
   backend:
@@ -31,6 +31,6 @@ services:
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: dream11
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./db:/var/lib/postgresql/data
