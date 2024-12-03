@@ -123,10 +123,11 @@ def verify_csv(request):
             result = validate_uploaded_csv(file, PLAYER_NAMES_PATH, TEAM_NAMES_PATH)
             errors = result["errors"]
             logos = result["team_logos"]
+            final_players_unique_names = result["final_players_unique_names"]
             if errors:
                 return JsonResponse({"status": "error", "errors": errors}, status=400)
             return JsonResponse(
-                {"status": "success", "message": "File is valid.", "team_logos": logos}
+                {"status": "success", "message": "File is valid.", "team_logos": logos, "final_players_unique_names": final_players_unique_names}
             )
         return JsonResponse(
             {
@@ -172,14 +173,50 @@ def get_team_logos_from_team_names(request):
         team_logos = team_logos[['name', 'logo']].to_dict(orient='records')
         return JsonResponse({'team_logos': team_logos})
 
-# @csrf_exempt
-# def get_player_data(request):
-#     if request.method == "POST":
-#         # player_name = request.GET.get('player_name')
-#         # date = request.Get.get('date')
-#         data = json.loads(request.body)
-#         # stats = get_player_stats(player_name,date)
-#         return JsonResponse({'stats':"stats", "data": data})
+@csrf_exempt
+def get_player_data(request):
+    if request.method == "POST":
+        # player_name = request.GET.get('player_name')
+        # date = request.Get.get('date')
+        data = json.loads(request.body)
+        # stats = get_player_stats(player_name,date)
+        return JsonResponse({'stats':"stats", "data": data})
+    
+
+@csrf_exempt
+def get_player_matchups(request):
+    if request.method == "POST":
+        body = json.loads(request.body)
+        player_name = body['player_name']
+        player_opponents = body['player_opponents'].split(',')
+        date = body['date']
+        model = body['model']
+        stats = matchup_stats(player_name,player_opponents,model,date)
+        return JsonResponse({'stats':stats})
+    else:
+        return JsonResponse({'error':'Only POST request allowed'})
+        
+@csrf_exempt
+def get_player_features(request):
+    if request.method == "POST":
+        user_input = request.GET.get('user_input')
+        # If user_input is greater than 3 characters, search for team names
+        if len(user_input) > 3:
+            team_names = pd.read_csv(TEAM_NAMES_PATH)
+            team_names = team_names[team_names['name'].str.contains(user_input, case=False)]
+            team_names = team_names['name'].tolist()
+            return JsonResponse({'team_names': team_names})
+        
+@csrf_exempt
+def get_team_logos_from_team_names(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        team_names = data['team_names']
+        team_details = pd.read_csv(TEAM_NAMES_PATH)
+        team_logos = team_details[team_details['name'].isin(team_names)]
+        team_logos = team_logos[['name', 'logo']].to_dict(orient='records')
+        return JsonResponse({'team_logos': team_logos})
+
 
 @csrf_exempt
 def get_player_data(request):
@@ -188,7 +225,7 @@ def get_player_data(request):
         player_name = body['name']
         date = body['date']
         model = body['model']
-        stats = get_player_stats(player_name,date,model)
+        stats = player_features(player_name,date,model)
         return JsonResponse({'stats':stats})
     
 

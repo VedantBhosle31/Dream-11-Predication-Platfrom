@@ -6,14 +6,17 @@ import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
 import ChooseTeamManually from "./ChooseTeamManually";
+import usePlayerStore from "../../store/playerStore";
 
 const ChooseTeam = () => {
   const [file, setFile] = useState<File | null>(null);
   const [fileData, setFileData] = useState<any[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [teamLogos, setTeamLogos] = useState<any>(null);
   const [manualSelection, setManualSelection] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { setPlayerNames, setTeamLogos, teamLogos, setMatchDate, setModel } =
+    usePlayerStore();
 
   const validateCSV = (data: any[]) => {
     // Check if headers match the required format
@@ -34,6 +37,11 @@ const ChooseTeam = () => {
           row["Match Date"] &&
           row["Format"]
       );
+
+    if (isValid) {
+      setMatchDate(data[0]["Match Date"]);
+      setModel(data[0]["Format"]);
+    }
 
     return isValid;
   };
@@ -85,7 +93,6 @@ const ChooseTeam = () => {
   };
 
   const processUploadedData = async (data: any[], uploadedFile: File) => {
-    console.log(data, validateCSV(data));
     if (validateCSV(data)) {
       setFileData(data); // First, set parsed data
       setFile(uploadedFile); // Only then, set the file
@@ -104,6 +111,7 @@ const ChooseTeam = () => {
       const logoData = await res.json();
       if (logoData.status === "success") {
         setTeamLogos(logoData.team_logos);
+        setPlayerNames(logoData.final_players_unique_names);
       } else {
         const fullError = logoData.errors.join(", ");
         setUploadError(
@@ -160,7 +168,7 @@ const ChooseTeam = () => {
                 <p className="file-name">{file.name}</p>
 
                 {!uploadError && !teamLogos && (
-                  <p className="file-preview-loading">Loading team logos...</p>
+                  <p className="file-preview-loading">Uploading your CSV...</p>
                 )}
               </div>
             )}
