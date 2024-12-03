@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import "./DropZone.css";
 import MyImage from "../../assets/images/virat_kohli.png";
@@ -10,6 +10,7 @@ import { CardData } from "../../SlidingPanels";
 import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
 import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import { DisplayCardData } from "../../pages/player_display_card/displayCard";
+import { useUserContext } from "../../context/DataContext";
 
 interface DropZoneProps {
   cards: CardData[];
@@ -28,6 +29,10 @@ const DropZone: React.FC<DropZoneProps> = ({
   selectedCard,
   handleSetCVC,
 }) => {
+
+  
+
+  
   const [, dropRef] = useDrop({
     accept: "CARD",
     drop: (item: { card: CardData }) => ({ ...item }),
@@ -56,15 +61,15 @@ const DropZone: React.FC<DropZoneProps> = ({
       <div className="dropzone-row">
         {row1.map((card, index) =>
           card ? (
-            <DroppableCard
-              key={card.id || `placeholder-${index}`}
-              card={card}
-              onRemove={onRemove}
-              isedit={isedit}
-              onSelectCard={handleSelectCard}
-              selectedCard={selectedCard}
-              handleSetCVC={handleSetCVC}
-            />
+              <DroppableCard
+                key={card.id || `placeholder-${index}`}
+                card={card}
+                onRemove={onRemove}
+                isedit={isedit}
+                onSelectCard={handleSelectCard}
+                selectedCard={selectedCard}
+                handleSetCVC={handleSetCVC}
+              />
           ) : (
             <Placeholder key={`placeholder-${index}`} />
           )
@@ -118,6 +123,8 @@ const DroppableCard: React.FC<{
   selectedCard: CardData | null;
   handleSetCVC: (id: string, role: "C" | "VC") => void;
 }> = ({ card, onRemove, isedit, onSelectCard, selectedCard, handleSetCVC }) => {
+
+
   // const [ishovered, setShowButtons] = useState(false);
   var [isCardExpanded, setCardExpanded] = useState(false);
 
@@ -457,9 +464,13 @@ const DroppableCard: React.FC<{
 
   const [format, setformat] = useState("Odi");
 
-
   // const filters = ["All", "T20I", "T20"]; // Filter options
-  const filters = format === "T20" ? ["All", "T20I", "T20"] : (format === "Odi" ? ["All", "OdiI", "Odi"] : ["All", "TestI", "Test"]); // Filter options
+  const filters =
+    format === "T20"
+      ? ["All", "T20I", "T20"]
+      : format === "Odi"
+      ? ["All", "OdiI", "Odi"]
+      : ["All", "TestI", "Test"]; // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
 
@@ -488,6 +499,15 @@ const DroppableCard: React.FC<{
     id: number;
   }
 
+
+  // const { details } = useUserContext();
+
+  // const { setDetails } = useUserContext();
+
+  // const updateDetails = () => {
+  //   setDetails(["newDetail1", "newDetail2"]);
+  // };
+
   const fetchData = async (url: string) => {
     setCardExpanded(true);
 
@@ -499,9 +519,15 @@ const DroppableCard: React.FC<{
           "Content-Type": "application/json", // Tell the server it's JSON
         },
         body: JSON.stringify({
-          // "name": "V Kohli",
-          name: "F du Plessis",
-          // "name": "GJ Maxwell",/
+          // name: "V Kohli",
+          // name: "GJ Maxwell",
+          // name: "MS Dhoni",
+          // name: "G Gambhir",
+          // name: "JJ Bumrah",
+          // name: "RG Sharma",
+          // name: "R Ashwin",
+          // name: "SR Tendulkar",
+          name: "HH Pandya",
           date: "2025-01-01",
           model: "Odi",
         }), // Convert the data to a JSON string
@@ -512,9 +538,11 @@ const DroppableCard: React.FC<{
       throw new Error(`Error: ${response.statusText}`);
     }
 
-    const fetcheddata: [] = await response.json();
+    const fetcheddata = await response.json();
 
     maindata = fetcheddata;
+
+    
 
     setmyData({
       BATTING: {
@@ -630,26 +658,24 @@ const DroppableCard: React.FC<{
       sums["0"] += battingData["dots"];
       // sums["4"] += battingData["previous_4s"];
       // sums["6"] += battingData["sixes"];
-     
     });
 
     var formRatio = 0;
-      var oppositionRatio = 0;
-      var venueRatio =  0;
-    
+    var oppositionRatio = 0;
+    var venueRatio = 0;
 
     const processData = (data: any[]) => {
       // Initialize the variables to track the max values and sums
       let formMax = -Infinity;
       let oppositionMax = -Infinity;
       let venueMax = -Infinity;
-    
+
       let formSum = 0;
       let oppositionSum = 0;
       let venueSum = 0;
-    
+
       // Loop through the data to find max values and sum the corresponding fields
-      data.forEach(item => {
+      data.forEach((item) => {
         // Max value for form
         if (item.form > formMax) {
           formMax = item.form;
@@ -662,40 +688,39 @@ const DroppableCard: React.FC<{
         if (item.venue > venueMax) {
           venueMax = item.venue;
         }
-    
+
         // Summing values
         formSum += item.form;
         oppositionSum += item.opposition;
         venueSum += item.venue;
       });
 
-     
-    
       // Calculate ratios
-      formRatio = formMax !== 0 ? formSum *10/ formMax : 0;
-      oppositionRatio = oppositionMax !== 0 ? oppositionSum *10/ oppositionMax : 0;
-      venueRatio = venueMax !== 0 ? venueSum *10/ venueMax : 0;
-    
+      formRatio = formMax !== 0 ? (formSum * 10) / formMax : 0;
+      oppositionRatio =
+        oppositionMax !== 0 ? (oppositionSum * 10) / oppositionMax : 0;
+      venueRatio = venueMax !== 0 ? (venueSum * 10) / venueMax : 0;
+
       return {
         formRatio,
         oppositionRatio,
-        venueRatio
+        venueRatio,
       };
     };
 
-
-
     processData(maindata["stats"]["batting"]);
-
-    
-
-
 
     setnewpieData([
       { name: "0", value: sums["0"] },
       { name: "4", value: maindata["stats"]["batting"][0]["previous_4s"] },
       { name: "6", value: maindata["stats"]["batting"][0]["previous_6s"] },
-      { name: "1,2,3", value: ( maindata["stats"]["batting"][0]["previous_balls_involved"] - (maindata["stats"]["batting"][0]["previous_4s"] + maindata["stats"]["batting"][0]["previous_6s"] ) )},
+      {
+        name: "1,2,3",
+        value:
+          maindata["stats"]["batting"][0]["previous_balls_involved"] -
+          (maindata["stats"]["batting"][0]["previous_4s"] +
+            maindata["stats"]["batting"][0]["previous_6s"]),
+      },
     ]);
 
     // setnewpieData([
@@ -712,7 +737,7 @@ const DroppableCard: React.FC<{
       maindata["stats"]["bowling"][0]["previous_wickets"],
       maindata["stats"]["bowling"][0]["previous_economy"],
 
-      maindata["stats"]["batting"][0]["innings_played"],
+      maindata["stats"]["batting"][0]["opposition"],
 
       maindata["stats"]["fielding"][0]["pfa_catches"],
       maindata["stats"]["batting"][0]["previous_average"],
@@ -817,163 +842,172 @@ const DroppableCard: React.FC<{
     );
 
     setnewpercentages([
-      Math.round(formRatio * 100) / 100,Math.round(oppositionRatio * 100) / 100, Math.round(venueRatio * 100) / 100
+      Math.round(formRatio * 100) / 100,
+      Math.round(oppositionRatio * 100) / 100,
+      Math.round(venueRatio * 100) / 100,
     ]);
 
     console.log("maindata", maindata["stats"]);
   };
 
-  return !isCardExpanded ? (
-    <div
-      className="droppable-card"
-      onClick={() => {}}
-      style={{ border: selectedCard === card ? "2px solid white" : "none" }}
-      onDropCapture={() => onSelectCard(card)}
-    >
-      <div className="left-half"></div>
-      <div className="right-half"></div>
+  return (
+      !isCardExpanded ? (
+        <div
+          className="droppable-card"
+          onClick={() => {}}
+          style={{ border: selectedCard === card ? "2px solid white" : "none" }}
+          onDropCapture={() => onSelectCard(card)}
+        >
+          <div className="left-half"></div>
+          <div className="right-half"></div>
 
-      <div className="droppable-card-points">
-        <div>
-          {card.points}
-          <div style={{ fontSize: 6, color: "red" }}>PTS</div>
+          <div className="droppable-card-points">
+            <div>
+              {card.points}
+              <div style={{ fontSize: 6, color: "red" }}>PTS</div>
+            </div>
+
+            <img
+              className="team-logo"
+              src={card.team === "RCB" ? rcblogo : milogo}
+              alt="Player"
+            />
+          </div>
+
+          <div className="card-overlay">
+            {card.name}
+            <div className="card-overlay-row">
+              <div style={{ fontSize: "9px", display: "flex" }}>
+                {card.score}
+                <div style={{ color: "red" }}>RNS</div>
+              </div>
+              <div style={{ fontSize: "9px", fontWeight: 900 }}>
+                {card.type}
+              </div>
+              <div
+                style={{ fontSize: "9px", fontWeight: 900, display: "flex" }}
+              >
+                {card.cost}
+                <div style={{ color: "red" }}>CR</div>
+              </div>
+            </div>
+          </div>
+
+          {card.cvc === "C" && (
+            <div
+              className="absolute text-white w-10 h-10 px-2 py-2 font-bold"
+              style={{
+                backgroundColor: "rgb(235, 134, 2)",
+                fontFamily: "Montserrat",
+              }}
+            >
+              C
+            </div>
+          )}
+
+          {card.cvc === "VC" && (
+            <div
+              className="absolute text-white bg-black w-10 h-10 px-2 py-2 font-bold"
+              style={{
+                backgroundColor: "rgb(2, 157, 235)",
+                fontFamily: "Montserrat",
+              }}
+            >
+              VC
+            </div>
+          )}
+
+          {isedit && (
+            <button className="remove-button" onClick={() => onRemove(card)}>
+              <RemoveCircleOutline style={{ width: "13px", height: "13px" }} />
+            </button>
+            //   <button className="remove-button" onClick={() => onSelectCard(card)} onDoubleClick={() => onRemove(card)}>
+            //   <RemoveCircleOutline style={{ width: "13px", height: "13px",}}/>
+            //  </button>
+          )}
+
+          {isedit && (
+            <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
+              <button
+                onClick={() => handleSetCVC(card.id, "C")}
+                className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+                style={{
+                  backgroundColor: "rgb(235, 134, 2)",
+                  fontFamily: "Montserrat",
+                  fontSize: "70%",
+                }}
+              >
+                Make Captain
+              </button>
+
+              <button
+                onClick={() => handleSetCVC(card.id, "VC")}
+                className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+                style={{
+                  backgroundColor: "rgb(2, 157, 235)",
+                  fontFamily: "Montserrat",
+                  fontSize: "70%",
+                }}
+              >
+                Make Vice-Captain
+              </button>
+
+              <button
+              // onClick={updateDetails}
+                onClick={() => 
+                  fetchData("http://127.0.0.1:8000/players/get-player-data")
+                }
+                className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+                style={{
+                  backgroundColor: "rgb(235, 134, 2)",
+                  fontFamily: "Montserrat",
+                  fontSize: "70%",
+                }}
+              >
+                Show Info
+              </button>
+            </div>
+          )}
+
+          <img className="card-image" src={MyImage} alt="Player" />
         </div>
-
-        <img
-          className="team-logo"
-          src={card.team === "RCB" ? rcblogo : milogo}
-          alt="Player"
+      ) : (
+        // <div></div>
+        <DisplayCardExpanded
+          containerRef={containerRef}
+          isExpanded={isCardExpanded}
+          setExpanded={setCardExpanded}
+          playerImage={playerImage}
+          card={card}
+          handleLeftClick={handleLeftClick}
+          handleRightClick={handleRightClick}
+          handleLeftClickTypes={handleLeftClickTypes}
+          handleRightClickTypes={handleRightClickTypes}
+          data={data}
+          typeData={typeData}
+          typeData_2={typeData_2}
+          currentIndex={currentIndex}
+          currentIndexTypes={currentIndexTypes}
+          suggestions={suggestions}
+          handleSearch={handleSearch}
+          handleClose={handleClose}
+          open={isCardExpanded}
+          selectedFilter={selectedFilter}
+          selectedFilter2={selectedFilter2}
+          selectedFilter3={selectedFilter3}
+          filters={filters}
+          filters2={filters2}
+          filters3={filters3}
+          handleFilterChange={handleFilterChange}
+          handleFilterChange2={handleFilterChange2}
+          handleFilterChange3={handleFilterChange3}
+          newpiedata={newpiedata}
+          venuechartdata={newvenuedata}
+          radarnumbers={newradardata}
+          fantasygraphdata={newfantasygraphdata}
+          percentages={newpercentages}
         />
-      </div>
-
-      <div className="card-overlay">
-        {card.name}
-        <div className="card-overlay-row">
-          <div style={{ fontSize: "9px", display: "flex" }}>
-            {card.score}
-            <div style={{ color: "red" }}>RNS</div>
-          </div>
-          <div style={{ fontSize: "9px", fontWeight: 900 }}>{card.type}</div>
-          <div style={{ fontSize: "9px", fontWeight: 900, display: "flex" }}>
-            {card.cost}
-            <div style={{ color: "red" }}>CR</div>
-          </div>
-        </div>
-      </div>
-
-      {card.cvc === "C" && (
-        <div
-          className="absolute text-white w-10 h-10 px-2 py-2 font-bold"
-          style={{
-            backgroundColor: "rgb(235, 134, 2)",
-            fontFamily: "Montserrat",
-          }}
-        >
-          C
-        </div>
-      )}
-
-      {card.cvc === "VC" && (
-        <div
-          className="absolute text-white bg-black w-10 h-10 px-2 py-2 font-bold"
-          style={{
-            backgroundColor: "rgb(2, 157, 235)",
-            fontFamily: "Montserrat",
-          }}
-        >
-          VC
-        </div>
-      )}
-
-      {isedit && (
-        <button className="remove-button" onClick={() => onRemove(card)}>
-          <RemoveCircleOutline style={{ width: "13px", height: "13px" }} />
-        </button>
-        //   <button className="remove-button" onClick={() => onSelectCard(card)} onDoubleClick={() => onRemove(card)}>
-        //   <RemoveCircleOutline style={{ width: "13px", height: "13px",}}/>
-        //  </button>
-      )}
-
-      {isedit && (
-        <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
-          <button
-            onClick={() => handleSetCVC(card.id, "C")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
-            style={{
-              backgroundColor: "rgb(235, 134, 2)",
-              fontFamily: "Montserrat",
-              fontSize: "70%",
-            }}
-          >
-            Make Captain
-          </button>
-
-          <button
-            onClick={() => handleSetCVC(card.id, "VC")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
-            style={{
-              backgroundColor: "rgb(2, 157, 235)",
-              fontFamily: "Montserrat",
-              fontSize: "70%",
-            }}
-          >
-            Make Vice-Captain
-          </button>
-
-          <button
-            onClick={() =>
-              fetchData("http://127.0.0.1:8000/players/get-player-data")
-            }
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
-            style={{
-              backgroundColor: "rgb(235, 134, 2)",
-              fontFamily: "Montserrat",
-              fontSize: "70%",
-            }}
-          >
-            Show Info
-          </button>
-        </div>
-      )}
-
-      <img className="card-image" src={MyImage} alt="Player" />
-    </div>
-  ) : (
-    // <div></div>
-    <DisplayCardExpanded
-      containerRef={containerRef}
-      isExpanded={isCardExpanded}
-      setExpanded={setCardExpanded}
-      playerImage={playerImage}
-      card={card}
-      handleLeftClick={handleLeftClick}
-      handleRightClick={handleRightClick}
-      handleLeftClickTypes={handleLeftClickTypes}
-      handleRightClickTypes={handleRightClickTypes}
-      data={data}
-      typeData={typeData}
-      typeData_2={typeData_2}
-      currentIndex={currentIndex}
-      currentIndexTypes={currentIndexTypes}
-      suggestions={suggestions}
-      handleSearch={handleSearch}
-      handleClose={handleClose}
-      open={isCardExpanded}
-      selectedFilter={selectedFilter}
-      selectedFilter2={selectedFilter2}
-      selectedFilter3={selectedFilter3}
-      filters={filters}
-      filters2={filters2}
-      filters3={filters3}
-      handleFilterChange={handleFilterChange}
-      handleFilterChange2={handleFilterChange2}
-      handleFilterChange3={handleFilterChange3}
-      newpiedata={newpiedata}
-      venuechartdata={newvenuedata}
-      radarnumbers={newradardata}
-      fantasygraphdata={newfantasygraphdata}
-      percentages={newpercentages}
-    />
+      )
   );
 };
 
