@@ -1,4 +1,5 @@
-from groq_client import generate_completion
+from genai.utils.groq_client import generate_completion
+
 
 def graph_explain(graph_name, input_data):
   # 'chart name':['description','input data description','input_data']

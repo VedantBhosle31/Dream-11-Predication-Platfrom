@@ -1,4 +1,4 @@
-from groq_client import generate_completion
+from genai.utils.groq_client import generate_completion
 
 
 def player_description(player_json,feature_name,user_task=''):

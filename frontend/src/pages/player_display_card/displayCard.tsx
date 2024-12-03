@@ -703,8 +703,9 @@ const DisplayCard: React.FC<{
           venuechartdata={[]}
           radarnumbers={[]}
           fantasygraphdata={[]}
-          percentages={[]} 
-          impactdata={[]}        
+          percentages={[]}
+          impactdata={[]} 
+          matchupsdata={undefined}        
         />
       )
   );

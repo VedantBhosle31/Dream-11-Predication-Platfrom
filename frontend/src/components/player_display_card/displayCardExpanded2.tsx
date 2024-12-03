@@ -10,6 +10,7 @@ import VenueGraph from "../points_chart/pointschart";
 import { Box, Modal, Skeleton, Typography } from "@mui/material";
 import { ChartContainer } from "@mui/x-charts/ChartContainer";
 // import { BarChart, BarPlot } from "@mui/x-charts/BarChart";
+import player2Image from "../../assets/images/virat_kohli.png"; // Replace with your player image
 
 import {
   Bar,
@@ -97,51 +98,51 @@ const xLabels = [
 
 // yValues.sort((a, b) => a - b);
 
-export interface Matchups {
-  name: string;
-  balls: string;
-  runs: string;
-  out: string;
-  strikerate: string;
-}
+// export interface Matchups {
+//   name: string;
+//   balls: string;
+//   runs: string;
+//   out: string;
+//   strikerate: string;
+// }
 
-const MatchupsData: Matchups[] = [
-  {
-    name: "JOfra Archer",
-    balls: "150",
-    runs: "60",
-    out: "3",
-    strikerate: "115",
-  },
-  {
-    name: "JOfra Archer",
-    balls: "150",
-    runs: "60",
-    out: "3",
-    strikerate: "115",
-  },
-  {
-    name: "JOfra Archer",
-    balls: "150",
-    runs: "60",
-    out: "3",
-    strikerate: "115",
-  },
-  {
-    name: "JOfra Archer",
-    balls: "150",
-    runs: "60",
-    out: "3",
-    strikerate: "115",
-  },
-  {
-    name: "JOfra Archer",
-    balls: "150",
-    runs: "60",
-    out: "3",
-    strikerate: "115",
-  },
-];
+// const MatchupsData: Matchups[] = [
+//   {
+//     name: "JOfra Archer",
+//     balls: "150",
+//     runs: "60",
+//     out: "3",
+//     strikerate: "115",
+//   },
+//   {
+//     name: "JOfra Archer",
+//     balls: "150",
+//     runs: "60",
+//     out: "3",
+//     strikerate: "115",
+//   },
+//   {
+//     name: "JOfra Archer",
+//     balls: "150",
+//     runs: "60",
+//     out: "3",
+//     strikerate: "115",
+//   },
+//   {
+//     name: "JOfra Archer",
+//     balls: "150",
+//     runs: "60",
+//     out: "3",
+//     strikerate: "115",
+//   },
+//   {
+//     name: "JOfra Archer",
+//     balls: "150",
+//     runs: "60",
+//     out: "3",
+//     strikerate: "115",
+//   },
+// ];
 
 interface ChartData {
   match: string;
@@ -199,6 +200,7 @@ interface DisplayCardExpandedProps {
   fantasygraphdata: { date: string; value: number }[];
   percentages: number[];
   impactdata: any;
+  matchupsdata: any;
 }
 
 const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
@@ -234,7 +236,8 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   radarnumbers,
   fantasygraphdata,
   percentages,
-  impactdata
+  impactdata,
+  matchupsdata,
 }) => (
     <Modal
       open={open}
@@ -613,6 +616,10 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   </div>
                 )}
 
+
+
+
+
                 {currentIndex === 0 && (
                   <ResponsiveContainer width="90%" height={250}>
                     <BarChart
@@ -731,142 +738,8 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                       marginTop: "10px",
                     }}
                   >
-                    {MatchupsData.map((player, index) => (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          fontSize: "10px",
-                          backgroundColor: "#333333",
-                          width: "90%",
-                          height: "25%",
-                          borderRadius: "10px",
-                          marginTop: "15px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: "20%",
-                            height: "100%",
-                            display: "flex",
-                          }}
-                        >
-                          <div style={{ width: "50%", height: "100%" }}>
-                            <img
-                              src={playerImage}
-                              alt="player"
-                              style={{
-                                width: "100%",
-                                height: "100%",
-                                position: "relative",
-                                objectFit: "contain",
-                              }}
-                            />
-                          </div>
-                          <div
-                            style={{
-                              fontSize: "15px",
-                              width: "50%",
-                              color: "white",
-                              alignContent: "center",
-                            }}
-                          >
-                            {player.name}
-                          </div>
-                        </div>
-
-                        <div
-                          style={{
-                            width: "2px",
-                            height: "100%",
-                            backgroundColor: "white",
-                            marginLeft: "5px",
-                          }}
-                        ></div>
-
-                        <div
-                          style={{
-                            width: "20%",
-                            height: "100%",
-                            color: "white",
-                            justifyItems: "center",
-                            alignContent: "center",
-                            fontSize: "15px",
-                          }}
-                        >
-                          BALLS
-                          <div style={{ color: "#FA2433" }}>{player.balls}</div>
-                        </div>
-
-                        <div
-                          style={{
-                            width: "2px",
-                            height: "100%",
-                            backgroundColor: "white",
-                          }}
-                        ></div>
-
-                        <div
-                          style={{
-                            width: "20%",
-                            height: "100%",
-                            color: "white",
-                            justifyItems: "center",
-                            alignContent: "center",
-                            fontSize: "15px",
-                          }}
-                        >
-                          RUNS
-                          <div style={{ color: "#FA2433" }}>{player.runs}</div>
-                        </div>
-
-                        <div
-                          style={{
-                            width: "2px",
-                            height: "100%",
-                            backgroundColor: "white",
-                          }}
-                        ></div>
-
-                        <div
-                          style={{
-                            width: "20%",
-                            height: "100%",
-                            color: "white",
-                            justifyItems: "center",
-                            alignContent: "center",
-                            fontSize: "15px",
-                          }}
-                        >
-                          OUT
-                          <div style={{ color: "#FA2433" }}>{player.out}</div>
-                        </div>
-
-                        <div
-                          style={{
-                            width: "2px",
-                            height: "100%",
-                            backgroundColor: "white",
-                          }}
-                        ></div>
-
-                        <div
-                          style={{
-                            width: "20%",
-                            height: "100%",
-                            color: "white",
-                            justifyItems: "center",
-                            alignContent: "center",
-                            fontSize: "15px",
-                          }}
-                        >
-                          STRIKE RATE
-                          <div style={{ color: "#FA2433" }}>
-                            {player.strikerate}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                    <MatchupsComponent matchupsdata={matchupsdata}/>
+                    
 
                     <div></div>
                   </div>
@@ -1083,5 +956,220 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
       </Box>
     </Modal>
 );
+
+
+
+// interface PlayerStats {
+//   previous_runs?: number | null;
+//   previous_wickets?: number | null;
+//   previous_avg_strike_rate?: number | null;
+//   balls?: number | null;
+// }
+
+// interface Stats {
+//   [playerName: string]: PlayerStats | null;
+// }
+
+// interface RootObject {
+//   stats: Stats;
+// }
+
+// const MatchupsData: RootObject = {
+//   stats: {
+//     // "RR Hendricks": null,
+//     // " Q de Kock": null,
+//     // "AK Markram": {
+//     //   previous_runs: 44,
+//     //   previous_wickets: 0,
+//     //   previous_avg_strike_rate: 95.65217391304348,
+//     //   balls: 7,
+//     // },
+//     // " T Stubbs": null,
+//     // "DA Miller": null,
+//     // " M Jansen": null,
+//     // "KA Maharaj": {
+//     //   previous_runs: 72,
+//     //   previous_wickets: 2,
+//     //   previous_avg_strike_rate: 60.50420168067227,
+//     //   balls: 29,
+//     // },
+//     // " K Rabada": null,
+//     // "A Nortje": null,
+//     // " T Shamsi": null,
+//     // "KS Williamson": {
+//     //   previous_runs: 14,
+//     //   previous_wickets: 0,
+//     //   previous_avg_strike_rate: 116.66666666666669,
+//     //   balls: 4,
+//     // },
+//   },
+// };
+
+// interface MatchupsComponentProps {
+//   matchupsdata:any;
+// }
+
+
+const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({ matchupsdata }) => {
+  const stats = matchupsdata["stats"];
+
+  return (
+    <>
+      {Object.keys(stats).map((playerName, index) => {
+        const playerStats = stats[playerName]; // Access the stats for the player
+
+        return (
+          playerStats !== null ?
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "10px",
+              backgroundColor: "#333333",
+              width: "90%",
+              height: "25%",
+              borderRadius: "10px",
+              marginTop: "15px",
+            }}
+          >
+            {/* Player Name and Image */}
+            <div
+              style={{
+                width: "20%",
+                height: "100%",
+                display: "flex",
+              }}
+            >
+              <div style={{ width: "50%", height: "100%" }}>
+                <img
+                src={player2Image}
+                  alt="player"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "relative",
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  fontSize: "15px",
+                  width: "50%",
+                  color: "white",
+                  alignContent: "center",
+                }}
+              >
+                {playerName.trim()}
+              </div>
+            </div>
+
+            <div
+              style={{
+                width: "2px",
+                height: "100%",
+                backgroundColor: "white",
+                marginLeft: "5px",
+              }}
+            ></div>
+
+            {/* Stats */}
+            <div
+              style={{
+                width: "20%",
+                height: "100%",
+                color: "white",
+                justifyItems: "center",
+                alignContent: "center",
+                fontSize: "15px",
+              }}
+            >
+              BALLS
+              <div style={{ color: "#FA2433" }}>
+                {/* {playerStats?.balls ?? "N/A"} */}
+                {(playerStats["previous_runs"] !== null && playerStats["previous_runs"] !== 0) && (playerStats["previous_avg_strike_rate"] !== null && playerStats["previous_avg_strike_rate"] !== 0) ? Math.round(playerStats["previous_runs"]*100/playerStats["previous_avg_strike_rate"]) : 0}
+              </div>
+            </div>
+
+            <div
+              style={{
+                width: "2px",
+                height: "100%",
+                backgroundColor: "white",
+              }}
+            ></div>
+
+            <div
+              style={{
+                width: "20%",
+                height: "100%",
+                color: "white",
+                justifyItems: "center",
+                alignContent: "center",
+                fontSize: "15px",
+              }}
+            >
+              RUNS
+              <div style={{ color: "#FA2433" }}>
+                {playerStats !== null ? playerStats["previous_runs"] : "N/A"}
+              </div>
+            </div>
+
+            <div
+              style={{
+                width: "2px",
+                height: "100%",
+                backgroundColor: "white",
+              }}
+            ></div>
+
+            <div
+              style={{
+                width: "20%",
+                height: "100%",
+                color: "white",
+                justifyItems: "center",
+                alignContent: "center",
+                fontSize: "15px",
+              }}
+            >
+              OUT
+              <div style={{ color: "#FA2433" }}>
+                {playerStats !== null ? playerStats["previous_wickets"] : "N/A"}
+              </div>
+            </div>
+
+            <div
+              style={{
+                width: "2px",
+                height: "100%",
+                backgroundColor: "white",
+              }}
+            ></div>
+
+            <div
+              style={{
+                width: "20%",
+                height: "100%",
+                color: "white",
+                justifyItems: "center",
+                alignContent: "center",
+                fontSize: "15px",
+              }}
+            >
+              STRIKE RATE
+              <div style={{ color: "#FA2433" }}>
+                {playerStats !== null
+                  ? playerStats["previous_avg_strike_rate"].toFixed(2)
+                  : "N/A"}
+              </div>
+            </div>
+          </div>: <div></div>
+        );
+      })}
+    </>
+  );
+};
 
 export default DisplayCardExpanded;

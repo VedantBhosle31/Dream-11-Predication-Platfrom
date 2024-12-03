@@ -85,7 +85,7 @@ def matchup_stats_two_players(player_1, player_2, format, match_date):
                 batsman_name=batsman, bowler_name=bowler, date__lt=match_date
             )
             .order_by('-date')
-            .values('previous_runs', 'previous_wickets', 'previous_avg_strike_rate', 'balls_involved')
+            .values('previous_runs', 'previous_wickets', 'previous_avg_strike_rate')
             .first()
         )
     

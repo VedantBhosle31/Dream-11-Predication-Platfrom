@@ -22,6 +22,7 @@ def explain_graph(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     else:
+        return JsonResponse({'error': 'Invalid JSON'})
 
 
 def describe_player(request):

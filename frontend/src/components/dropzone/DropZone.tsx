@@ -406,6 +406,8 @@ const DroppableCard: React.FC<{
 
   const [newimpactdata, setnewimpactdata] = useState<any>([]);
 
+  const [newmatchupsdata, setnewmatchupsdata] = useState<any>([]);
+
   // Prepare data for the `typeData_2` prop
   const typeData_2 = Object.values(mydata).map((type) => ({
     title: type.title,
@@ -419,11 +421,66 @@ const DroppableCard: React.FC<{
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexTypes, setCurrentIndexTypes] = useState(0);
 
-  const handleLeftClick = () => {
+  const handleLeftClick = async () => {
+    if (currentIndex === 3) {
+      const response = await fetch(
+        "http://127.0.0.1:8000/players/get-player-matchups",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Tell the server it's JSON
+          },
+          body: JSON.stringify({
+            player_name: "V Kohli",
+            player_opponents:
+              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            date: "2025-01-01",
+            model: "Odi",
+          }), // Convert the data to a JSON string
+        }
+      );
+      
+      const matchupsdata = await response.json();
+
+
+
+
+      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+
+      setnewmatchupsdata(matchupsdata);
+    }
     setCurrentIndex((prev) => (prev === 0 ? data.length - 1 : prev - 1));
   };
 
-  const handleRightClick = () => {
+  const handleRightClick = async () => {
+
+    if (currentIndex === 1) {
+      const response = await fetch(
+        "http://127.0.0.1:8000/players/get-player-matchups",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Tell the server it's JSON
+          },
+          body: JSON.stringify({
+            player_name: "V Kohli",
+            player_opponents:
+              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            date: "2025-01-01",
+            model: "Odi",
+          }), // Convert the data to a JSON string
+        }
+      );
+      
+      const matchupsdata = await response.json();
+
+
+
+
+      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+
+      setnewmatchupsdata(matchupsdata);
+    }
     setCurrentIndex((prev) => (prev === data.length - 1 ? 0 : prev + 1));
   };
 
@@ -839,11 +896,8 @@ const DroppableCard: React.FC<{
       Math.round(venueRatio * 100) / 100,
     ]);
 
-    
-
     // Extract stats from maindata
     const battingStats = maindata["stats"]["batting"];
-    
 
     setnewimpactdata(battingStats);
 
@@ -969,40 +1023,41 @@ const DroppableCard: React.FC<{
   ) : (
     // <div></div>
     <DisplayCardExpanded
-      containerRef={containerRef}
-      isExpanded={isCardExpanded}
-      setExpanded={setCardExpanded}
-      playerImage={playerImage}
-      card={card}
-      handleLeftClick={handleLeftClick}
-      handleRightClick={handleRightClick}
-      handleLeftClickTypes={handleLeftClickTypes}
-      handleRightClickTypes={handleRightClickTypes}
-      data={data}
-      typeData={typeData}
-      typeData_2={typeData_2}
-      currentIndex={currentIndex}
-      currentIndexTypes={currentIndexTypes}
-      suggestions={suggestions}
-      handleSearch={handleSearch}
-      handleClose={handleClose}
-      open={isCardExpanded}
-      selectedFilter={selectedFilter}
-      selectedFilter2={selectedFilter2}
-      selectedFilter3={selectedFilter3}
-      filters={filters}
-      filters2={filters2}
-      filters3={filters3}
-      handleFilterChange={handleFilterChange}
-      handleFilterChange2={handleFilterChange2}
-      handleFilterChange3={handleFilterChange3}
-      newpiedata={newpiedata}
-      venuechartdata={newvenuedata}
-      radarnumbers={newradardata}
-      fantasygraphdata={newfantasygraphdata}
-      percentages={newpercentages}
-      impactdata={newimpactdata}
-    />
+        containerRef={containerRef}
+        isExpanded={isCardExpanded}
+        setExpanded={setCardExpanded}
+        playerImage={playerImage}
+        card={card}
+        handleLeftClick={handleLeftClick}
+        handleRightClick={handleRightClick}
+        handleLeftClickTypes={handleLeftClickTypes}
+        handleRightClickTypes={handleRightClickTypes}
+        data={data}
+        typeData={typeData}
+        typeData_2={typeData_2}
+        currentIndex={currentIndex}
+        currentIndexTypes={currentIndexTypes}
+        suggestions={suggestions}
+        handleSearch={handleSearch}
+        handleClose={handleClose}
+        open={isCardExpanded}
+        selectedFilter={selectedFilter}
+        selectedFilter2={selectedFilter2}
+        selectedFilter3={selectedFilter3}
+        filters={filters}
+        filters2={filters2}
+        filters3={filters3}
+        handleFilterChange={handleFilterChange}
+        handleFilterChange2={handleFilterChange2}
+        handleFilterChange3={handleFilterChange3}
+        newpiedata={newpiedata}
+        venuechartdata={newvenuedata}
+        radarnumbers={newradardata}
+        fantasygraphdata={newfantasygraphdata}
+        percentages={newpercentages}
+        impactdata={newimpactdata} 
+        matchupsdata={newmatchupsdata}    
+      />
   );
 };
 
