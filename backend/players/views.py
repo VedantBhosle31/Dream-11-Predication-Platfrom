@@ -218,14 +218,6 @@ def get_team_logos_from_team_names(request):
         team_logos = team_logos[['name', 'logo']].to_dict(orient='records')
         return JsonResponse({'team_logos': team_logos})
 
-# @csrf_exempt
-# def get_player_data(request):
-#     if request.method == "POST":
-#         # player_name = request.GET.get('player_name')
-#         # date = request.Get.get('date')
-#         data = json.loads(request.body)
-#         # stats = get_player_stats(player_name,date)
-#         return JsonResponse({'stats':"stats", "data": data})
 
 @csrf_exempt
 def get_player_data(request):
