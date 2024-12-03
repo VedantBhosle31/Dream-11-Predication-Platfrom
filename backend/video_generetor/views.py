@@ -8,7 +8,7 @@ from utils.video_generetor import process_files, create_video, cleanup_temp_file
 def generate_video(request):
     if request.method == 'GET':
         try:
-            pptx_files = ["bat1.pptx", "bat2.pptx", "bat3.pptx", "bat4.pptx"]
+            pptx_files = ["video_generetor/utils/pptx_template/batting1.pptx", "video_generetor/utils/pptx_template/batting2.pptx", "video_generetor/utils/pptx_template/batting3.pptx", "video_generetor/utils/pptx_template/batting4.pptx"]
             scripts = [
                 """In analyzing Player A's potential...""",  
                 "This is the script for slide 2.",
@@ -35,4 +35,5 @@ def generate_video(request):
             return response
         except Exception as e:
             return HttpResponse(f"Error: {str(e)}", status=500)
+        
 
