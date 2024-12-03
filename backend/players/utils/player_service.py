@@ -89,7 +89,7 @@ def get_player_stats(name,match_date,format):
     stats ={}
     stats["batting"] = list(model_batter.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('player_name','previous_average','previous_strike_rate','innings_played','previous_runs','previous_average','previous_4s','previous_6s','previous_runs','previous_fifties','previous_centuries','highest_score','form','venue_avg','opposition','previous_zeros','tbahs_economy_agg', 'tbahs_4s_agg', 'tbahp_dismissals_agg', 'dots', 'venue', 'previous_average', 'odi_match_fantasy_points', 'venue_avg', 'opposition', 'form', 'consistency', 'previous_balls_involved', 'tbahs_economy_agg', 'tbahp_economy_agg', 'tbahs_4s_agg', 'tbahp_4s_agg', 'tbahs_dismissals_agg', 'tbahp_dismissals_agg', 'dots', 'venue', 'previous_average', 'odi_match_fantasy_points', 'venue_avg', 'opposition', 'form', 'consistency', 'previous_balls_involved'))
 
-    stats["bowling"] = list(model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('previous_wickets','previous_economy','previous_balls_involved','innings_played','previous_strik(e_rate','previous_maidens','previous_average'))
+    stats["bowling"] = list(model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('previous_wickets','previous_economy','previous_balls_involved','innings_played','previous_strike_rate','previous_maidens','previous_average'))
     stats["fielding"] = list(model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('pfa_catches','pfa_stumpings','pfa_runouts', 'previous_stumpings', 'previous_runouts', 'previous_catches'))
     return stats
 

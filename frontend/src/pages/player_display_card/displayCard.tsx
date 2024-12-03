@@ -44,6 +44,8 @@ interface Graphs {
 }
 
 const DisplayScreen: React.FC = () => {
+
+
   const DisplayCards: DisplayCardData[] = [
     {
       id: "1",
@@ -204,39 +206,45 @@ const DisplayScreen: React.FC = () => {
   const row1 = DisplayCards.slice(0, 3); // First 3 cards
   const row2 = DisplayCards.slice(3, 7); // Next 4 cards
   const row3 = DisplayCards.slice(7, 11); // Last 4 cards
-
+  
   return (
-    <div className="main-display">
-      <div className="display-container">
-        <div className="display-card-row">
-          {row1.map((card) => (
-            <DisplayCard key={card.id} card={card} />
-          ))}
+    
+      <div className="main-display">
+        <div className="display-container">
+          <div className="display-card-row">
+            {row1.map((card) => (
+
+
+                <DisplayCard key={card.id} card={card} />
+              
+            ))}
+          </div>
+        </div>
+        <div className="display-container">
+          <div className="display-card-row-2">
+            {row2.map((card) => (
+              <DisplayCard key={card.id} card={card} />
+            ))}
+          </div>
+        </div>
+        <div className="display-container">
+          <div className="display-card-row-2">
+            {row3.map((card) => (
+              <DisplayCard key={card.id} card={card} />
+            ))}
+          </div>
         </div>
       </div>
-      <div className="display-container">
-        <div className="display-card-row-2">
-          {row2.map((card) => (
-            <DisplayCard key={card.id} card={card} />
-          ))}
-        </div>
-      </div>
-      <div className="display-container">
-        <div className="display-card-row-2">
-          {row3.map((card) => (
-            <DisplayCard key={card.id} card={card} />
-          ))}
-        </div>
-      </div>
-    </div>
   );
 };
-
 
 const DisplayCard: React.FC<{
   card: DisplayCardData;
 }> = ({ card }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // const { playerData, setPlayerData } = usePlayerData();
+
 
   var [isExpanded, setExpanded] = useState(false);
   const handleOpen = () => setExpanded(true);
@@ -419,13 +427,17 @@ const DisplayCard: React.FC<{
   // const format= "";
   const [format, setformat] = useState("Odi");
 
-
   //for filterBar(All,T20I, T20)
   const [selectedFilter, setSelectedFilter] = useState("All"); // State for the selected filter
   const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // State for the selected filter
   const [selectedFilter3, setSelectedFilter3] = useState("venue"); // State for the selected filter
 
-  const filters = format === "T20" ? ["All", "T20I", "T20"] : (format === "Odi" ? ["All", "OdiI", "Odi"] : ["All", "TestI", "Test"]); // Filter options
+  const filters =
+    format === "T20"
+      ? ["All", "T20I", "T20"]
+      : format === "Odi"
+      ? ["All", "OdiI", "Odi"]
+      : ["All", "TestI", "Test"]; // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
 
@@ -506,13 +518,6 @@ const DisplayCard: React.FC<{
     },
   };
 
-  
-
-  
-  
-
-
-
   const piedata = [
     { name: "0", value: 400 },
     { name: "1", value: 300 },
@@ -521,8 +526,6 @@ const DisplayCard: React.FC<{
     { name: "4", value: 100 },
     { name: "6", value: 50 },
   ];
-
-  
 
   const [mydata, setmyData] =
     useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>(
@@ -573,129 +576,136 @@ const DisplayCard: React.FC<{
     typeData_2: TypeData[];
   }
 
-  return !isExpanded ? (
-    <div
-      ref={containerRef}
-      className={`display-card ${
-        card.cvc === "C"
-          ? "big"
-          : card.id === "5" ||
-            card.id === "6" ||
-            card.id === "9" ||
-            card.id === "10"
-          ? "middle"
-          : ""
-      }`}
-    >
-      <div className="background-overlay"></div>
+  return (
+      !isExpanded ? (
+        <div
+          ref={containerRef}
+          className={`display-card ${
+            card.cvc === "C"
+              ? "big"
+              : card.id === "5" ||
+                card.id === "6" ||
+                card.id === "9" ||
+                card.id === "10"
+              ? "middle"
+              : ""
+          }`}
+        >
+          <div className="background-overlay"></div>
 
-      <div className="display-card-overlay">
-        {card.name}
+          <div className="display-card-overlay">
+            {card.name}
 
-        <div className="display-card-overlay-row">
-          <div
-            className="overlay-row-section"
-            style={{
-              borderTopLeftRadius: "15px",
-              borderBottomLeftRadius: "15px",
-            }}
-          >
-            <div style={{ fontSize: "13px", marginBottom: "10px" }}>RUNS</div>
-            {card.runs}
-          </div>
-          {/* <div className="divider"></div> */}
-          <div className="overlay-row-section">
-            <div style={{ fontSize: "13px", marginBottom: "10px" }}>
-              AVERAGE
+            <div className="display-card-overlay-row">
+              <div
+                className="overlay-row-section"
+                style={{
+                  borderTopLeftRadius: "15px",
+                  borderBottomLeftRadius: "15px",
+                }}
+              >
+                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+                  RUNS
+                </div>
+                {card.runs}
+              </div>
+              {/* <div className="divider"></div> */}
+              <div className="overlay-row-section">
+                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+                  AVERAGE
+                </div>
+                {card.average}
+              </div>
+              {/* <div className="divider"></div> */}
+              <div
+                className="overlay-row-section"
+                style={{
+                  borderTopRightRadius: "15px",
+                  borderBottomRightRadius: "15px",
+                }}
+              >
+                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+                  STRIKE RATE
+                </div>
+                {card.strike_rate}
+              </div>
             </div>
-            {card.average}
           </div>
-          {/* <div className="divider"></div> */}
-          <div
-            className="overlay-row-section"
-            style={{
-              borderTopRightRadius: "15px",
-              borderBottomRightRadius: "15px",
-            }}
-          >
-            <div style={{ fontSize: "13px", marginBottom: "10px" }}>
-              STRIKE RATE
+
+          <div className="display-card-points">
+            <div>
+              207
+              <div style={{ fontSize: 20 }}>PTS</div>
             </div>
-            {card.strike_rate}
+
+            <img
+              className="display-card-team-logo"
+              src={card.team === "RCB" ? rcblogo : milogo}
+              alt="Player"
+            />
+
+            <div style={{ fontSize: 13 }}>{card.type}</div>
           </div>
-        </div>
-      </div>
 
-      <div className="display-card-points">
-        <div>
-          207
-          <div style={{ fontSize: 20 }}>PTS</div>
-        </div>
+          <button
+            className="info-button"
+            onClick={
+              () => {
+                setExpanded(true);
+              }
+              // fetchData("http://127.0.0.1:8000/players/get-player-data")
+            }
+            aria-label="Info Button"
+          >
+            i
+          </button>
 
-        <img
-          className="display-card-team-logo"
-          src={card.team === "RCB" ? rcblogo : milogo}
-          alt="Player"
+          {card.cvc === "C" && <div className="display-card-c">C</div>}
+
+          {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
+
+          {/* {( (card.cvc === "C" || card.cvc === "VC") && <div className="display-card-cvc">
+                {( card.cvc === "C" ? "C" : (card.cvc === "VC" ? "VC" : "") )}
+              </div>)} */}
+
+          <img className="display-card-image" src={playerImage} alt="Player" />
+        </div>
+      ) : (
+        <DisplayCardExpanded
+          containerRef={containerRef}
+          isExpanded={isExpanded}
+          setExpanded={setExpanded}
+          playerImage={playerImage}
+          card={card}
+          handleLeftClick={handleLeftClick}
+          handleRightClick={handleRightClick}
+          handleLeftClickTypes={handleLeftClickTypes}
+          handleRightClickTypes={handleRightClickTypes}
+          data={data}
+          typeData={typeData}
+          typeData_2={typeData_2}
+          newpiedata={piedata}
+          currentIndex={currentIndex}
+          currentIndexTypes={currentIndexTypes}
+          suggestions={suggestions}
+          handleSearch={handleSearch}
+          handleClose={handleClose}
+          open={isExpanded}
+          selectedFilter={selectedFilter}
+          selectedFilter2={selectedFilter2}
+          selectedFilter3={selectedFilter3}
+          filters={filters}
+          filters2={filters2}
+          filters3={filters3}
+          handleFilterChange={handleFilterChange}
+          handleFilterChange2={handleFilterChange2}
+          handleFilterChange3={handleFilterChange3}
+          venuechartdata={[]}
+          radarnumbers={[]}
+          fantasygraphdata={[]}
+          percentages={[]}
         />
-
-        <div style={{ fontSize: 13 }}>{card.type}</div>
-      </div>
-
-      <button
-        className="info-button"
-        onClick={() =>{}
-          // fetchData("http://127.0.0.1:8000/players/get-player-data")
-        }
-        aria-label="Info Button"
-      >
-        i
-      </button>
-
-      {card.cvc === "C" && <div className="display-card-c">C</div>}
-
-      {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
-
-      {/* {( (card.cvc === "C" || card.cvc === "VC") && <div className="display-card-cvc">
-          {( card.cvc === "C" ? "C" : (card.cvc === "VC" ? "VC" : "") )}
-        </div>)} */}
-
-      <img className="display-card-image" src={playerImage} alt="Player" />
-    </div>
-  ) : (
-    <DisplayCardExpanded
-        containerRef={containerRef}
-        isExpanded={isExpanded}
-        setExpanded={setExpanded}
-        playerImage={playerImage}
-        card={card}
-        handleLeftClick={handleLeftClick}
-        handleRightClick={handleRightClick}
-        handleLeftClickTypes={handleLeftClickTypes}
-        handleRightClickTypes={handleRightClickTypes}
-        data={data}
-        typeData={typeData}
-        typeData_2={typeData_2}
-        newpiedata={piedata}
-        currentIndex={currentIndex}
-        currentIndexTypes={currentIndexTypes}
-        suggestions={suggestions}
-        handleSearch={handleSearch}
-        handleClose={handleClose}
-        open={isExpanded}
-        selectedFilter={selectedFilter}
-        selectedFilter2={selectedFilter2}
-        selectedFilter3={selectedFilter3}
-        filters={filters}
-        filters2={filters2}
-        filters3={filters3}
-        handleFilterChange={handleFilterChange}
-        handleFilterChange2={handleFilterChange2}
-        handleFilterChange3={handleFilterChange3}
-        venuechartdata={[]}
-        radarnumbers={[]}
-        fantasygraphdata={[]} 
-        percentages={[]}     
-       />
+      )
   );
 
   // <div ref={containerRef} className="display-card-expanded" style={{position: isExpanded ? 'absolute' : 'relative', transition: 'all 0.5s ease'}}>
