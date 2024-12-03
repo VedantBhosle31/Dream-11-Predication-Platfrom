@@ -10,7 +10,6 @@ import { CardData } from "../../SlidingPanels";
 import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
 import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import { DisplayCardData } from "../../pages/player_display_card/displayCard";
-import { useUserContext } from "../../context/DataContext";
 
 interface DropZoneProps {
   cards: CardData[];
