@@ -1,82 +1,66 @@
 from players.models import (
-    BatterIt20, BatterMdm, BatterOdi, BatterOdm, BatterTest,
+    BatterIt20, BatterMdm, BatterOdi, BatterOdm, BatterTest, BatterT20,
     BatterWit20, BatterWodi, BatterWodm, BatterWt20, BatterWtest,
-    BowlerIt20, BowlerMdm, BowlerOdi, BowlerOdm, BowlerTest,
+    BowlerIt20, BowlerMdm, BowlerOdi, BowlerOdm, BowlerTest, BowlerT20,
     BowlerWit20, BowlerWodi, BowlerWodm, BowlerWt20, BowlerWtest,
-    FielderIt20, FielderMdm, FielderOdi, FielderOdm, FielderTest,
+    FielderIt20, FielderMdm, FielderOdi, FielderOdm, FielderTest, FielderT20,
     FielderWit20, FielderWodi, FielderWodm, FielderWt20, FielderWtest,
-    MatchupIt20, MatchupWit20, MatchupWtest
+    MatchupIt20, MatchupMdm, MatchupOdi, MatchupOdm, MatchupT20, MatchupTest,
+    MatchupWit20, MatchupWodi, MatchupWodm, MatchupWt20, MatchupWtest,
+    PlayerNames, TeamDetails, FantasyBowl7
 )
 
 def model_mapping(name):
-    if name == 'BatterOdi':
-        return BatterOdi
-    elif name == 'BatterIt20':
-        return BatterIt20
-    elif name == 'BatterMdm':
-        return BatterMdm
-    elif name == 'BatterOdm':
-        return BatterOdm
-    elif name == 'BatterTest':
-        return BatterTest
-    elif name == 'BatterWit20':
-        return BatterWit20
-    elif name == 'BatterWodi':
-        return BatterWodi
-    elif name == 'BatterWodm':
-        return BatterWodm
-    elif name == 'BatterWt20':
-        return BatterWt20
-    elif name == 'BatterWtest':
-        return BatterWtest
-    elif name == 'BowlerIt20':
-        return BowlerIt20
-    elif name == 'BowlerMdm':
-        return BowlerMdm
-    elif name == 'BowlerOdi':
-        return BowlerOdi
-    elif name == 'BowlerOdm':
-        return BowlerOdm
-    elif name == 'BowlerTest':
-        return BowlerTest
-    elif name == 'BowlerWit20':
-        return BowlerWit20
-    elif name == 'BowlerWodi':
-        return BowlerWodi
-    elif name == 'BowlerWodm':
-        return BowlerWodm
-    elif name == 'BowlerWt20':
-        return BowlerWt20
-    elif name == 'BowlerWtest':
-        return BowlerWtest
-    elif name == 'FielderIt20':
-        return FielderIt20
-    elif name == 'FielderMdm':
-        return FielderMdm
-    elif name == 'FielderOdi':
-        return FielderOdi
-    elif name == 'FielderOdm':
-        return FielderOdm
-    elif name == 'FielderTest':
-        return FielderTest
-    elif name == 'FielderWit20':
-        return FielderWit20
-    elif name == 'FielderWodi':
-        return FielderWodi
-    elif name == 'FielderWodm':
-        return FielderWodm
-    elif name == 'FielderWt20':
-        return FielderWt20
-    elif name == 'FielderWtest':
-        return FielderWtest
-    elif name == 'MatchupIt20':
-        return MatchupIt20
-    elif name == 'MatchupWit20':
-        return MatchupWit20
-    elif name == 'MatchupWtest':
-        return MatchupWtest
-    else:
-        raise ValueError(f"Unknown model name: {name}")
+    models = {
+        'BatterOdi': BatterOdi,
+        'BatterIt20': BatterIt20,
+        'BatterMdm': BatterMdm,
+        'BatterOdm': BatterOdm,
+        'BatterTest': BatterTest,
+        'BatterWit20': BatterWit20,
+        'BatterWodi': BatterWodi,
+        'BatterWodm': BatterWodm,
+        'BatterWt20': BatterWt20,
+        'BatterWtest': BatterWtest,
+        'BatterT20': BatterT20,
+        'BowlerOdi': BowlerOdi,
+        'BowlerIt20': BowlerIt20,
+        'BowlerMdm': BowlerMdm,
+        'BowlerOdm': BowlerOdm,
+        'BowlerTest': BowlerTest,
+        'BowlerT20': BowlerT20,
+        'BowlerWit20': BowlerWit20,
+        'BowlerWodi': BowlerWodi,
+        'BowlerWodm': BowlerWodm,
+        'BowlerWt20': BowlerWt20,
+        'BowlerWtest': BowlerWtest,
+        'FielderOdi': FielderOdi,
+        'FielderIt20': FielderIt20,
+        'FielderMdm': FielderMdm,
+        'FielderOdm': FielderOdm,
+        'FielderTest': FielderTest,
+        'FielderT20': FielderT20,
+        'FielderWit20': FielderWit20,
+        'FielderWodi': FielderWodi,
+        'FielderWodm': FielderWodm,
+        'FielderWt20': FielderWt20,
+        'FielderWtest': FielderWtest,
+        'MatchupIt20': MatchupIt20,
+        'MatchupMdm': MatchupMdm,
+        'MatchupOdi': MatchupOdi,
+        'MatchupOdm': MatchupOdm,
+        'MatchupT20': MatchupT20,
+        'MatchupTest': MatchupTest,
+        'MatchupWit20': MatchupWit20,
+        'MatchupWodi': MatchupWodi,
+        'MatchupWodm': MatchupWodm,
+        'MatchupWt20': MatchupWt20,
+        'MatchupWtest': MatchupWtest,
+        'PlayerNames': PlayerNames,
+        'TeamDetails': TeamDetails,
+        'FantasyBowl7': FantasyBowl7
+    }
+    return models.get(name)
 
 def get_player_stats(name,match_date,format):
     '''
@@ -128,4 +112,3 @@ def player_features(name,match_date,format):
     stats["bowling"] = model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date').values().first()
     stats["fielding"] = model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date').values().first()
     return stats
-

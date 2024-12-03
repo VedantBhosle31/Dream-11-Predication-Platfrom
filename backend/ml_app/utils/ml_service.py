@@ -44,8 +44,8 @@ def predict_for_one(name,date,format):
         scaler = scalers[s]
         feature_column= feature_columns_dict[s]
         feature = features[target_position_dict[target]]
-        X = [feature[key] for key in feature.keys() if key in feature_column]
-        if(X):
+        if(feature):
+            X = [feature[key] for key in feature.keys() if key in feature_column]
             X = np.array(X).reshape(1,-1)
             X_scaled = scaler.transform(X)
             pred = model.predict(X_scaled)
