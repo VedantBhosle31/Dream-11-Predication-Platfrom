@@ -433,7 +433,6 @@ const DroppableCard: React.FC<{
           body: JSON.stringify({
             player_name: "V Kohli",
             player_opponents:
-              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: "2025-01-01",
             model: "Odi",
           }), // Convert the data to a JSON string
