@@ -84,9 +84,9 @@ def predict_for_one(player_stats,format):
         catches = 0
         stumpings = 0
 
-    # fantasy_points = points_calculator(format=format, runouts_direct=runouts * 0.58
-    # ,runouts_indirect=runouts * 0.42, catches=catches, stumpings=stumpings, runs=runs, sixes=sixes, wickets=wickets, bowled_lbw=bowled_lbw, maidens=maidens, economy=economy, strike_rate=strike_rate, boundaries=boundary_runs)
-    fantasy_points = 0
+    fantasy_points = points_calculator(format=format, runouts_direct=runouts * 0.58
+    ,runouts_indirect=runouts * 0.42, catches=catches, stumpings=stumpings, runs=runs, sixes=sixes, wickets=wickets, bowled_lbw=bowled_lbw, maidens=maidens, economy=economy, strike_rate=strike_rate, boundaries=boundary_runs)
+    # fantasy_points = 0
     print(fantasy_points)
     return {"predictions":predictions, "fantasy_points":fantasy_points}
 
