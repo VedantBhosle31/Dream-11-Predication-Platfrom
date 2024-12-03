@@ -198,6 +198,7 @@ interface DisplayCardExpandedProps {
   radarnumbers: number[];
   fantasygraphdata: { date: string; value: number }[];
   percentages: number[];
+  impactdata: any;
 }
 
 const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
@@ -233,6 +234,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   radarnumbers,
   fantasygraphdata,
   percentages,
+  impactdata
 }) => (
     <Modal
       open={open}
@@ -945,7 +947,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                       backgroundColor: "#1A1A1A",
                     }}
                   >
-                    <ImpactChart />
+                    <ImpactChart battingStats={impactdata} filter={selectedFilter2} />
                   </div>
                 )}
 
@@ -969,6 +971,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     description={data[currentIndex].description}
                   />
                 </div>
+
               </div>
             </div>
           </div>
