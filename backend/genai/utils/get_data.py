@@ -31,36 +31,36 @@ def batter_data(player_name, date, model, player_opponents, player_type):
         "player_type": player_type,
         "bowlerwise_matchups": matchups_data,
         "fielding_stats": {
-            "catches_per_game": player_data["fielding"]["pfa_catches"],
-            "runouts_per_game": player_data["fielding"]["pfa_runouts"],
-            "stumpings_per_game": player_data["fielding"]["pfa_stumpings"],
+            "catches_per_game": player_data["fielding"][0]["pfa_catches"],
+            "runouts_per_game": player_data["fielding"][0]["pfa_runouts"],
+            "stumpings_per_game": player_data["fielding"][0]["pfa_stumpings"],
         },
         "batter_indices": {
-            "consistency": player_data["batting"]["consistency"],
-            "venue": player_data["batting"]["venue"],
-            "form": player_data["batting"]["form"],
-            "opposition": player_data["batting"]["opposition"],
+            "consistency": player_data["batting"][0]["consistency"],
+            "venue": player_data["batting"][0]["venue"],
+            "form": player_data["batting"][0]["form"],
+            "opposition": player_data["batting"][0]["opposition"],
         },
         "historical_data": {
-            "total_runs": player_data["batting"]["previous_runs"],
-            "total_matches": player_data["batting"]["innings_played"],
-            "total_fifties": player_data["batting"]["previous_fifties"],
-            "total_hundreds": player_data["batting"]["previous_centuries"],
-            "highest_score": player_data["batting"]["highest_score"],
-            "average": player_data["batting"]["previous_average"],
-            "average_against_spin": player_data["batting"]["tbahs_economy_agg"] * 100,
-            "strike_rate_against_spin": player_data["batting"]["previous_strike_rate"]
-            * player_data["batting"]["tbahr_economy_agg"],
-            "strike_rate_against_pace": player_data["batting"]["previous_strike_rate"]
-            / player_data["batting"]["tbahp_economy_agg"],
-            "average_against_pace": player_data["batting"]["tbahp_economy_agg"] * 100,
-            "career_strike_rate": player_data["batting"]["previous_strike_rate"],
+            "total_runs": player_data["batting"][0]["previous_runs"],
+            "total_matches": player_data["batting"][0]["innings_played"],
+            "total_fifties": player_data["batting"][0]["previous_fifties"],
+            "total_hundreds": player_data["batting"][0]["previous_centuries"],
+            "highest_score": player_data["batting"][0]["highest_score"],
+            "average": player_data["batting"][0]["previous_average"],
+            "average_against_spin": player_data["batting"][0]["tbahs_economy_agg"] * 100,
+            "strike_rate_against_spin": player_data["batting"][0]["previous_strike_rate"]
+            * player_data["batting"][0]["tbahr_economy_agg"],
+            "strike_rate_against_pace": player_data["batting"][0]["previous_strike_rate"]
+            / player_data["batting"][0]["tbahp_economy_agg"],
+            "average_against_pace": player_data["batting"][0]["tbahp_economy_agg"] * 100,
+            "career_strike_rate": player_data["batting"][0]["previous_strike_rate"],
             "boundary_percentage": (
                 (
-                    player_data["batting"]["previous_4s"]
-                    + player_data["batting"]["previous_6s"]
+                    player_data["batting"][0]["previous_4s"]
+                    + player_data["batting"][0]["previous_6s"]
                 )
-                / player_data["batting"]["previous_balls"]
+                / player_data["batting"][0]["previous_balls"]
             )
             * 100,
         },
@@ -97,22 +97,22 @@ def bowler_data(player_name, date, model, player_opponents, player_type):
         "player_type": player_type,
         "bowlerwise_matchups": matchups_data,
         "fielding_stats": {
-            "catches_per_game": player_data["fielding"]["pfa_catches"],
-            "runouts_per_game": player_data["fielding"]["pfa_runouts"],
-            "stumpings_per_game": player_data["fielding"]["pfa_stumpings"],
+            "catches_per_game": player_data["fielding"][0]["pfa_catches"],
+            "runouts_per_game": player_data["fielding"][0]["pfa_runouts"],
+            "stumpings_per_game": player_data["fielding"][0]["pfa_stumpings"],
         },
         "bowler_indices": {
-            "consistency": player_data["bowling"]["consistency"],
-            "venue": player_data["bowling"]["venue"],
-            "form": player_data["bowling"]["form"],
-            "opposition": player_data["bowling"]["opposition"],
+            "consistency": player_data["bowling"][0]["consistency"],
+            "venue": player_data["bowling"][0]["venue"],
+            "form": player_data["bowling"][0]["form"],
+            "opposition": player_data["bowling"][0]["opposition"],
         },
         "historical_data": {
-            "total_wickets": player_data["bowling"]["previous_wickets"],
-            "total_matches": player_data["bowling"]["innings_played"],
-            "average": player_data["bowling"]["previous_average"],
-            "economy_rate": player_data["bowling"]["previous_economy"],
-            "strike_rate": player_data["bowling"]["previous_strike_rate"],
+            "total_wickets": player_data["bowling"][0]["previous_wickets"],
+            "total_matches": player_data["bowling"][0]["innings_played"],
+            "average": player_data["bowling"][0]["previous_average"],
+            "economy_rate": player_data["bowling"][0]["previous_economy"],
+            "strike_rate": player_data["bowling"][0]["previous_strike_rate"],
         },
     }
 
@@ -154,36 +154,36 @@ def wicketkeeper_data(player_name, date, model, player_opponents, player_type):
         "player_type": "Wicketkeeper",
         "bowlerwise_matchups": matchups_data,
         "fielding_stats": {
-            "catches_per_game": player_data["fielding"]["pfa_catches"],
-            "runouts_per_game": player_data["fielding"]["pfa_runouts"],
-            "stumpings_per_game": player_data["fielding"]["pfa_stumpings"],
-            "total_stumpings": player_data["fielding"]["total_stumpings"],
-            "total_catches": player_data["fielding"]["total_catches"],
+            "catches_per_game": player_data["fielding"][0]["pfa_catches"],
+            "runouts_per_game": player_data["fielding"][0]["pfa_runouts"],
+            "stumpings_per_game": player_data["fielding"][0]["pfa_stumpings"],
+            "total_stumpings": player_data["fielding"][0]["total_stumpings"],
+            "total_catches": player_data["fielding"][0]["total_catches"],
         },
         "bowler_indices": {
-            "consistency": player_data["bowling"]["consistency"],
-            "venue": player_data["bowling"]["venue"],
-            "form": player_data["bowling"]["form"],
-            "opposition": player_data["bowling"]["opposition"],
+            "consistency": player_data["bowling"][0]["consistency"],
+            "venue": player_data["bowling"][0]["venue"],
+            "form": player_data["bowling"][0]["form"],
+            "opposition": player_data["bowling"][0]["opposition"],
         },
         "historical_data": {
-            "total_runs": player_data["batting"]["previous_runs"],
-            "total_matches": player_data["batting"]["innings_played"],
-            "total_fifties": player_data["batting"]["previous_fifties"],
-            "total_hundreds": player_data["batting"]["previous_centuries"],
-            "highest_score": player_data["batting"]["highest_score"],
-            "average": player_data["batting"]["previous_average"],
-            "average_against_spin": player_data["batting"]["tbahs_economy_agg"] * 100,
-            "strike_rate_against_spin": player_data["batting"]["previous_strike_rate"]
-            * player_data["batting"]["tbahr_economy_agg"],
-            "strike_rate_against_pace": player_data["batting"]["previous_strike_rate"]
-            / player_data["batting"]["tbahp_economy_agg"],
-            "average_against_pace": player_data["batting"]["tbahp_economy_agg"] * 100,
-            "career_strike_rate": player_data["batting"]["previous_strike_rate"],
-            "total_balls_faced": player_data["batting"]["previous_balls"],
-            "total_catches_taken": player_data["fielding"]["total_catches"],
-            "total_run_outs": player_data["fielding"]["total_runouts"],
-            "total_stumpings": player_data["fielding"]["total_stumpings"],
+            "total_runs": player_data["batting"][0]["previous_runs"],
+            "total_matches": player_data["batting"][0]["innings_played"],
+            "total_fifties": player_data["batting"][0]["previous_fifties"],
+            "total_hundreds": player_data["batting"][0]["previous_centuries"],
+            "highest_score": player_data["batting"][0]["highest_score"],
+            "average": player_data["batting"][0]["previous_average"],
+            "average_against_spin": player_data["batting"][0]["tbahs_economy_agg"] * 100,
+            "strike_rate_against_spin": player_data["batting"][0]["previous_strike_rate"]
+            * player_data["batting"][0]["tbahr_economy_agg"],
+            "strike_rate_against_pace": player_data["batting"][0]["previous_strike_rate"]
+            / player_data["batting"][0]["tbahp_economy_agg"],
+            "average_against_pace": player_data["batting"][0]["tbahp_economy_agg"] * 100,
+            "career_strike_rate": player_data["batting"][0]["previous_strike_rate"],
+            "total_balls_faced": player_data["batting"][0]["previous_balls"],
+            "total_catches_taken": player_data["fielding"][0]["total_catches"],
+            "total_run_outs": player_data["fielding"][0]["total_runouts"],
+            "total_stumpings": player_data["fielding"][0]["total_stumpings"],
         },
     }
 
