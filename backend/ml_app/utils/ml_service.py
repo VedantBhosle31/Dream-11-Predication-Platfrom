@@ -1,5 +1,5 @@
 from players.utils.fantacy_points import points_calculator
-from players.utils.player_service import player_features
+from players.utils.player_service import fetch_all_player_features, player_features
 import pickle
 import pandas as pd
 from ml_app.utils.predictor import feature_columns_dict
@@ -36,8 +36,8 @@ target_position_dict={
     'catches':'fielding', 
     'stumpings':'fielding'
 }
-def predict_for_one(name,date,format):
-    features = player_features(name,date,format.capitalize())
+def predict_for_one(player_stats,format):
+    features = player_stats
     predictions = {}
     for target in targets:
         s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
@@ -92,10 +92,11 @@ def predict_for_one(name,date,format):
 
 def predict(names,date,format):
     fantasy_points={}
-    predictions={}
+    predictions = {}
+    all_player_stats = fetch_all_player_features(names.split(','),date,format)
     for name in names:
         fantasy_points[name] = predict_for_one(name,date,format)["fantasy_points"]
-        predictions[name] = predict_for_one(name,date,format)["predictions"]
+        predictions[name] = predict_for_one(all_player_stats[name],format)["predictions"]
     
     # Sort the fantasy points in descending order and send best 11
     fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))
@@ -103,8 +104,4 @@ def predict(names,date,format):
     # return fantasy_points
     return {"fantasy_points":fantasy_points, "predictions":predictions}
 
-        
-
-
-    
-    
+  

@@ -112,3 +112,48 @@ def player_features(name,match_date,format):
     stats["bowling"] = model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date').values().first()
     stats["fielding"] = model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date').values().first()
     return stats
+
+def fetch_all_player_features(player_names, match_date, format):
+    model_batter = model_mapping("Batter" + format)
+    model_bowler = model_mapping("Bowler" + format)
+    model_fielder = model_mapping("Fielder" + format)
+
+    # Fetch all data in one query per model
+    batter_data = model_batter.objects.filter(
+        player_name__in=player_names, date__lt=match_date
+    ).order_by('-date').values()
+    
+    bowler_data = model_bowler.objects.filter(
+        player_name__in=player_names, date__lt=match_date
+    ).order_by('-date').values()
+    
+    fielder_data = model_fielder.objects.filter(
+        player_name__in=player_names, date__lt=match_date
+    ).order_by('-date').values()
+    
+    # Organize data by player name for easy lookup
+    batter_dict = {}
+    for entry in batter_data:
+        if entry["player_name"] not in batter_dict:
+            batter_dict[entry["player_name"]] = entry
+
+    bowler_dict = {}
+    for entry in bowler_data:
+        if entry["player_name"] not in bowler_dict:
+            bowler_dict[entry["player_name"]] = entry
+
+    fielder_dict = {}
+    for entry in fielder_data:
+        if entry["player_name"] not in fielder_dict:
+            fielder_dict[entry["player_name"]] = entry
+
+    # Combine data for each player
+    player_stats = {}
+    for name in player_names:
+        player_stats[name] = {
+            "batting": batter_dict.get(name),
+            "bowling": bowler_dict.get(name),
+            "fielding": fielder_dict.get(name),
+        }
+
+    return player_stats
