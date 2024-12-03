@@ -87,7 +87,7 @@ import zIndex from "@mui/material/styles/zIndex";
 
 const style = {
   position: "absolute",
-  bottom: "10%",
+  top: "20%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
@@ -97,11 +97,10 @@ const style = {
   p: 4,
   display: "flex",
   justifyContent: "space-between",
-  fontFamily:"Montserrat",
-//   color:"white"
-borderRadius:"10px",
-zIndex:100
-
+  fontFamily: "Montserrat",
+  //   color:"white"
+  borderRadius: "10px",
+  zIndex: 100,
 };
 
 interface ModalProps {
@@ -135,7 +134,9 @@ const DevTools: React.FC<ModalProps> = ({ open, handleDevClose }) => {
     >
       <Box sx={style}>
         <div style={{ width: "45%" }}>
-          <label htmlFor="firstDropdown" style={{ color:"white"}}>Select Plan:</label>
+          <label htmlFor="firstDropdown" style={{ color: "white" }}>
+            Select Plan:
+          </label>
           <select
             id="firstDropdown"
             value={firstDropdown}
@@ -148,7 +149,9 @@ const DevTools: React.FC<ModalProps> = ({ open, handleDevClose }) => {
         </div>
 
         <div style={{ width: "45%" }}>
-          <label htmlFor="secondDropdown" style={{ color:"white"}}>Select Graph</label>
+          <label htmlFor="secondDropdown" style={{ color: "white" }}>
+            Select Graph
+          </label>
           <select
             id="secondDropdown"
             value={secondDropdown}
