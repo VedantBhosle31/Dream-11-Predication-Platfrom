@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import VideoPlayer from "../../components/video_player/videoplayer";
 import Slideshow from "../../components/slide-show/SlideShow";
 import { CardData } from "../../SlidingPanels";
+import {motion} from 'framer-motion'
 
 export interface EditComponentProps {
   showContainer: boolean;
@@ -62,22 +63,30 @@ const EditComponent: React.FC<EditComponentProps> = ({
 
   if (!showContainer) {
     return (
-      <div className="video-card">
-        <div className="video-section">
-          {/* {<VideoPlayer videoUrl={backendUrl} />} */}
-          <Slideshow />
+      <div className="video-section">
+        <div className="video-wrapper">
+
+          <div className="video-card">
+            {/* {<VideoPlayer videoUrl={backendUrl} />} */}
+            <Slideshow />
+          </div>
+
+          <motion.button   whileTap={{
+          scale: 0.98,
+        }} whileHover={{scale:1.02}} className="edit-team" onClick={toggleContainer}>
+            EDIT TEAM
+          </motion.button>
+
         </div>
-        <button className="edit-team" onClick={toggleContainer}>
-          EDIT TEAM
-        </button>
+        
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center h-full border-10 -mb-10 border-red-600">
+    <div className="dragzone-section">
       <DndProvider backend={HTML5Backend}>
-        <div className="side-container">
+        <div className="dragzone-wrapper">
           <DragZone
             cards={dragZoneCards}
             filterType={filterType}
@@ -87,12 +96,13 @@ const EditComponent: React.FC<EditComponentProps> = ({
             selectedCard={selectedCard}
             addToDropZone={addToDropZone}
           />
-          <button
-            className="complete-team"
-            onClick={handleButtonClick}
-          >
+      
+          <motion.button   whileTap={{
+          scale: 0.98,
+        }} whileHover={{scale:1.02}} className="complete-team" onClick={handleButtonClick}>
             COMPLETE TEAM
-          </button>
+          </motion.button>
+          
           {/* <button className="complete-team" onClick={() => {}}>
             Submit Team
           </button> */}

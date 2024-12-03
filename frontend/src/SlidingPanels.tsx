@@ -4,6 +4,7 @@ import Comparision from "./components/comparision_player/Comparision";
 import TeamPage from "./pages/teamPage/teamPage";
 import EditComponent from "./pages/teamPage/EditComponent";
 import usePlayerStore from "./store/playerStore";
+import Navbar from "./components/navbar/navbar";
 
 // export interface CardData {
 //   id: string;
@@ -523,7 +524,7 @@ const SlidingPanels = () => {
             {isOpen ? "^" : "compare players"}
           </button>
         )}
-  
+
         <div className="flex h-full">
           <div
             className={`fixed top-0 w-[45%] h-full bg-black-100 shadow-lg transition-transform 
@@ -532,12 +533,12 @@ const SlidingPanels = () => {
             }`}
           >
             <Comparision />
-          </div>
+          </div>  
   
           <div
             className={`fixed top-0 h-full bg-white transition-transform duration-500 
             ease-in-out ${
-              isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[58%] translate-x-0"
+              isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[60%] translate-x-0"
             }`}
           >
             {/* <div className="p-6">Component 2</div> */}
@@ -557,7 +558,7 @@ const SlidingPanels = () => {
           </div>
   
           <div
-            className={`fixed right-0 w-[45%] h-full bg-black transition-transform 
+            className={`fixed right-0 w-[40%] h-full bg-black transition-transform 
             duration-500 ease-in-out ${
               isOpen ? "translate-x-full" : "translate-x-0"
             }`}
