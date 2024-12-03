@@ -1,3 +1,4 @@
+from players.utils.fantacy_points import points_calculator
 from players.utils.player_service import player_features
 import pickle
 import pandas as pd
@@ -52,14 +53,55 @@ def predict_for_one(name,date,format):
             predictions[target] = str(pred[0])
         else:
             predictions[target] = ""
-    print(predictions)
-    return predictions
+
+    # Calculate fantasy points based on the predictions
+    runouts = predictions.get('runouts', 0)
+    runs = predictions.get('runs', 0)
+    strike_rate = predictions.get('strike_rate', 0)
+
+    try:
+        runouts = float(runouts)
+        runs = float(runs)
+        strike_rate = float(strike_rate)
+        boundary_runs = float(predictions.get('4s', 0))
+        sixes = float(predictions.get('6s', 0))
+        wickets = float(predictions.get('wickets', 0))
+        bowled_lbw = float(predictions.get('bowledlbw', 0))
+        maidens = float(predictions.get('maidens', 0))
+        economy = float(predictions.get('economy', 0))
+        catches = float(predictions.get('catches', 0))
+        stumpings = float(predictions.get('stumpings', 0))
+    except ValueError:
+        runouts = 0
+        runs = 0
+        strike_rate = 100
+        boundary_runs = 0
+        sixes = 0
+        wickets = 0
+        bowled_lbw = 0
+        maidens = 0
+        economy = 0
+        catches = 0
+        stumpings = 0
+
+    # fantasy_points = points_calculator(format=format, runouts_direct=runouts * 0.58
+    # ,runouts_indirect=runouts * 0.42, catches=catches, stumpings=stumpings, runs=runs, sixes=sixes, wickets=wickets, bowled_lbw=bowled_lbw, maidens=maidens, economy=economy, strike_rate=strike_rate, boundaries=boundary_runs)
+    fantasy_points = 0
+    print(fantasy_points)
+    return {"predictions":predictions, "fantasy_points":fantasy_points}
 
 def predict(names,date,format):
+    fantasy_points={}
     predictions={}
-    for name in names.split(','):
-        predictions[name] = predict_for_one(name,date,format)
-    return predictions
+    for name in names:
+        fantasy_points[name] = predict_for_one(name,date,format)["fantasy_points"]
+        predictions[name] = predict_for_one(name,date,format)["predictions"]
+    
+    # Sort the fantasy points in descending order and send best 11
+    fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))
+    fantasy_points = dict(list(fantasy_points.items())[:11])
+    # return fantasy_points
+    return {"fantasy_points":fantasy_points, "predictions":predictions}
 
         
 
