@@ -17,9 +17,8 @@ def explain_graph(request):
             model = body.get('model')
             player_opponents = body.get('player_opponents').split(',') if body.get('player_opponents') else []
             player_type = body.get('player_type')
-            opponent = body.get('opponent')
 
-            if not graph_name or not player_name or not date or not model or not opponent:
+            if not graph_name or not player_name or not date or not model:
                 return JsonResponse({'error': 'graph_name, player_name, date and model are required'}, status=400)
             if not player_opponents:
                 return JsonResponse({'error': 'player_opponents is required'}, status=400)
@@ -42,9 +41,17 @@ def describe_player(request):
             body = json.loads(request.body)
             feature_name = body['feature_name']
             user_task = body.get('user_task', '')
+            player_name = body.get('player_name')
+            date = body.get('date')
+            model = body.get('model')
+            player_opponents = body.get('player_opponents').split(',') if body.get('player_opponents') else []
+            player_type = body.get('player_type')
+
             if not feature_name:
                 return JsonResponse({'error': 'feature_name is required'}, status=400)
-            data = json.dumps(body)
+            if not player_name or not date or not model:
+                return JsonResponse({'error': 'player_name, date and model are required'}, status=400)
+            data = json.dumps(get_data(player_type, feature_name, player_name, date, model, player_opponents))
             description = player_description(data,feature_name, user_task)
             return JsonResponse({'description': description}, status=200)
         except json.JSONDecodeError:
