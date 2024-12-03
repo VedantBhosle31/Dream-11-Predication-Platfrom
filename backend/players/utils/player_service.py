@@ -118,3 +118,14 @@ def matchup_stats(player_name,opponents_list,format,match_date):
         stats[opponent] = matchup_stats_two_players(player_1=player_name,player_2=opponent,format=format,match_date=match_date)
     return stats
     
+def player_features(name,match_date,format):
+    model_batter = model_mapping("Batter" + format)
+    model_bowler = model_mapping("Bowler" + format)
+    model_fielder = model_mapping("Fielder"+format) 
+
+    stats ={}
+    stats["batting"] = model_batter.objects.filter(player_name=name, date__lt = match_date).order_by('-date').values().first()
+    stats["bowling"] = model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date').values().first()
+    stats["fielding"] = model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date').values().first()
+    return stats
+

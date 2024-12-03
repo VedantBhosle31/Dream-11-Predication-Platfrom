@@ -2,7 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from ml_app.utils.predictor import CricketPerformancePredictor
+from ml_app.utils.predictor import PerformancePredictor
 
 
 
