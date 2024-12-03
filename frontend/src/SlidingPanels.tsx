@@ -4,6 +4,17 @@ import Comparision from "./components/comparision_player/Comparision";
 import TeamPage from "./pages/teamPage/teamPage";
 import EditComponent from "./pages/teamPage/EditComponent";
 
+// export interface CardData {
+//   id: string;
+//   name: string;
+//   type: string;
+//   team: string;
+//   points: string;
+//   cost: string;
+//   score: string;
+//   cvc: string;
+// }
+
 export interface CardData {
   id: string;
   name: string;
@@ -13,6 +24,10 @@ export interface CardData {
   cost: string;
   score: string;
   cvc: string;
+  runs: string;
+  average: string;
+  strike_rate: string;
+  country: string;
 }
 
 const SlidingPanels = () => {
@@ -29,6 +44,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "VC",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "2",
@@ -39,6 +58,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "C",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "3",
@@ -49,6 +72,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "4",
@@ -59,6 +86,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "5",
@@ -69,6 +100,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "6",
@@ -79,6 +114,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "7",
@@ -89,6 +128,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "8",
@@ -99,6 +142,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "9",
@@ -109,6 +156,10 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "10",
@@ -119,11 +170,25 @@ const SlidingPanels = () => {
       cost: "12",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
-      id: "11", name: "ALZARRI JOSEPH", type: "BOWL", team: "RCB", points: "207", cost: "12", score: "89",
-      cvc: ""
-    }
+      id: "11",
+      name: "ALZARRI JOSEPH",
+      type: "BOWL",
+      team: "RCB",
+      points: "207",
+      cost: "12",
+      score: "89",
+      cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
+    },
   ];
 
   const initialDragZoneCards: CardData[] = [
@@ -136,6 +201,10 @@ const SlidingPanels = () => {
       cost: "10",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "13",
@@ -146,6 +215,10 @@ const SlidingPanels = () => {
       cost: "4.5",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "14",
@@ -156,6 +229,10 @@ const SlidingPanels = () => {
       cost: "15",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "15",
@@ -166,6 +243,10 @@ const SlidingPanels = () => {
       cost: "27",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "16",
@@ -176,6 +257,10 @@ const SlidingPanels = () => {
       cost: "27.65",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "17",
@@ -186,6 +271,10 @@ const SlidingPanels = () => {
       cost: "11",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "18",
@@ -196,6 +285,10 @@ const SlidingPanels = () => {
       cost: "2",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "19",
@@ -206,6 +299,10 @@ const SlidingPanels = () => {
       cost: "20",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "20",
@@ -216,6 +313,10 @@ const SlidingPanels = () => {
       cost: "22",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "21",
@@ -226,6 +327,10 @@ const SlidingPanels = () => {
       cost: "3.8",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
     {
       id: "22",
@@ -236,6 +341,10 @@ const SlidingPanels = () => {
       cost: "7",
       score: "89",
       cvc: "",
+      runs: "",
+      average: "",
+      strike_rate: "",
+      country: ""
     },
   ];
 
@@ -274,7 +383,24 @@ const SlidingPanels = () => {
   };
 
   const removeFromDropZone = (card: CardData) => {
-    setDropZoneCards(dropZoneCards.filter((c) => c.id !== card.id));
+    // Remove the card from the DropZone
+    const updatedDropZone = dropZoneCards.filter((c) => c.id !== card.id);
+
+    // Reset the removed card's CVC value if it's Captain or Vice-Captain
+    if (card.cvc === "C" || card.cvc === "VC") {
+      // card.cvc = "";
+
+      // Assign new Captain or Vice-Captain if the removed card was one
+      if (updatedDropZone.length >= 3) {
+        const thirdCard = updatedDropZone[4];
+        thirdCard.cvc = card.cvc === "C" ? "C" : "VC";
+      }
+      card.cvc = "";
+    }
+
+    // Update the state
+    setDropZoneCards(updatedDropZone);
+    // setDropZoneCards(dropZoneCards.filter((c) => c.id !== card.id));
     setDragZoneCards([...dragZoneCards, card]);
     setSelectedCard(null);
   };
@@ -308,8 +434,6 @@ const SlidingPanels = () => {
     setShowContainer((prev) => !prev);
   };
 
-
-
   const handleSetCVC = (id: string, role: "C" | "VC") => {
     setDropZoneCards((prevCards) =>
       prevCards.map((card) => {
@@ -318,8 +442,20 @@ const SlidingPanels = () => {
           return { ...card, cvc: role };
         }
 
+        // If we are swapping roles, we check if the other card is a Vice-Captain or Captain
+        if (
+          (role === "C" && card.cvc === "VC") || // If the role is being set to "C", and the card is currently "VC"
+          (role === "VC" && card.cvc === "C") // If the role is being set to "VC", and the card is currently "C"
+        ) {
+          // Swap the roles
+          return { ...card, cvc: (role === "C" ? "VC" : "C") }; // Set the swapped role
+        }
+
         // Reset the previously selected Captain or Vice-Captain
-        if ((role === "C" && card.cvc === "C") || (role === "VC" && card.cvc === "VC")) {
+        if (
+          (role === "C" && card.cvc === "C") ||
+          (role === "VC" && card.cvc === "VC")
+        ) {
           return { ...card, cvc: "" };
         }
 
@@ -333,25 +469,24 @@ const SlidingPanels = () => {
       setDropZoneCards([...dropZoneCards, card]);
       setDragZoneCards(dragZoneCards.filter((c) => c.id !== card.id));
     } else {
-      alert("DropZone is already full!");
+      alert("Dream team is already full!");
     }
   };
-
-
-
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Button with higher z-index and clear positioning */}
-      { showContainer && <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
+      {showContainer && (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
         text-white rounded-l-3xl shadow-lg transition-colors duration-200 -rotate-180 uppercase
         font-semibold text-lg"
-        style={{ writingMode: 'vertical-rl'}}
-      >
-        {isOpen ? "^" : "compare players"}
-      </button>}
+          style={{ writingMode: "vertical-rl" }}
+        >
+          {isOpen ? "^" : "compare players"}
+        </button>
+      )}
 
       <div className="flex h-full">
         <div
@@ -381,7 +516,7 @@ const SlidingPanels = () => {
             dropZoneCards={dropZoneCards}
             removeFromDropZone={removeFromDropZone}
             handleSelectCard={handleSelectCard}
-            // handleSetCVC={handleSetCVC}
+            handleSetCVC={handleSetCVC}
           />
         </div>
 
@@ -396,6 +531,7 @@ const SlidingPanels = () => {
             showContainer={showContainer}
             toggleContainer={toggleContainer}
             dragZoneCards={dragZoneCards}
+            dropZoneCards={dropZoneCards}
             filterType={filterType}
             applyFilter={applyFilter}
             handleSwapCards={handleSwapCards}

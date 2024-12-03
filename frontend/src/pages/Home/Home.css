@@ -12,7 +12,8 @@
 /* Title Section */
 .title {
   position: fixed;
-  top: 25%; /* Adjust for central positioning */
+  top: 25%;
+  /* Adjust for central positioning */
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
@@ -43,7 +44,8 @@
 /* Box Section */
 .box {
   position: fixed;
-  top: 5%; /* Initially positioned offscreen for animation */
+  top: 5%;
+  /* Initially positioned offscreen for animation */
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
@@ -161,9 +163,12 @@ label {
 
 /* Spacer for Scroll */
 .spacer {
-  height: 700vh; /* Adjust the scrollable area */
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent white */
-  backdrop-filter: blur(2px); /* Frosted glass effect */
+  height: 300vh;
+  /* Adjust the scrollable area */
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent white */
+  backdrop-filter: blur(2px);
+  /* Frosted glass effect */
 }
 
 /* Layout */
@@ -172,71 +177,99 @@ label {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: transparent; /* Tailwind: bg-gray-100 */
-  padding: 1rem; /* Tailwind: p-4 */
+  background-color: transparent;
+  /* Tailwind: bg-gray-100 */
+  padding: 1rem;
+  /* Tailwind: p-4 */
 }
 
 .card {
   width: 50%;
-  max-width: 1024px; /* Tailwind: max-w-4xl */
-  background-color: transparent; /* Tailwind: bg-white */
-  border-radius: 0.75rem; /* Tailwind: rounded-xl */
-  padding: 1.5rem; /* Tailwind: p-6 */
+  max-width: 1024px;
+  /* Tailwind: max-w-4xl */
+  background-color: transparent;
+  /* Tailwind: bg-white */
+  border-radius: 0.75rem;
+  /* Tailwind: rounded-xl */
+  padding: 1.5rem;
+  /* Tailwind: p-6 */
 }
 
 /* File Upload Section */
 .upload-box {
-  border: 2px dashed #d1d5db; /* Tailwind: border-gray-300 */
-  border-radius: 0.5rem; /* Tailwind: rounded-lg */
-  padding: 2.5rem; /* Tailwind: p-12 */
+  border: 2px dashed #d1d5db;
+  /* Tailwind: border-gray-300 */
+  border-radius: 0.5rem;
+  /* Tailwind: rounded-lg */
+  padding: 2.5rem;
+  /* Tailwind: p-12 */
   text-align: center;
-  transition: border-color 0.3s; /* Tailwind: transition-colors duration-300 */
+  transition: border-color 0.3s;
+  /* Tailwind: transition-colors duration-300 */
   cursor: pointer;
   margin-bottom: 30px;
 }
 
 .upload-box-file-selected {
-  border: 2px solid #ff5d6b; /* Tailwind: border-blue-500 */
-  border-radius: 0.5rem; /* Tailwind: rounded-lg */
-  padding: 2.5rem; /* Tailwind: p-12 */
+  border: 2px solid #ff5d6b;
+  /* Tailwind: border-blue-500 */
+  border-radius: 0.5rem;
+  /* Tailwind: rounded-lg */
+  padding: 2.5rem;
+  /* Tailwind: p-12 */
   text-align: center;
-  transition: border-color 0.3s; /* Tailwind: transition-colors duration-300 */
+  transition: border-color 0.3s;
+  /* Tailwind: transition-colors duration-300 */
   cursor: pointer;
   margin-bottom: 30px;
 }
 
 .upload-box:hover {
-  border-color: #ff5d6b; /* Tailwind: hover:border-blue-500 */
+  border-color: #ff5d6b;
+  /* Tailwind: hover:border-blue-500 */
 }
 
 .upload-box input {
-  display: none; /* Tailwind: hidden */
+  display: none;
+  /* Tailwind: hidden */
 }
 
 .upload-box-icon {
-  margin: 0 auto 1rem; /* Tailwind: mx-auto mb-4 */
-  color: white; /* Tailwind: text-gray-400 */
+  margin: 0 auto 1rem;
+  /* Tailwind: mx-auto mb-4 */
+  color: white;
+  /* Tailwind: text-gray-400 */
 }
 
 .upload-box-text {
-  color: white; /* Tailwind: text-gray-600 */
+  color: white;
+  /* Tailwind: text-gray-600 */
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
 }
 
 .upload-box-subtext {
-  color: #ececff; /* Tailwind: text-gray-500 */
-  font-size: 0.875rem; /* Tailwind: text-sm */
-  margin-top: 0.5rem; /* Tailwind: mt-2 */
+  color: #ececff;
+  /* Tailwind: text-gray-500 */
+  font-size: 0.875rem;
+  /* Tailwind: text-sm */
+  margin-top: 0.5rem;
+  /* Tailwind: mt-2 */
 }
 
 .error-box {
-  background-color: #fef2f2; /* Tailwind: bg-red-50 */
-  border: 1px solid #fecaca; /* Tailwind: border-red-200 */
-  color: #b91c1c; /* Tailwind: text-red-700 */
-  padding: 0.75rem; /* Tailwind: p-3 */
-  border-radius: 0.5rem; /* Tailwind: rounded-lg */
-  margin-bottom: 1rem; /* Tailwind: mb-4 */
+  background-color: #fef2f2;
+  /* Tailwind: bg-red-50 */
+  border: 1px solid #fecaca;
+  /* Tailwind: border-red-200 */
+  color: #b91c1c;
+  /* Tailwind: text-red-700 */
+  padding: 0.75rem;
+  /* Tailwind: p-3 */
+  border-radius: 0.5rem;
+  /* Tailwind: rounded-lg */
+  margin-bottom: 1rem;
+  /* Tailwind: mb-4 */
 }
 
 /* Logos */
@@ -244,14 +277,34 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.5rem; /* Tailwind: mt-6 */
-  gap: 1rem; /* Tailwind: space-x-4 */
+  margin-top: 1.5rem;
+  /* Tailwind: mt-6 */
+  gap: 1rem;
+  /* Tailwind: space-x-4 */
 }
 
 .logo {
-  width: 6rem; /* Tailwind: w-24 */
-  height: 6rem; /* Tailwind: h-24 */
-  object-fit: contain; /* Tailwind: object-contain */
+  width: 6rem;
+  /* Tailwind: w-24 */
+  height: 6rem;
+  /* Tailwind: h-24 */
+  object-fit: contain;
+  /* Tailwind: object-contain */
+}
+
+
+.devtools {
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  bottom: 100px;
+  /* Adjust this value to control vertical position */
+  /* right: 50%; / Adjust this value to control horizontal position */
+  padding: 10px;
+  border-radius: 5px;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+  z-index: 100;
+  justify-items: center;
 }
 
 .custom-select-container {

@@ -23,7 +23,7 @@ const FilterBar: React.FC<FilterProps> = ({ filters, selected, onFilterChange })
         ))}
         
         <div
-          className="slider"
+          className={`slider ${filters.length === 4 ? 'long-filters' : ''}`}
           style={{
             transform: `translateX(${filters.indexOf(selected) * 100}%)`,
           }}
