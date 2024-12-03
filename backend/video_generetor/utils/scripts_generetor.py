@@ -24,6 +24,7 @@ def generate_completion(prompt):
   return chat_completion.choices[0].message.content
 
 def self_discover(user_task, player_data):
+  # if batter or bowler or all-rounder or wicket-keeper choose the relevant modules
   select_prompt = select_template.format(user_task, batter_reasoning_modules)
   selected_modules = generate_completion(select_prompt)
   print('Selected Modules:', selected_modules.content)
