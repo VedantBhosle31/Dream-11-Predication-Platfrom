@@ -7,6 +7,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
 import VideoPlayer from "../../components/video_player/videoplayer";
+import Slideshow from "../../components/slide-show/SlideShow";
 import { CardData } from "../../SlidingPanels";
 
 export interface EditComponentProps {
@@ -18,7 +19,7 @@ export interface EditComponentProps {
   applyFilter: (filter: "points" | "cost") => void;
   handleSwapCards: (card: CardData) => void;
   selectedCard: CardData | null;
-  addToDropZone:(card: CardData) => void;
+  addToDropZone: (card: CardData) => void;
 }
 
 const EditComponent: React.FC<EditComponentProps> = ({
@@ -43,18 +44,18 @@ const EditComponent: React.FC<EditComponentProps> = ({
     // Check if Captain and Vice-Captain are assigned
     const hasCaptain = dropZoneCards.some((card) => card.cvc === "C");
     const hasViceCaptain = dropZoneCards.some((card) => card.cvc === "VC");
-  
+
     if (!hasCaptain || !hasViceCaptain) {
       alert("Assign a Captain and Vice-Captain to your dream team!");
       return;
     }
-  
+
     // Check if 11 players are selected in the drag zone
     if (dragZoneCards.length > 11) {
       alert("Complete 11 players of your dream team!");
       return;
     }
-  
+
     // Navigate to the player-info page if both conditions are satisfied
     navigation("/player-info");
   };
@@ -63,7 +64,8 @@ const EditComponent: React.FC<EditComponentProps> = ({
     return (
       <div className="video-card">
         <div className="video-section">
-          {<VideoPlayer videoUrl={backendUrl} />}
+          {/* {<VideoPlayer videoUrl={backendUrl} />} */}
+          <Slideshow />
         </div>
         <button className="edit-team" onClick={toggleContainer}>
           EDIT TEAM
