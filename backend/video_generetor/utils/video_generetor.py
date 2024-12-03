@@ -6,6 +6,8 @@ import os
 from typing import List, Tuple
 from datetime import datetime
 
+
+# GIVE PATH TO PPTX FILES AND SCRIPTS
 def convert_pptx_to_png(pptx_file: str) -> str:
     try:
         presentation = Presentation()
@@ -32,6 +34,7 @@ def create_audio_file(script: str, index: int) -> str:
         print(f"Error creating audio file {index}: {str(e)}")
         return None
 
+# RUN THIS FUNCTION GET AUDIO AND IMAGE FILES
 def process_files(pptx_files: List[str], scripts: List[str]) -> Tuple[List[str], List[str]]:
     # print(pptx_files)
     # print("process_to png and audio start")

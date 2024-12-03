@@ -18,6 +18,8 @@ from pptx.oxml.xmlchemy import OxmlElement
 from pptx.util import Pt
 from pptx.enum.text import PP_ALIGN
 
+from backend.players.utils.player_service import get_player_stats
+
 #@title Functions:
 def create_dict(ppt_file,pointer):
     # """
@@ -751,7 +753,10 @@ replacements = {
     "Average":78,
     "50/100":'133/44',
     'graph':{
-        'fantasy':[1,2,3,4,5,6,7,8,9,10],#[last 10 days of fantasy points]when (n==1)
+       
+       'fantasy':{'points':[1,2,3,4,5,6,7,8,9,10],'date':['1','2','3','4','5','6','7','8','9','10']},#[last 10 days of fantasy points]when (n==1)
+
+        # 'fantasy':[1,2,3,4,5,6,7,8,9,10],#[last 10 days of fantasy points]when (n==1)
         'consistancy':[0.5,0.75,0.9],#[overall,against given opp, in given venue]when (n==2)
         'vpi':[1,1.5,0.5,0.4,0.25,6,0.75,1.8,0.1,1.9,0.9],#[last 10 vpi]-------- (n==3)[if current venue data is not possible, skip venue]
         'opi':[1,1.5,0.5,0.4,0.25,6,0.75,1.8,0.1,1.9,0.9],#[last 10 opi] when (only n=4)
@@ -759,6 +764,74 @@ replacements = {
     'n':1
 
 }
+
+
+def get_requirements_object(n, name, match_date, format, team, predictions):
+    data = get_player_stats(name, match_date, format)
+    player_type = predictions['player_type']
+    ps = data['stats'][player_type]
+    ps0 = data['stats']['player_type'][0]
+    basic_requirements={
+        "name": name,
+        "team": team,
+        "expct_pts": predictions["expected_points"],
+        "cost": predictions["cost"],
+        "expct_runs": ps0["runs"],
+        "expct_4s_and_6s": ps0["boundaries"],
+        "runs": ps0["runs"],
+        "strike_rate": ps0["strike_rate"],
+        "boundaries": ps0["boundaries"],
+        "wickets": ps0["wickets"],
+        "economy": ps0["economy"],
+        "catches": ps0["catches"],
+        "run_outs": ps0["run_outs"],
+        "form": ps0["form"],
+    }
+
+    basic_requirements["Matches"] = ps0["innings_played"]
+    basic_requirements["cruns"] = ps0["previous_runs"]
+    basic_requirements["hstrike_rate"] = ps0["previous_strike_rate"]
+    basic_requirements["4s/6s"] = ps0["previous_4s"]+ps0["previous_6s"]
+    basic_requirements["highest_score"] = ps0["highest_score"]
+    basic_requirements["innings"] = ps0["innings_played"]
+    basic_requirements["Average"] = ps0["average"]
+    basic_requirements["50/100"] = ps0["previous_fifties"]+ps0["previous_centuries"]
+    if n == 1:
+        fantasy_points = []
+        match_dates = []
+        for i in range(1, 11):
+            fantasy_points.append(ps[i][f"{format}_fantasy_points"])
+            match_date.append(ps[i])
+        basic_requirements["graph"] = {
+            "fantasy": {
+                "points": fantasy_points,
+                "date": match_dates
+            }
+        }
+    if n == 2:
+        basic_requirements["graph"] = {
+            "consistancy": [ps[0]["consistency"], ps[1]["consistency"], ps["consistency"]]
+        }
+    if n == 3:
+        vpis = []
+        for i in range(1, 11):
+            vpis.append(ps[i]["venue"])
+        basic_requirements["graph"] = {
+            "vpi": vpis
+        }
+    if n == 4:
+        vpis = []
+        for i in range(1, 11):
+            vpis.append(ps[i]["venue"])
+        basic_requirements["graph"] = {
+            "vpi": vpis
+        }
+
+    return basic_requirements
+
+
+
+
 #n==1: overall
 #n==2: past 10 days
 #n==3: in given venue
@@ -772,6 +845,11 @@ replacements = {
     # "Average":78,
     # "50/100":'133/44'
 #search IMG in fill text to find  player and symbol image path code
-for i in range (1, 5):
-    PPT_GEN(i,replacements,pointer)
+
+# 4 REPLACEMENTS OVERALL, LAST 10 DAYS, VENUE, OPONENT PLAYER
+def generate_ppts(name, match_date, format, team, predictions):
+    for n in range(1, 5):
+        replacement_obj = get_requirements_object(n, name, match_date, format, team, predictions)
+        PPT_GEN(n, pointer, replacements=replacement_obj)
+
 #output_file='/content/file.png' here i store the graphs temporarily. have not written deletion code.(note this file is created automatically by my code)
