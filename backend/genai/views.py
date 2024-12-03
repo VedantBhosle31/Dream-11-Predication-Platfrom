@@ -2,10 +2,14 @@ from django.http import JsonResponse, HttpResponse
 import json
 from genai.utils.explain_graph import graph_explain
 from genai.utils.player_info import player_description
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 def home(request):
     return HttpResponse("Hello, World!")
 
+@csrf_exempt
 def explain_graph(request):
     if request.method == "POST":
         try:
@@ -25,6 +29,7 @@ def explain_graph(request):
         return JsonResponse({'error': 'Invalid JSON'})
 
 
+@csrf_exempt
 def describe_player(request):
     if request.method == "POST":
         try:

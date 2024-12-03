@@ -94,7 +94,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 from players.utils.player_service import get_player_stats, matchup_stats, player_features
 # from services.player_service import get_player_stats
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import parser_classes
 
