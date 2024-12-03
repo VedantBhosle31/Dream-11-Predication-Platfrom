@@ -1,13 +1,12 @@
-from genai.models import (
-    
-)
+impor
 def get_data(player_type, player_id, format):
     '''
         take player_name and format(type of match
     '''
-    batter_player_data_json={
+    
+    batter_player_data_json= {
       "player_name": "Virat Kohli",
-      "player_id": "VIRAT001",
+      "player_id": player_id,
       "player_type": "Batter",
       "bowlerwise_matchups": [
         {
