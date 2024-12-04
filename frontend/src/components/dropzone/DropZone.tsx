@@ -430,7 +430,7 @@ const DroppableCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
@@ -458,7 +458,7 @@ const DroppableCard: React.FC<{
   const handleRightClick = async () => {
     if (currentIndex === 1) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
@@ -931,7 +931,7 @@ const DroppableCard: React.FC<{
           <button
             // onClick={updateDetails}
             onClick={() =>
-              fetchData("http://127.0.0.1:8080/players/get-player-data")
+              fetchData(`${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`)
             }
             className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
             style={{
