@@ -221,9 +221,8 @@ def update_text_split_and_format(shape, new_text):
 
 def make_colchart(slide,info,left,top,width,height):
         chart_data = CategoryChartData()
-        chart_data.categories = [f'{i}' for i in range(1,11)]
-        chart_data.add_series('Series 1', info)  # Example data for the series
-
+        chart_data.categories = info['date']
+        chart_data.add_series('Series 1', info['points'])  # Example data for the series
         # Get the position of the removed image
 
         # Remove the old image
@@ -722,43 +721,47 @@ def PPT_GEN(n,replacements,pointer):#n is slide number
 #####################################
 #@title example replacement data
 #@title replacements
+
 replacements = {
     "name":"Bob ",
     "player_id":"VIRAT001",
     "team":"Cartoon Network",
-    "expt_pts": 32,
-    "cost": 15,
+    #model given prediction
+    "expt_pts": 32, #fantasy points
+    "cost": 15, 
     "expt_runs": 77,
     "expt_4s_and_6s": 8,
     "runs": 77,#both expt_runs and runs store same val
-    "strike_rate": 8,
-    "boundaries": 8,
+    "strike_rate": 8, 
+    "boundaries": 8, #predicted 4s+6s
     "wickets": 1,
     "economy": 57,
     "catches": 23,#fielding stats->catches
     "run_outs": 3,
     "form": 92,
-############################### upto here, independent of n
-    "Matches": 244,
-    "cruns":324089,
-    "hstrike_rate":23,
-    "4s/6s":'134/45',
-    "player_img":'image.jpg',#hardcoded file path into fill_text for now
-    "team_symbol":'image.jpg',#no code written to replace symbol currently. shape.name is automatically located
 
-    "highest_score": 55,#
-    "innings": 3489,
-    "Average":78,
-    "50/100":'133/44',
+############################### upto here, independent of n
+    "Matches": 244,  #dependent on n
+    "cruns":324089,  #dependent on n
+    "hstrike_rate":23,  #dependent on n
+    "4s/6s":'134/45',  #dependent on n
+    "player_img":'image.jpg',
+    "team_symbol":'image.jpg',
+
+    "highest_score": 55, #dependent on n
+    "innings": 3489, #dependent on n
+    "Average":78, #dependent on n
+    "50/100":'133/44', #dependent on n
     'graph':{
-        'fantasy':[1,2,3,4,5,6,7,8,9,10],#[last 10 days of fantasy points]when (n==1)
+        'fantasy':{'points':[1,2,3,4,5,6,7,8,9,10],'date':['1','2','3','4','5','6','7','8','9','10']},#[last 10 days of fantasy points]when (n==1)
+
         'consistancy':[0.5,0.75,0.9],#[overall,against given opp, in given venue]when (n==2)
         'vpi':[1,1.5,0.5,0.4,0.25,6,0.75,1.8,0.1,1.9,0.9],#[last 10 vpi]-------- (n==3)[if current venue data is not possible, skip venue]
         'opi':[1,1.5,0.5,0.4,0.25,6,0.75,1.8,0.1,1.9,0.9],#[last 10 opi] when (only n=4)
     },
-    'n':1
-
 }
+
+
 #n==1: overall
 #n==2: past 10 days
 #n==3: in given venue
@@ -767,7 +770,7 @@ replacements = {
     # "cruns":324089,
     # "hstrike_rate":23,
     # "4s/6s":'134/45',
-    # "highest_score": 55,
+    # "highest_score": 55, 
     # "innings": 3489,
     # "Average":78,
     # "50/100":'133/44'
