@@ -26,25 +26,32 @@ def process_file(file_path, player_data, file_type):
             player_id = row.get("player_id", None).strip()
             fantasy_points = row.get(fantasy_column, None)
 
-            if True:# if (player_name and player_id and fantasy_points is not None )or True:
+            if (
+                True
+            ):  # if (player_name and player_id and fantasy_points is not None )or True:
                 if player_id not in player_data.keys():
-                    player_data[player_id] = {"player_name": player_name, "total_points": 0, "matches": 0}
+                    player_data[player_id] = {
+                        "player_name": player_name,
+                        "total_points": 0,
+                        "matches": 0,
+                    }
                 player_data[player_id]["total_points"] += fantasy_points
                 player_data[player_id]["matches"] += 1
 
-    
     except Exception as e:
         print(f"Error processing file {file_path}: {e}")
-    #print(len(player_data))
+    # print(len(player_data))
+
+
 # Traverse the directory for bowler and fielder files
 for subdir, dirs, files in os.walk(cwd):
     print(len(bowler_data))
     for file in files:
         print(file)
-        if file in ["batter.csv","bowler.csv", "fielder.csv"]:
+        if file in ["batter.csv", "bowler.csv", "fielder.csv"]:
             file_path = os.path.join(subdir, file)
             if "bowler" in file:
-               
+
                 process_file(file_path, bowler_data, "bowler")
             elif "fielder" in file:
                 process_file(file_path, bowler_data, "fielder")
@@ -55,13 +62,19 @@ for subdir, dirs, files in os.walk(cwd):
 result_bowler_data = []
 for player_id, data in bowler_data.items():
     avg_points = data["total_points"] / data["matches"]
-    result_bowler_data.append({"player_name": data["player_name"], "player_id": player_id, "matchpoints_avg": avg_points})
+    result_bowler_data.append(
+        {
+            "player_name": data["player_name"],
+            "player_id": player_id,
+            "matchpoints_avg": avg_points,
+        }
+    )
 
 # Convert the results into a DataFrame
 result_bowler_df = pd.DataFrame(result_bowler_data)
 
 # Sort the results by average points (optional)
-#result_bowler_df = result_bowler_df.sort_values(by="matchpoints_avg", ascending=False)
+# result_bowler_df = result_bowler_df.sort_values(by="matchpoints_avg", ascending=False)
 
 # Save the result to a CSV file
 result_bowler_df.to_csv("fantasy_bowl7.csv", index=False)

@@ -9,7 +9,7 @@ st.set_page_config(
     page_title="Model UI",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 # Sidebar
@@ -28,25 +28,28 @@ testing_end_date = st.sidebar.date_input("To", value=datetime(2023, 12, 31))
 # Submit Button
 if st.sidebar.button("🔍 Fetch Results"):
     # Convert dates to strings for command line arguments
-    training_start_str = training_start_date.strftime('%Y-%m-%d')
-    training_end_str = training_end_date.strftime('%Y-%m-%d')
-    testing_start_str = testing_start_date.strftime('%Y-%m-%d')
-    testing_end_str = testing_end_date.strftime('%Y-%m-%d')
+    training_start_str = training_start_date.strftime("%Y-%m-%d")
+    training_end_str = training_end_date.strftime("%Y-%m-%d")
+    testing_start_str = testing_start_date.strftime("%Y-%m-%d")
+    testing_end_str = testing_end_date.strftime("%Y-%m-%d")
 
     # Define the command to run the script with arguments
     command = [
-        "python", "util.py",
-        training_start_str, training_end_str,
-        testing_start_str, testing_end_str
+        "python",
+        "util.py",
+        training_start_str,
+        training_end_str,
+        testing_start_str,
+        testing_end_str,
     ]
-    
+
     # Run the script using subprocess
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)
-        
+
         # Assuming the script generates a predictions.csv file
         predictions_file = "Final_Result.csv"  # Adjust path if necessary
-        
+
         if os.path.exists(predictions_file):
             st.success("✅ Data successfully processed!")
             st.write("### 📊 Model Results")
@@ -59,10 +62,10 @@ if st.sidebar.button("🔍 Fetch Results"):
                 label="📥 Download Results as CSV",
                 data=csv,
                 file_name="model_results.csv",
-                mime="text/csv"
+                mime="text/csv",
             )
         else:
             st.error("❌ Could not find the predictions.csv file. Please try again.")
-    
+
     except subprocess.CalledProcessError as e:
         st.error(f"Error while running the script: {e}")
