@@ -363,9 +363,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
               <div style={{ fontSize: "32px", fontWeight: "bold" }}>
                 {card.name}
               </div>
-              <div style={{ fontSize: "14px", color: "gray" }}>
-                ROYAL CHALLENGERS BANGLORE
-              </div>
             </div>
 
             {/* Image */}

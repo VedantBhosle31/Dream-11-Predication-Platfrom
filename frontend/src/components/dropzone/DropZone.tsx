@@ -569,7 +569,7 @@ const DroppableCard: React.FC<{
     setCardExpanded(true);
 
     const response = await fetch(
-      "http://127.0.0.1:8000/players/get-player-data",
+      `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`,
       {
         method: "POST",
         headers: {
@@ -596,6 +596,8 @@ const DroppableCard: React.FC<{
     }
 
     const fetcheddata = await response.json();
+
+    console.log("fetcheddata", fetcheddata);
 
     maindata = fetcheddata;
 
@@ -798,8 +800,8 @@ const DroppableCard: React.FC<{
       result.push({
         date: maindata["stats"]["batting"][i]["date"],
         value: maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
+          ? 0
+          : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
       });
     }
 
@@ -844,13 +846,13 @@ const DroppableCard: React.FC<{
 
       <div className="droppable-card-points">
         <div>
-        {parseFloat(card.points).toFixed(2)}
+          {parseFloat(card.points).toFixed(2)}
           <div style={{ fontSize: 6, color: "red" }}>PTS</div>
         </div>
 
         <img
           className="team-logo"
-          src={card.team === "RCB" ? rcblogo : milogo}
+          src={card.team_url}
           alt={defaultimg}
         />
       </div>
@@ -978,8 +980,8 @@ const DroppableCard: React.FC<{
       newpiedata={newpiedata}
       venuechartdata={newvenuedata}
       radarnumbers={newradardata}
-        // fantasygraphdata={newfantasygraphdata}
-        fantasygraphdata={fantasygraphdata}
+      // fantasygraphdata={newfantasygraphdata}
+      fantasygraphdata={fantasygraphdata}
       percentages={newpercentages}
       impactdata={newimpactdata}
       matchupsdata={newmatchupsdata}

@@ -21,13 +21,13 @@ export interface CardData {
   strike_rate: string;
   country: string; //
   team_url: string;
-  espn_id:string;
-  img_url:string;
+  espn_id: string;
+  img_url: string;
 }
 
 const SlidingPanels = () => {
-  
-  
+
+
   const {
     playerStats,
     best11Players,
@@ -36,8 +36,8 @@ const SlidingPanels = () => {
     playerTeamMap,
   } = usePlayerStore();
   // console.log("playerStats", playerStats, fantasyPoints);
-  
-  
+
+
   const extractCardData = (
     fantasyPoints_: any,
     predictions: Record<string, any>
@@ -68,7 +68,7 @@ const SlidingPanels = () => {
         country: playerStats.country || "Unknown",
         espn_id: playerStats.player_id2 || "",
         team_url: teamLogos![playerTeam.toLowerCase()] || "",
-        img_url:espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
+        img_url: espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
       };
     });
   };
@@ -87,13 +87,13 @@ const SlidingPanels = () => {
     const remainingPlayers = Object.keys(playerStats).filter(
       (playerName) => !best11Players.includes(playerName)
     );
-  
+
     // Map the remaining players into the desired CardData format
     return remainingPlayers.map((playerName, index) => {
       const playerStatsData = playerStats[playerName] || {};
       const playerTeam = playerTeamMap[playerName] || "Unknown";
       const espnId = playerStatsData.player_id2 || "";
-  
+
       return {
         id: `${index + 1}`, // Unique ID for remaining players
         name: playerName,
@@ -109,16 +109,16 @@ const SlidingPanels = () => {
         country: playerStatsData.country || "Unknown",
         espn_id: playerStatsData.player_id2 || "",
         team_url: teamLogos![playerTeam.toLowerCase()] || "",
-        img_url:espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
+        img_url: espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
       };
     });
   };
-  
-  
-  const remainingPlayers = extractRemainingPlayers( best11Players, playerStats);
 
 
-  
+  const remainingPlayers = extractRemainingPlayers(best11Players, playerStats);
+
+
+
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -133,7 +133,7 @@ const SlidingPanels = () => {
   // const [dragZoneCards, setDragZoneCards] =
   //   useState<CardData[]>(initialDragZoneCards);
 
-     const [dragZoneCards, setDragZoneCards] =
+  const [dragZoneCards, setDragZoneCards] =
     useState<CardData[]>(remainingPlayers);
 
   const [filterType, setFilterType] = useState<"points" | "cost">("points");
@@ -145,7 +145,7 @@ const SlidingPanels = () => {
     setFilterType(filter);
   };
 
-  
+
   const removeFromDropZone = (card: CardData) => {
     // Remove the card from the DropZone
     const updatedDropZone = dropZoneCards.filter((c) => c.id !== card.id);
@@ -254,12 +254,12 @@ const SlidingPanels = () => {
   };
 
   return (
-        <div className="relative w-full h-screen overflow-hidden ">
-        {/* Button with higher z-index and clear positioning */}
-        {showContainer && (
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
+    <div className="relative w-full h-screen overflow-hidden ">
+      {/* Button with higher z-index and clear positioning */}
+      {showContainer && (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
           text-white rounded-l-3xl shadow-lg transition-colors duration-200 -rotate-180 uppercase
           font-semibold text-lg"
           style={{ writingMode: "vertical-rl" }}
@@ -271,17 +271,15 @@ const SlidingPanels = () => {
       <div className="flex h-full">
         <div
           className={`fixed top-0 w-[45%] h-full bg-black-100 shadow-lg transition-transform 
-            duration-500 ease-in-out  ${
-              isOpen ? "translate-x-0" : "-translate-x-full"
+            duration-500 ease-in-out  ${isOpen ? "translate-x-0" : "-translate-x-full"
             }`}
-          >
-            <Comparision />
-          </div>  
-  
-          <div
-            className={`fixed top-0 h-full bg-black transition-transform duration-500 
-            ease-in-out  ${
-              isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[60%] translate-x-0"
+        >
+          <Comparision />
+        </div>
+
+        <div
+          className={`fixed top-0 h-full bg-black transition-transform duration-500 
+            ease-in-out  ${isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[60%] translate-x-0"
             }`}
         >
           {/* <div className="p-6">Component 2</div> */}
@@ -302,8 +300,7 @@ const SlidingPanels = () => {
 
         <div
           className={`fixed right-0 w-[40%] h-full bg-black transition-transform 
-            duration-500 ease-in-out ${
-              isOpen ? "translate-x-full" : "translate-x-0"
+            duration-500 ease-in-out ${isOpen ? "translate-x-full" : "translate-x-0"
             }`}
         >
           {/* <div className="p-6">Component 3</div> */}

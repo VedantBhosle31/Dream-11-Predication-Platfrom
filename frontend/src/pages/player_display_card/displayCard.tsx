@@ -532,6 +532,8 @@ const DisplayCard: React.FC<{
 
     const maindata: any = allmaindata;
 
+    console.log("maindata", maindata);
+
     setmyData({
       BATTING: {
         title: "BATTING",

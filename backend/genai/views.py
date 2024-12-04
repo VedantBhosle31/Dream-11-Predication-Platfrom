@@ -63,3 +63,18 @@ def describe_player(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
+    
+def get_ai_audio(request):
+    body = json.loads(request.body)
+    feature_name = "player_description"
+    user_task = body.get('user_task', '')
+    player_name = body.get('player_name')
+    date = body.get('date')
+    model = body.get('model')
+    player_opponents = body.get('player_opponents').split(',') if body.get('player_opponents') else []
+    player_type = body.get('player_type')    
+    if not feature_name:
+        return JsonResponse({'error': 'feature_name is required'}, status=400)
+    if not player_name or not date or not model:
+        return JsonResponse({'error': 'player_name, date and model are required'}, status=400)
+    final_text = ''
