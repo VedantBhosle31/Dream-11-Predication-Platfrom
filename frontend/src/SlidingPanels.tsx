@@ -20,54 +20,61 @@ import Navbar from "./components/navbar/navbar";
 export interface CardData {
   id: string;
   name: string;
-  type: string;//
-  team: string;//
-  points: string;//
+  type: string; //
+  team: string; //
+  points: string; //
   cost: string;
   score: string;
-  cvc: string;//
+  cvc: string; //
   runs: string;
-  average: string;//
+  average: string; //
   strike_rate: string;
   country: string; //
+  team_url: string;
   // espn_id:string
 }
 
 const SlidingPanels = () => {
+  const {
+    playerStats,
+    best11Players,
+    fantasyPoints,
+    teamLogos,
+    playerTeamMap,
+  } = usePlayerStore();
+  console.log("playerStats", playerStats, fantasyPoints);
+  const extractCardData = (
+    fantasyPoints_: any,
+    predictions: Record<string, any>
+  ) => {
+    console.log(playerStats, fantasyPoints);
+    return best11Players?.map((f, index) => {
+      const playerName = best11Players[index];
+      const playerFantasyPoints = fantasyPoints[playerName];
+      const playerStats = predictions[playerName] || {};
+      const playerTeam = playerTeamMap[playerName] || "Unknown";
 
+      return {
+        id: `${index + 1}`, // Unique ID for the player
+        name: playerName,
+        type: playerStats.position || "N/A",
+        team: playerStats.team || "Unknown",
+        points: playerFantasyPoints.toString(),
+        cost: playerStats.cost || "0",
+        score: playerStats.score || "0",
+        cvc: index === 0 ? "C" : index === 1 ? "VC" : "",
+        runs: playerStats.runs || "0",
+        average: playerStats.average || "0.0",
+        strike_rate: playerStats.strike_rate || "0.0",
+        country: playerStats.country || "Unknown",
+        espn_id: playerStats.player_id2 || "",
+        team_url: teamLogos![playerTeam.toLowerCase()] || "",
+      };
+    });
+  };
 
-
-  const { playerStats } = usePlayerStore();
-const { best11Players } = usePlayerStore();
-const extractCardData = (fantasyPoints: any, predictions: Record<string, any>) => {
-  return Object.keys(fantasyPoints).map((playerName, index) => {
-    const playerFantasyPoints = fantasyPoints[playerName];
-    const playerStats = predictions[playerName] || {};
-
-    return {
-      id: `${index + 1}`, // Unique ID for the player
-      name: playerName,
-      type: playerStats.position || "N/A",
-      team: playerStats.team || "Unknown",
-      points: playerFantasyPoints.toString(),
-      cost: playerStats.cost || "0",
-      score: playerStats.score || "0",
-      cvc: index === 0 ? "C" : index === 1 ? "VC" : "",
-      runs: playerStats.runs || "0",
-      average: playerStats.average || "0.0",
-      strike_rate: playerStats.strike_rate || "0.0",
-      country: playerStats.country || "Unknown",
-      espn_id: playerStats.player_id2 || "",
-    };
-  });
-};
-
-
-
-
-const cardData = extractCardData(best11Players, playerStats);
-console.log("cardData here here b",cardData);
-
+  const cardData = extractCardData(best11Players, playerStats);
+  console.log("cardData here here b", cardData);
 
   const [isOpen, setIsOpen] = useState(false);
   // const { best11Players, playerStats } = usePlayerStore();
@@ -387,47 +394,14 @@ console.log("cardData here here b",cardData);
     // },
   ];
 
-  
-
-
-
-
-
   // const [dropZoneCards, setDropZoneCards] =
   //   useState<CardData[]>(initialDropZoneCards);
-  const [dropZoneCards, setDropZoneCards] =
-    useState<CardData[]>(cardData);
+  const [dropZoneCards, setDropZoneCards] = useState<CardData[]>(
+    cardData as any
+  );
 
   const [dragZoneCards, setDragZoneCards] =
     useState<CardData[]>(initialDragZoneCards);
-
-
-
-
-
-
-
-
-  const { playerNames } = usePlayerStore();
-  // const { playerStats } = usePlayerStore();
-  // const { best11Players } = usePlayerStore();
-
-  const { model } = usePlayerStore();
-  const { matchDate } = usePlayerStore();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   const [filterType, setFilterType] = useState<"points" | "cost">("points");
 
@@ -506,7 +480,6 @@ console.log("cardData here here b",cardData);
   //   setSelectedCard(null);
   // };
 
-
   const handleSwapCards = (card: CardData) => {
     if (selectedCard !== null) {
       const updatedDropZone = dropZoneCards.map((c) => {
@@ -517,16 +490,22 @@ console.log("cardData here here b",cardData);
         }
         return c;
       });
-  
+
       const updatedDragZone = dragZoneCards.map((c) => {
         // Replace the dragged card in the drag zone with the selected card
         if (c.id === card.id) {
           // If the dragged card was a captain or vice-captain, reset its cvc
-          return { ...selectedCard, cvc: selectedCard.cvc === "C" || selectedCard.cvc === "VC" ? "" : selectedCard.cvc };
+          return {
+            ...selectedCard,
+            cvc:
+              selectedCard.cvc === "C" || selectedCard.cvc === "VC"
+                ? ""
+                : selectedCard.cvc,
+          };
         }
         return c;
       });
-  
+
       setDropZoneCards(updatedDropZone);
       setDragZoneCards(updatedDragZone);
       setSelectedCard(null);
@@ -534,8 +513,6 @@ console.log("cardData here here b",cardData);
       setSelectedCard(null);
     }
   };
-  
-  
 
   const toggleContainer = () => {
     setShowContainer((prev) => !prev);
@@ -580,87 +557,74 @@ console.log("cardData here here b",cardData);
     }
   };
 
-
-
-
-
-
-  
-
-
-
-
-
-
   return (
-        <div className="relative w-full h-screen overflow-hidden">
-        {/* Button with higher z-index and clear positioning */}
-        {showContainer && (
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Button with higher z-index and clear positioning */}
+      {showContainer && (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
           text-white rounded-l-3xl shadow-lg transition-colors duration-200 -rotate-180 uppercase
           font-semibold text-lg"
-            style={{ writingMode: "vertical-rl" }}
-          >
-            {isOpen ? "^" : "compare players"}
-          </button>
-        )}
+          style={{ writingMode: "vertical-rl" }}
+        >
+          {isOpen ? "^" : "compare players"}
+        </button>
+      )}
 
-        <div className="flex h-full">
-          <div
-            className={`fixed top-0 w-[45%] h-full bg-black-100 shadow-lg transition-transform 
+      <div className="flex h-full">
+        <div
+          className={`fixed top-0 w-[45%] h-full bg-black-100 shadow-lg transition-transform 
             duration-500 ease-in-out  ${
               isOpen ? "translate-x-0" : "-translate-x-full"
             }`}
-          >
-            <Comparision />
-          </div>  
-  
-          <div
-            className={`fixed top-0 h-full bg-white transition-transform duration-500 
+        >
+          <Comparision />
+        </div>
+
+        <div
+          className={`fixed top-0 h-full bg-white transition-transform duration-500 
             ease-in-out ${
               isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[60%] translate-x-0"
             }`}
-          >
-            {/* <div className="p-6">Component 2</div> */}
-            <TeamPage
-              showContainer={showContainer}
-              toggleContainer={toggleContainer}
-              dragZoneCards={dragZoneCards}
-              filterType={filterType}
-              applyFilter={applyFilter}
-              handleSwapCards={handleSwapCards}
-              selectedCard={selectedCard}
-              dropZoneCards={dropZoneCards}
-              removeFromDropZone={removeFromDropZone}
-              handleSelectCard={handleSelectCard}
-              handleSetCVC={handleSetCVC}
-            />
-          </div>
-  
-          <div
-            className={`fixed right-0 w-[40%] h-full bg-black transition-transform 
+        >
+          {/* <div className="p-6">Component 2</div> */}
+          <TeamPage
+            showContainer={showContainer}
+            toggleContainer={toggleContainer}
+            dragZoneCards={dragZoneCards}
+            filterType={filterType}
+            applyFilter={applyFilter}
+            handleSwapCards={handleSwapCards}
+            selectedCard={selectedCard}
+            dropZoneCards={dropZoneCards}
+            removeFromDropZone={removeFromDropZone}
+            handleSelectCard={handleSelectCard}
+            handleSetCVC={handleSetCVC}
+          />
+        </div>
+
+        <div
+          className={`fixed right-0 w-[40%] h-full bg-black transition-transform 
             duration-500 ease-in-out ${
               isOpen ? "translate-x-full" : "translate-x-0"
             }`}
-          >
-            {/* <div className="p-6">Component 3</div> */}
-            <EditComponent
-              showContainer={showContainer}
-              toggleContainer={toggleContainer}
-              dragZoneCards={dragZoneCards}
-              dropZoneCards={dropZoneCards}
-              filterType={filterType}
-              applyFilter={applyFilter}
-              handleSwapCards={handleSwapCards}
-              selectedCard={selectedCard}
-              addToDropZone={addToDropZone}
-            />
-          </div>
+        >
+          {/* <div className="p-6">Component 3</div> */}
+          <EditComponent
+            showContainer={showContainer}
+            toggleContainer={toggleContainer}
+            dragZoneCards={dragZoneCards}
+            dropZoneCards={dropZoneCards}
+            filterType={filterType}
+            applyFilter={applyFilter}
+            handleSwapCards={handleSwapCards}
+            selectedCard={selectedCard}
+            addToDropZone={addToDropZone}
+          />
         </div>
       </div>
-    
+    </div>
   );
 };
 

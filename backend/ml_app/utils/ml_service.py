@@ -48,7 +48,11 @@ def predict_for_one(player_stats,format):
     features = player_stats
     predictions = {}
     for target in targets:
-        s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+        if 'format' == 'Test':
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format+'_match_'+target
+        else:
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+
         model = models[s]
         scaler = scalers[s]
         feature_column= feature_columns_dict[s]

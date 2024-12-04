@@ -20,6 +20,7 @@ export interface DisplayCardData {
   strike_rate: string;
   cvc: string;
   country: string;
+  team_url: string;
 }
 
 interface Stat {
