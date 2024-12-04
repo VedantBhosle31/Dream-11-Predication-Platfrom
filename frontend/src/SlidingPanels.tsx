@@ -6,16 +6,6 @@ import EditComponent from "./pages/teamPage/EditComponent";
 import usePlayerStore from "./store/playerStore";
 import Navbar from "./components/navbar/navbar";
 
-// export interface CardData {
-//   id: string;
-//   name: string;
-//   type: string;
-//   team: string;
-//   points: string;
-//   cost: string;
-//   score: string;
-//   cvc: string;
-// }
 
 export interface CardData {
   id: string;
