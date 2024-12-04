@@ -12,6 +12,8 @@ from rest_framework.decorators import parser_classes
 
 import json
 
+from players.utils.validators import validate_uploaded_csv
+
 
 # Create your views here.
 PLAYER_NAMES_PATH = "players/utils/player_names.csv"
@@ -50,6 +52,18 @@ def verify_csv(request):
             },
             status=400,
         )
+
+# @csrf_exempt
+# @parser_classes([MultiPartParser, FormParser])
+# def verify_csv(request):
+#     if request.method == "POST" and request.FILES.get("file"):
+#         file = request.FILES["file"]
+#         result = validate_uploaded_csv(file)
+#         errors = result["errors"]
+#         logos = result["team_logos"]
+#         final_players_unique_names = result["final_players_unique_names"]
+#         if errors:
+#             return JsonResponse({"status": "error", "errors": errors}, status=400)
 
 
 @csrf_exempt

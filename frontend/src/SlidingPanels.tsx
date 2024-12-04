@@ -31,10 +31,13 @@ export interface CardData {
   strike_rate: string;
   country: string; //
   team_url: string;
-  // espn_id:string
+  espn_id:string;
+  img_url:string;
 }
 
 const SlidingPanels = () => {
+  
+  
   const {
     playerStats,
     best11Players,
@@ -42,17 +45,23 @@ const SlidingPanels = () => {
     teamLogos,
     playerTeamMap,
   } = usePlayerStore();
-  console.log("playerStats", playerStats, fantasyPoints);
+  // console.log("playerStats", playerStats, fantasyPoints);
+  
+  
   const extractCardData = (
     fantasyPoints_: any,
     predictions: Record<string, any>
   ) => {
+
+
     console.log(playerStats, fantasyPoints);
+
     return best11Players?.map((f, index) => {
       const playerName = best11Players[index];
       const playerFantasyPoints = fantasyPoints[playerName];
       const playerStats = predictions[playerName] || {};
       const playerTeam = playerTeamMap[playerName] || "Unknown";
+      const espnId = playerStats.player_id2 || "";
 
       return {
         id: `${index + 1}`, // Unique ID for the player
@@ -69,6 +78,7 @@ const SlidingPanels = () => {
         country: playerStats.country || "Unknown",
         espn_id: playerStats.player_id2 || "",
         team_url: teamLogos![playerTeam.toLowerCase()] || "",
+        img_url:espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
       };
     });
   };
@@ -76,323 +86,388 @@ const SlidingPanels = () => {
   const cardData = extractCardData(best11Players, playerStats);
   console.log("cardData here here b", cardData);
 
+
+
+
+  const extractRemainingPlayers = (
+    best11Players: string[],
+    playerStats: Record<string, any>
+  ) => {
+    // Filter the playerStats to exclude the best11Players
+    const remainingPlayers = Object.keys(playerStats).filter(
+      (playerName) => !best11Players.includes(playerName)
+    );
+  
+    // Map the remaining players into the desired CardData format
+    return remainingPlayers.map((playerName, index) => {
+      const playerStatsData = playerStats[playerName] || {};
+      const playerTeam = playerTeamMap[playerName] || "Unknown";
+      const espnId = playerStatsData.player_id2 || "";
+  
+      return {
+        id: `${index + 1}`, // Unique ID for remaining players
+        name: playerName,
+        type: playerStatsData.position || "N/A",
+        team: playerStatsData.team || "Unknown",
+        points: "N/A", // No fantasy points for remaining players
+        cost: playerStatsData.cost || "0",
+        score: playerStatsData.score || "0",
+        cvc: "", // No Captain or Vice-Captain for remaining players
+        runs: playerStatsData.runs || "0",
+        average: playerStatsData.average || "0.0",
+        strike_rate: playerStatsData.strike_rate || "0.0",
+        country: playerStatsData.country || "Unknown",
+        espn_id: playerStatsData.player_id2 || "",
+        team_url: teamLogos![playerTeam.toLowerCase()] || "",
+        img_url:espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
+      };
+    });
+  };
+  
+  
+  const remainingPlayers = extractRemainingPlayers( best11Players, playerStats);
+
+
+  
+
   const [isOpen, setIsOpen] = useState(false);
-  // const { best11Players, playerStats } = usePlayerStore();
 
   //   from teamPage.tsx
-  const initialDropZoneCards: CardData[] = [
-    // {
-    //   id: "1",
-    //   name: "FAF DU PLESSIS",
-    //   type: "BATSMAN",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "199",
-    //   average: "49",
-    //   strike_rate: "120",
-    //   cvc: "VC",
-    //   country: "SOUTH AFRICA",
-    // },
-    // {
-    //   id: "2",
-    //   name: "VIRAT KOHLI",
-    //   type: "BAT",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "299",
-    //   average: "59",
-    //   strike_rate: "140",
-    //   cvc: "C",
-    //   country: "INDIA",
-    // },
-    // {
-    //   id: "3",
-    //   name: "GLENN MAXWELL",
-    //   type: "ALL",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "4",
-    //   name: "DINESH KARTHIK",
-    //   type: "WICKETKEEPER",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "5",
-    //   name: "MOHAMMED SIRAJ",
-    //   type: "BOWL",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "6",
-    //   name: "WILL JACKS",
-    //   type: "ALL",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "7",
-    //   name: "MAHIPAL LOMROR",
-    //   type: "ALL",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "8",
-    //   name: "REECE TOPLEY",
-    //   type: "BOWL",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "9",
-    //   name: "RAJAT PATIDAR",
-    //   type: "BAT",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "10",
-    //   name: "ANUJ RAWAT",
-    //   type: "WICKETKEEPER",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "11",
-    //   name: "ALZARRI JOSEPH",
-    //   type: "BOWL",
-    //   team: "RCB",
-    //   points: "207",
-    //   cost: "12",
-    //   score: "89",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   cvc: "",
-    //   country: "AUSTRALIA",
-    // },
-  ];
+  // const initialDropZoneCards: CardData[] = [
+  //   {
+  //     id: "1",
+  //     name: "FAF DU PLESSIS",
+  //     type: "BATSMAN",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "199",
+  //     average: "49",
+  //     strike_rate: "120",
+  //     cvc: "VC",
+  //     country: "SOUTH AFRICA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "VIRAT KOHLI",
+  //     type: "BAT",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "299",
+  //     average: "59",
+  //     strike_rate: "140",
+  //     cvc: "C",
+  //     country: "INDIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "GLENN MAXWELL",
+  //     type: "ALL",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "4",
+  //     name: "DINESH KARTHIK",
+  //     type: "WICKETKEEPER",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "5",
+  //     name: "MOHAMMED SIRAJ",
+  //     type: "BOWL",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "6",
+  //     name: "WILL JACKS",
+  //     type: "ALL",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "7",
+  //     name: "MAHIPAL LOMROR",
+  //     type: "ALL",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "8",
+  //     name: "REECE TOPLEY",
+  //     type: "BOWL",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "9",
+  //     name: "RAJAT PATIDAR",
+  //     type: "BAT",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "10",
+  //     name: "ANUJ RAWAT",
+  //     type: "WICKETKEEPER",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "11",
+  //     name: "ALZARRI JOSEPH",
+  //     type: "BOWL",
+  //     team: "RCB",
+  //     points: "207",
+  //     cost: "12",
+  //     score: "89",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     cvc: "",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  // ];
 
-  const initialDragZoneCards: CardData[] = [
-    // {
-    //   id: "12",
-    //   name: "ROHIT SHARMA",
-    //   type: "BAT",
-    //   team: "MI",
-    //   points: "207",
-    //   cost: "10",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "13",
-    //   name: "SURYAKUMAR YADAV",
-    //   type: "BAT",
-    //   team: "MI",
-    //   points: "206",
-    //   cost: "4.5",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "14",
-    //   name: "HARDIK PANDYA",
-    //   type: "ALL",
-    //   team: "MI",
-    //   points: "204",
-    //   cost: "15",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "15",
-    //   name: "TIM DAVID",
-    //   type: "BAT",
-    //   team: "MI",
-    //   points: "217",
-    //   cost: "27",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "16",
-    //   name: "ISHAN KISHAN",
-    //   type: "WICKETKEEPER",
-    //   team: "MI",
-    //   points: "210",
-    //   cost: "27.65",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "17",
-    //   name: "JASPRIT BUMRAH",
-    //   type: "BOWL",
-    //   team: "MI",
-    //   points: "300",
-    //   cost: "11",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "18",
-    //   name: "NEHAL WADHERA",
-    //   type: "BAT",
-    //   team: "MI",
-    //   points: "200",
-    //   cost: "2",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "19",
-    //   name: "TILAK VARMA",
-    //   type: "ALL",
-    //   team: "MI",
-    //   points: "213",
-    //   cost: "20",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "20",
-    //   name: "AKASH MADHWAL",
-    //   type: "BOWL",
-    //   team: "MI",
-    //   points: "247",
-    //   cost: "22",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "21",
-    //   name: "KUMAR KARTIKEYA",
-    //   type: "BOWL",
-    //   team: "MI",
-    //   points: "256",
-    //   cost: "3.8",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-    // {
-    //   id: "22",
-    //   name: "PIYUSH CHAWLA",
-    //   type: "BOWL",
-    //   team: "MI",
-    //   points: "267",
-    //   cost: "7",
-    //   score: "89",
-    //   cvc: "",
-    //   runs: "150",
-    //   average: "39",
-    //   strike_rate: "135",
-    //   country: "AUSTRALIA",
-    // },
-  ];
+  // const initialDragZoneCards: CardData[] = [
+  //   {
+  //     id: "12",
+  //     name: "ROHIT SHARMA",
+  //     type: "BAT",
+  //     team: "MI",
+  //     points: "207",
+  //     cost: "10",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "13",
+  //     name: "SURYAKUMAR YADAV",
+  //     type: "BAT",
+  //     team: "MI",
+  //     points: "206",
+  //     cost: "4.5",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "14",
+  //     name: "HARDIK PANDYA",
+  //     type: "ALL",
+  //     team: "MI",
+  //     points: "204",
+  //     cost: "15",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "15",
+  //     name: "TIM DAVID",
+  //     type: "BAT",
+  //     team: "MI",
+  //     points: "217",
+  //     cost: "27",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "16",
+  //     name: "ISHAN KISHAN",
+  //     type: "WICKETKEEPER",
+  //     team: "MI",
+  //     points: "210",
+  //     cost: "27.65",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "17",
+  //     name: "JASPRIT BUMRAH",
+  //     type: "BOWL",
+  //     team: "MI",
+  //     points: "300",
+  //     cost: "11",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "18",
+  //     name: "NEHAL WADHERA",
+  //     type: "BAT",
+  //     team: "MI",
+  //     points: "200",
+  //     cost: "2",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "19",
+  //     name: "TILAK VARMA",
+  //     type: "ALL",
+  //     team: "MI",
+  //     points: "213",
+  //     cost: "20",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "20",
+  //     name: "AKASH MADHWAL",
+  //     type: "BOWL",
+  //     team: "MI",
+  //     points: "247",
+  //     cost: "22",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "21",
+  //     name: "KUMAR KARTIKEYA",
+  //     type: "BOWL",
+  //     team: "MI",
+  //     points: "256",
+  //     cost: "3.8",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  //   {
+  //     id: "22",
+  //     name: "PIYUSH CHAWLA",
+  //     type: "BOWL",
+  //     team: "MI",
+  //     points: "267",
+  //     cost: "7",
+  //     score: "89",
+  //     cvc: "",
+  //     runs: "150",
+  //     average: "39",
+  //     strike_rate: "135",
+  //     country: "AUSTRALIA",
+  //     team_url: ""
+  //   },
+  // ];
 
   // const [dropZoneCards, setDropZoneCards] =
   //   useState<CardData[]>(initialDropZoneCards);
@@ -400,8 +475,11 @@ const SlidingPanels = () => {
     cardData as any
   );
 
-  const [dragZoneCards, setDragZoneCards] =
-    useState<CardData[]>(initialDragZoneCards);
+  // const [dragZoneCards, setDragZoneCards] =
+  //   useState<CardData[]>(initialDragZoneCards);
+
+     const [dragZoneCards, setDragZoneCards] =
+    useState<CardData[]>(remainingPlayers);
 
   const [filterType, setFilterType] = useState<"points" | "cost">("points");
 
