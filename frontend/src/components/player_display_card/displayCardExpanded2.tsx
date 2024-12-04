@@ -25,6 +25,7 @@ import FilterBar from "../filterBar/filterBar";
 import ImpactChart from "../impactindexchart/impactchart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 import usePlayerStore from "../../store/playerStore";
+import { CardData } from "../../SlidingPanels";
 
 const COLORS = [
   "#0088FE",
@@ -75,12 +76,7 @@ interface DisplayCardExpandedProps {
   isExpanded: boolean;
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   playerImage: string;
-  card: {
-    name: string;
-    country: string;
-    type: string;
-    cvc: string;
-  };
+  card: CardData;
   handleLeftClick: () => void;
   handleRightClick: () => void;
   handleRightClickTypes: () => void;
@@ -404,7 +400,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
           >
             <img
               className="display-card-expanded-player-image"
-              src={playerImage}
+              src={card.img_url}
               alt="Player"
               style={{
                 position: "absolute",
