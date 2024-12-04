@@ -36,7 +36,7 @@ const COLORS = [
 ];
 
 const exampleQueries = [
-  "Recent Form of Virat Kohli",
+  // "Recent Form of `${card.name}`",
   "Top Scorers in IPL 2024",
   "Fastest Bowler Stats",
   "Most Runs by a Player",

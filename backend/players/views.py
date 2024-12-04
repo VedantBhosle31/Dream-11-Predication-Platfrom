@@ -13,8 +13,6 @@ from players.utils.validators import validate_uploaded_csv
 
 import json
 
-
-
 def home(request):
     return HttpResponse("hello world!")
 
@@ -22,14 +20,23 @@ def home(request):
 @csrf_exempt
 @parser_classes([MultiPartParser, FormParser])
 def verify_csv(request):
-    if request.method == "POST" and request.FILES.get("file"):
-        file = request.FILES["file"]
-        result = validate_uploaded_csv(file)
-        errors = result["errors"]
-        logos = result["team_logos"]
-        final_players_unique_names = result["final_players_unique_names"]
-        if errors:
-            return JsonResponse({"status": "error", "errors": errors}, status=400)
+    if request.method == "POST":
+        print("request", request.body)
+        print("request", request.FILES)
+        from .utils.validators import validate_uploaded_csv
+
+        if request.method == "POST" and request.FILES.get("file"):
+            file = request.FILES["file"]
+            result = validate_uploaded_csv(file)
+            errors = result["errors"]
+            logos = result["team_logos"]
+            final_players_unique_names = result["final_players_unique_names"]
+            final_selected_players = result["final_selected_players"]
+            if errors:
+                return JsonResponse({"status": "error", "errors": errors}, status=400)
+            return JsonResponse(
+                {"status": "success", "message": "File is valid.", "team_logos": logos, "final_players_unique_names": final_players_unique_names, "final_selected_players": final_selected_players}
+            )
         return JsonResponse(
             {"status": "success", "message": "File is valid.", "team_logos": logos, "final_players_unique_names": final_players_unique_names}
         )

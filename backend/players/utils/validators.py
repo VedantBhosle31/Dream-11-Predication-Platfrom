@@ -6,6 +6,7 @@ def validate_uploaded_csv(file):
     errors = []
     team_logos = []
     final_players_unique_names = []
+    final_selected_players = {} 
 
     try:
         # Read the uploaded CSV file
@@ -73,6 +74,7 @@ def validate_uploaded_csv(file):
             unique_name = get_player_unique_name(player_name, valid_players)
             if unique_name:
                 final_players_unique_names.append(unique_name)
+                final_selected_players[unique_name]= team_name
             else:
                 errors.append(f"Row {index + 1}: Player '{player_name}' does not exist.")
 
@@ -87,7 +89,8 @@ def validate_uploaded_csv(file):
             if len(unique_teams) != 2:
                 errors.append(f"Expected players from exactly 2 teams, but got {len(unique_teams)} teams: {', '.join(unique_teams)}.")
             else:
-                team_logos = [valid_teams[team] for team in unique_teams]
+                # Get the dict for the two valid teams with key as team name
+                team_logos = {team: valid_teams[team] for team in unique_teams}
 
             # Ensure all match dates are the same
             unique_dates = uploaded_df["Match Date"].str.strip().unique()
@@ -97,4 +100,4 @@ def validate_uploaded_csv(file):
     except Exception as e:
         errors.append(f"Error processing file: {str(e)}")
 
-    return {"errors": errors, "team_logos": team_logos, "final_players_unique_names": final_players_unique_names}
+    return {"errors": errors, "team_logos": team_logos, "final_players_unique_names": final_players_unique_names, "final_selected_players": final_selected_players}

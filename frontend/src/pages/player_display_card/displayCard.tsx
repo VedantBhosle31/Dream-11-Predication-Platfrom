@@ -20,6 +20,7 @@ export interface DisplayCardData {
   strike_rate: string;
   cvc: string;
   country: string;
+  team_url: string;
 }
 
 interface Stat {
@@ -263,7 +264,7 @@ const DisplayCard: React.FC<{
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            player_name: "V Kohli",
+            player_name: card.name,
             player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: matchDate,
             model: model,

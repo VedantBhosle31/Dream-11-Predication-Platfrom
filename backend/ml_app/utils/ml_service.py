@@ -48,7 +48,11 @@ def predict_for_one(player_stats,format):
     features = player_stats
     predictions = {}
     for target in targets:
-        s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+        if 'format' == 'Test':
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format+'_match_'+target
+        else:
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+
         model = models[s]
         scaler = scalers[s]
         feature_column= feature_columns_dict[s]
@@ -126,7 +130,7 @@ def predict(names,date,format):
         player_cost = player['cost'].values[0]  # Use `player_cost` to avoid overwriting `cost_df`
         position = player['position'].values[0]
 
-        # average = all_player_stats[name]['average']
+
 
         if position == "Unknown":
             position = "Batter"
@@ -140,7 +144,6 @@ def predict(names,date,format):
 
     # Sort the fantasy points in descending order and send the best 11
     fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))
-    fantasy_points = dict(list(fantasy_points.items())[:11])
 
     result = {
         "fantasy_points": fantasy_points,
