@@ -71,6 +71,11 @@ const EditComponent: React.FC<EditComponentProps> = ({
         }} whileHover={{scale:1.02}} className="edit-team" onClick={toggleContainer}>
             EDIT TEAM
           </motion.button>
+          <motion.button   whileTap={{
+          scale: 0.98,
+        }} whileHover={{scale:1.02}} className="complete-team" onClick={handleButtonClick}>
+            COMPLETE TEAM
+          </motion.button>
 
         </div>
         

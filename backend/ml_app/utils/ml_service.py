@@ -1,5 +1,5 @@
 from players.utils.fantacy_points import points_calculator
-from players.utils.player_service import fetch_all_player_features, player_features
+from players.utils.player_service import fetch_all_player_features, player_features,player_names
 import pickle
 import pandas as pd
 from ml_app.utils.predictor import feature_columns_dict
@@ -48,7 +48,11 @@ def predict_for_one(player_stats,format):
     features = player_stats
     predictions = {}
     for target in targets:
-        s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+        if 'format' == 'Test':
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format+'_match_'+target
+        else:
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+
         model = models[s]
         scaler = scalers[s]
         feature_column= feature_columns_dict[s]
@@ -94,7 +98,6 @@ def predict_for_one(player_stats,format):
 
     fantasy_points = points_calculator(format=format.upper(), runouts_direct=runouts * 0.58
     ,runouts_indirect=runouts * 0.42, catches=catches, stumpings=stumpings, runs=runs, sixes=sixes, wickets=wickets, bowled_lbw=bowled_lbw, maidens=maidens, economy=economy, strike_rate=strike_rate, boundaries=boundary_runs)
-    # fantasy_points = 0
     print(fantasy_points)
     return {"predictions":predictions, "fantasy_points":fantasy_points}
 
@@ -103,7 +106,7 @@ def predict(names,date,format):
     predictions = {}
     all_player_stats = fetch_all_player_features(names, date, format)
     cost_df = pd.read_csv(COST_CSV)  # Renaming `cost` to `cost_df`
-    player_names_df = pd.read_csv(PLAYER_CSV)
+    player_names_df = pd.DataFrame(player_names())
 
     for name in names:
         fantasy_points[name] = predict_for_one(all_player_stats[name], format)["fantasy_points"]
@@ -126,7 +129,7 @@ def predict(names,date,format):
         player_cost = player['cost'].values[0]  # Use `player_cost` to avoid overwriting `cost_df`
         position = player['position'].values[0]
 
-        # average = all_player_stats[name]['average']
+
 
         if position == "Unknown":
             position = "Batter"
@@ -140,7 +143,6 @@ def predict(names,date,format):
 
     # Sort the fantasy points in descending order and send the best 11
     fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))
-    fantasy_points = dict(list(fantasy_points.items())[:11])
 
     result = {
         "fantasy_points": fantasy_points,
