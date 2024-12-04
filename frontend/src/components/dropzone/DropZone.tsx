@@ -5,13 +5,13 @@ import MyImage from "../../assets/images/virat_kohli.png";
 import milogo from "../../assets/images/mumbai_indians.png";
 import rcblogo from "../../assets/images/rcb_logo.png";
 import { IconButton } from "@mui/material";
-import { AddCircleOutline } from "@mui/icons-material";
+import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
 import { CardData } from "../../SlidingPanels";
 import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
 import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import { DisplayCardData } from "../../pages/player_display_card/displayCard";
 import usePlayerStore from "../../store/playerStore";
-import { round } from "lodash";
+import defaultimg from "../../assets/images/default.png"; // Replace with your player image
 
 interface DropZoneProps {
   cards: CardData[];
@@ -113,7 +113,7 @@ const DropZone: React.FC<DropZoneProps> = ({
 var maindata: any = [];
 
 const DroppableCard: React.FC<{
-  card: DisplayCardData;
+  card: CardData;
   onRemove: (card: CardData) => void;
   onSelectCard: (card: CardData) => void;
   isedit: boolean;
@@ -430,18 +430,18 @@ const DroppableCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
+        "http://127.0.0.1:8000/players/get-player-matchups",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json", // Tell the server it's JSON
           },
           body: JSON.stringify({
-            player_name: "V Kohli",
+            player_name: card.name,
             player_opponents:
               "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
-            date: "2025-01-01",
-            model: "Odi",
+            date: matchDate,
+            model: model,
           }), // Convert the data to a JSON string
         }
       );
@@ -458,18 +458,18 @@ const DroppableCard: React.FC<{
   const handleRightClick = async () => {
     if (currentIndex === 1) {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
+        "http://127.0.0.1:8000/players/get-player-matchups",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json", // Tell the server it's JSON
           },
           body: JSON.stringify({
-            player_name: "V Kohli",
+            player_name: card.name,
             player_opponents:
               "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
-            date: "2025-01-01",
-            model: "Odi",
+            date: matchDate,
+            model: model,
           }), // Convert the data to a JSON string
         }
       );
@@ -506,15 +506,18 @@ const DroppableCard: React.FC<{
   const handleSearch = (query: string) => {
     console.log("Search Query:", query);
     alert(`You searched for: ${query}`);
-  };
+  }; //
 
   //for filterBar(All,T20I, T20)
   const [selectedFilter, setSelectedFilter] = useState("All"); // State for the selected filter
   const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // State for the selected filter
   const [selectedFilter3, setSelectedFilter3] = useState("venue"); // State for the selected filter
 
+  // const [format, setformat] = useState("Odi");//
+
   const { model } = usePlayerStore();
   const { matchDate } = usePlayerStore();
+  // const { model } = usePlayerStore();
 
   // const filters = ["All", "T20I", "T20"]; // Filter options
   const filters =
@@ -552,13 +555,21 @@ const DroppableCard: React.FC<{
     id: number;
   }
 
+  // const { details } = useUserContext();
+
+  // const { setDetails } = useUserContext();
+
+  // const updateDetails = () => {
+  //   setDetails(["newDetail1", "newDetail2"]);
+  // };
+
   const { allmaindata, setallmaindata } = usePlayerStore();
 
   const fetchData = async (url: string) => {
     setCardExpanded(true);
 
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`,
+      "http://127.0.0.1:8000/players/get-player-data",
       {
         method: "POST",
         headers: {
@@ -572,7 +583,7 @@ const DroppableCard: React.FC<{
           // name: "JJ Bumrah",
           // name: "RG Sharma",
           // name: "R Ashwin",
-          name: "SR Tendulkar",
+          name: card.name,
           // name: "HH Pandya",
           date: matchDate,
           model: model,
@@ -590,6 +601,8 @@ const DroppableCard: React.FC<{
 
     // storing the fetched data to maindata
     setallmaindata(maindata);
+
+    console.log(maindata);
 
     setmyData({
       BATTING: {
@@ -615,9 +628,7 @@ const DroppableCard: React.FC<{
           {
             key: "STRIKE RATE",
             value:
-              maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(
-                2
-              ),
+              maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(2),
           },
           {
             key: "HIGHEST SCORE",
@@ -651,9 +662,7 @@ const DroppableCard: React.FC<{
           {
             key: "STRIKE RATE",
             value:
-              maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(
-                2
-              ),
+              maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(2),
           },
           {
             key: "MAIDENS",
@@ -699,9 +708,12 @@ const DroppableCard: React.FC<{
     });
 
     let sums = { "0": 0, "4": 0, "6": 0 };
+    // let sumsrecent = { "form": 0, "opposition": 0, "venue": 0 };
 
     maindata["stats"]["batting"].forEach((battingData: any) => {
       sums["0"] += battingData["dots"];
+      // sums["4"] += battingData["previous_4s"];
+      // sums["6"] += battingData["sixes"];
     });
 
     var formRatio = 0;
@@ -778,78 +790,21 @@ const DroppableCard: React.FC<{
       maindata["stats"]["batting"][0]["previous_average"],
     ]);
 
-    // setnewfantasygraphData([
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][0]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][1]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][2]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][2]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][3]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][3]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][4]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][4]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][5]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][5]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][6]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][6]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][7]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][7]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][8]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][8]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][9]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
-    //   },
-    // ]);
+    const result = [];
+
+    for (let i = 0; i < maindata["stats"]["batting"].length; i++) {
+      const format = model; // Replace with the actual model value
+
+      result.push({
+        date: maindata["stats"]["batting"][i]["date"],
+        value: maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`] < 0
+            ? 0
+            : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
+      });
+    }
+
+
+    setnewfantasygraphData(result);
 
     setnewvenueData(
       Array.from({ length: 10 }, (_, index) => {
@@ -889,14 +844,14 @@ const DroppableCard: React.FC<{
 
       <div className="droppable-card-points">
         <div>
-          {round(parseInt(card.points), 2)}
+        {parseFloat(card.points).toFixed(2)}
           <div style={{ fontSize: 6, color: "red" }}>PTS</div>
         </div>
 
         <img
-          className="team-logo h-6 object-contain"
-          src={card.team_url}
-          alt="Player"
+          className="team-logo"
+          src={card.team === "RCB" ? rcblogo : milogo}
+          alt={defaultimg}
         />
       </div>
 
@@ -904,7 +859,7 @@ const DroppableCard: React.FC<{
         {card.name}
         <div className="card-overlay-row">
           <div style={{ fontSize: "9px", display: "flex" }}>
-            {round(parseInt(card.runs), 2)}
+            {card.score}
             <div style={{ color: "red" }}>RNS</div>
           </div>
           <div style={{ fontSize: "9px", fontWeight: 900 }}>{card.type}</div>
@@ -940,10 +895,16 @@ const DroppableCard: React.FC<{
       )}
 
       {isedit && (
-        <div className="absolute inset-0 bg-black bg-opacity-60 grid place-items-center grid-cols-2 opacity-0 hover:opacity-100 transition-opacity z-10 font-semibold text-xs">
+        <button className="remove-button" onClick={() => onRemove(card)}>
+          <RemoveCircleOutline style={{ width: "13px", height: "13px" }} />
+        </button>
+      )}
+
+      {isedit && (
+        <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
           <button
             onClick={() => handleSetCVC(card.id, "C")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
             style={{
               backgroundColor: "rgb(235, 134, 2)",
               fontFamily: "Montserrat",
@@ -955,51 +916,37 @@ const DroppableCard: React.FC<{
 
           <button
             onClick={() => handleSetCVC(card.id, "VC")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
             style={{
               backgroundColor: "rgb(2, 157, 235)",
               fontFamily: "Montserrat",
               fontSize: "70%",
             }}
           >
-            Make Vice-Cap
+            Make Vice-Captain
           </button>
 
           <button
+            // onClick={updateDetails}
             onClick={() =>
-              fetchData(
-                `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`
-              )
+              fetchData("http://127.0.0.1:8080/players/get-player-data")
             }
-            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%] bg-gray-900 text-white"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
             style={{
+              backgroundColor: "rgb(235, 134, 2)",
               fontFamily: "Montserrat",
               fontSize: "70%",
             }}
           >
             Show Info
           </button>
-          <button
-            // onClick={updateDetails}
-            onClick={() => onRemove(card)}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%] bg-gray-900 text-white"
-            style={{
-              fontFamily: "Montserrat",
-              fontSize: "70%",
-            }}
-          >
-            Remove
-          </button>
         </div>
       )}
 
-      <img
-        className="card-image"
-        src={MyImage}
-        alt="Player"
-      />
+      <img className="card-image" src={card.img_url} alt={defaultimg} />
     </div>
   ) : (
+    // <div></div>
     <DisplayCardExpanded
       containerRef={containerRef}
       isExpanded={isCardExpanded}

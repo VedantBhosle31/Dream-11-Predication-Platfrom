@@ -10,8 +10,10 @@ from players.utils.player_service import get_player_stats, matchup_stats, player
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import parser_classes
 from players.utils.validators import validate_uploaded_csv
-
 import json
+from players.utils.validators import validate_uploaded_csv
+
+
 
 def home(request):
     return HttpResponse("hello world!")

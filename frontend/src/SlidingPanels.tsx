@@ -21,10 +21,13 @@ export interface CardData {
   strike_rate: string;
   country: string; //
   team_url: string;
-  // espn_id:string
+  espn_id:string;
+  img_url:string;
 }
 
 const SlidingPanels = () => {
+  
+  
   const {
     playerStats,
     best11Players,
@@ -32,17 +35,23 @@ const SlidingPanels = () => {
     teamLogos,
     playerTeamMap,
   } = usePlayerStore();
-  console.log("playerStats", playerStats, fantasyPoints);
+  // console.log("playerStats", playerStats, fantasyPoints);
+  
+  
   const extractCardData = (
     fantasyPoints_: any,
     predictions: Record<string, any>
   ) => {
+
+
     console.log(playerStats, fantasyPoints);
+
     return best11Players?.map((f, index) => {
       const playerName = best11Players[index];
       const playerFantasyPoints = fantasyPoints[playerName];
       const playerStats = predictions[playerName] || {};
       const playerTeam = playerTeamMap[playerName] || "Unknown";
+      const espnId = playerStats.player_id2 || "";
 
       return {
         id: `${index + 1}`, // Unique ID for the player
@@ -59,6 +68,7 @@ const SlidingPanels = () => {
         country: playerStats.country || "Unknown",
         espn_id: playerStats.player_id2 || "",
         team_url: teamLogos![playerTeam.toLowerCase()] || "",
+        img_url:espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
       };
     });
   };
@@ -66,17 +76,53 @@ const SlidingPanels = () => {
   const cardData = extractCardData(best11Players, playerStats);
   console.log("cardData here here b", cardData);
 
+
+
+
+  const extractRemainingPlayers = (
+    best11Players: string[],
+    playerStats: Record<string, any>
+  ) => {
+    // Filter the playerStats to exclude the best11Players
+    const remainingPlayers = Object.keys(playerStats).filter(
+      (playerName) => !best11Players.includes(playerName)
+    );
+  
+    // Map the remaining players into the desired CardData format
+    return remainingPlayers.map((playerName, index) => {
+      const playerStatsData = playerStats[playerName] || {};
+      const playerTeam = playerTeamMap[playerName] || "Unknown";
+      const espnId = playerStatsData.player_id2 || "";
+  
+      return {
+        id: `${index + 1}`, // Unique ID for remaining players
+        name: playerName,
+        type: playerStatsData.position || "N/A",
+        team: playerStatsData.team || "Unknown",
+        points: "N/A", // No fantasy points for remaining players
+        cost: playerStatsData.cost || "0",
+        score: playerStatsData.score || "0",
+        cvc: "", // No Captain or Vice-Captain for remaining players
+        runs: playerStatsData.runs || "0",
+        average: playerStatsData.average || "0.0",
+        strike_rate: playerStatsData.strike_rate || "0.0",
+        country: playerStatsData.country || "Unknown",
+        espn_id: playerStatsData.player_id2 || "",
+        team_url: teamLogos![playerTeam.toLowerCase()] || "",
+        img_url:espnId ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png` : "",
+      };
+    });
+  };
+  
+  
+  const remainingPlayers = extractRemainingPlayers( best11Players, playerStats);
+
+
+  
+
   const [isOpen, setIsOpen] = useState(false);
-  // const { best11Players, playerStats } = usePlayerStore();
 
   //   from teamPage.tsx
-  const initialDropZoneCards: CardData[] = [
-
-  ];
-
-  const initialDragZoneCards: CardData[] = [
-
-  ];
 
   // const [dropZoneCards, setDropZoneCards] =
   //   useState<CardData[]>(initialDropZoneCards);
@@ -84,8 +130,11 @@ const SlidingPanels = () => {
     cardData as any
   );
 
-  const [dragZoneCards, setDragZoneCards] =
-    useState<CardData[]>(initialDragZoneCards);
+  // const [dragZoneCards, setDragZoneCards] =
+  //   useState<CardData[]>(initialDragZoneCards);
+
+     const [dragZoneCards, setDragZoneCards] =
+    useState<CardData[]>(remainingPlayers);
 
   const [filterType, setFilterType] = useState<"points" | "cost">("points");
 

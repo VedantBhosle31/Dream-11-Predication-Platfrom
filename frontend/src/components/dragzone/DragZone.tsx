@@ -5,6 +5,7 @@ import MyImage from "../../assets/images/virat_kohli.png"; // Replace with your 
 import { IconButton} from "@mui/material";
 import { AddCircleOutline, ArrowDownward, ArrowUpward } from "@mui/icons-material";
 import { CardData } from "../../SlidingPanels";
+import defaultimg from "../../assets/images/default.png"; // Replace with your player image
 
 
 interface DragZoneProps {
@@ -131,7 +132,7 @@ const DraggableCard: React.FC<{
       </div>
       
       <div className="card-image-container">
-        <img className="card-image-drag" src={MyImage} alt="Player" />
+        <img className="card-image-drag" src={card.img_url} alt={defaultimg} />
       </div>
 
       <div className="draggable-card-name" style={{display: "flex",left: "0px"}}>
