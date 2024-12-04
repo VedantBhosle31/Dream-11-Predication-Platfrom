@@ -1,9 +1,6 @@
-from django.shortcuts import render,HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import pickle
 import json
-import pandas as pd
 from ml_app.utils.ml_service import predict
 from players.utils.player_service import fetch_all_player_features
 from django.http import JsonResponse

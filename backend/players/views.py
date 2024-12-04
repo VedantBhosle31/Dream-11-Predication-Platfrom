@@ -77,17 +77,6 @@ def get_team_logos_from_team_names(request):
         team_logos = team_logos[['name', 'logo']].to_dict(orient='records')
         return JsonResponse({'team_logos': team_logos})
 
-
-# @csrf_exempt
-# def get_player_data(request):
-#     if request.method == "POST":
-#         body = json.loads(request.body)
-#         player_name = body['name']
-#         date = body['date']
-#         model = body['model']
-#         stats = get_player_stats(player_name,date,model)
-#         return JsonResponse({'stats':stats})
-
 @csrf_exempt
 def get_player_matchups(request):
     if request.method == "POST":

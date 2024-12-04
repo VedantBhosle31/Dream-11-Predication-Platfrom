@@ -136,8 +136,6 @@ def predict(names,date,format):
         predictions[name]["position"] = position
 
         predictions[name]["player_id2"] = player_id2
-        # predictions[name]["average"] = average
-        # print(all_player_stats)
 
 
     # Sort the fantasy points in descending order and send the best 11
