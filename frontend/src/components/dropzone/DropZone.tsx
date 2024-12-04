@@ -1,4 +1,4 @@
-import React, {  useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import "./DropZone.css";
 import MyImage from "../../assets/images/virat_kohli.png";
@@ -119,7 +119,6 @@ const DroppableCard: React.FC<{
   selectedCard: CardData | null;
   handleSetCVC: (id: string, role: "C" | "VC") => void;
 }> = ({ card, onRemove, isedit, onSelectCard, selectedCard, handleSetCVC }) => {
-
   // const [ishovered, setShowButtons] = useState(false);
   var [isCardExpanded, setCardExpanded] = useState(false);
 
@@ -132,12 +131,12 @@ const DroppableCard: React.FC<{
   interface Stats {
     title: string;
     stats: Stat[];
-  }//
+  } //
 
   interface Graphs {
     title: string;
     description: string;
-  }//
+  } //
 
   // graphs
 
@@ -173,7 +172,7 @@ const DroppableCard: React.FC<{
       description:
         "Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum",
     },
-  ];//
+  ]; //
 
   // batting , bowling AND fielder
   const typeData: Stats[] = [
@@ -248,12 +247,12 @@ const DroppableCard: React.FC<{
   type Stat = {
     key: string;
     value: string;
-  };//
+  }; //
 
   type TypeData = {
     title: string;
     stats: Stat[];
-  };//
+  }; //
 
   const typesMap: { [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData } = {
     BATTING: {
@@ -286,7 +285,7 @@ const DroppableCard: React.FC<{
         { key: "Stumps", value: "3" },
       ],
     },
-  };//
+  }; //
 
   const piedata = [
     { name: "0", value: 400 },
@@ -295,7 +294,7 @@ const DroppableCard: React.FC<{
     { name: "3", value: 200 },
     { name: "4", value: 100 },
     { name: "6", value: 50 },
-  ];//
+  ]; //
 
   const venuedata: ChartData[] = [
     {
@@ -395,7 +394,7 @@ const DroppableCard: React.FC<{
   const [mydata, setmyData] =
     useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>(
       typesMap
-    );//
+    ); //
 
   const [newpiedata, setnewpieData] =
     useState<{ name: string; value: number }[]>(piedata);
@@ -418,11 +417,11 @@ const DroppableCard: React.FC<{
   const typeData_2 = Object.values(mydata).map((type) => ({
     title: type.title,
     stats: type.stats,
-  }));//
+  })); //
 
   interface DisplayCardExpandedProps {
     typeData_2: TypeData[];
-  }//
+  } //
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexTypes, setCurrentIndexTypes] = useState(0);
@@ -438,19 +437,17 @@ const DroppableCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: card.name,
-            player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents:
+              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: matchDate,
-            model:model,
+            model: model,
           }), // Convert the data to a JSON string
         }
       );
-      
+
       const matchupsdata = await response.json();
 
-
-
-
-      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -458,7 +455,6 @@ const DroppableCard: React.FC<{
   };
 
   const handleRightClick = async () => {
-
     if (currentIndex === 1) {
       const response = await fetch(
         "http://127.0.0.1:8000/players/get-player-matchups",
@@ -476,13 +472,10 @@ const DroppableCard: React.FC<{
           }), // Convert the data to a JSON string
         }
       );
-      
+
       const matchupsdata = await response.json();
 
-
-
-
-      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -493,7 +486,7 @@ const DroppableCard: React.FC<{
     setCurrentIndexTypes((prev) =>
       prev === 0 ? typeData_2.length - 1 : prev - 1
     );
-  };//
+  }; //
 
   const handleRightClickTypes = () => {
     setCurrentIndexTypes((prev) =>
@@ -507,12 +500,12 @@ const DroppableCard: React.FC<{
     "React Native",
     "JavaScript",
     "Node.js",
-  ];//
+  ]; //
 
   const handleSearch = (query: string) => {
     console.log("Search Query:", query);
     alert(`You searched for: ${query}`);
-  };//
+  }; //
 
   //for filterBar(All,T20I, T20)
   const [selectedFilter, setSelectedFilter] = useState("All"); // State for the selected filter
@@ -525,27 +518,26 @@ const DroppableCard: React.FC<{
   const { matchDate } = usePlayerStore();
   // const { model } = usePlayerStore();
 
-
   // const filters = ["All", "T20I", "T20"]; // Filter options
   const filters =
-  model === "T20"
+    model === "T20"
       ? ["All", "T20I", "T20"]
       : model === "Odi"
       ? ["All", "OdiI", "Odi"]
       : ["All", "TestI", "Test"]; // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
-//
+  //
 
   const handleFilterChange = (filter: string) => {
     setSelectedFilter(filter); // Update the selected filter
-  };//
+  }; //
   const handleFilterChange2 = (filter: string) => {
     setSelectedFilter2(filter); // Update the selected filter
-  };//
+  }; //
   const handleFilterChange3 = (filter: string) => {
     setSelectedFilter3(filter); // Update the selected filter
-  };//
+  }; //
 
   interface somecarddata {
     name: string;
@@ -570,13 +562,7 @@ const DroppableCard: React.FC<{
   //   setDetails(["newDetail1", "newDetail2"]);
   // };
 
-
   const { allmaindata, setallmaindata } = usePlayerStore();
-  
-
-
-
-
 
   const fetchData = async (url: string) => {
     setCardExpanded(true);
@@ -615,6 +601,8 @@ const DroppableCard: React.FC<{
     // storing the fetched data to maindata
     setallmaindata(maindata);
 
+    console.log(maindata);
+
     setmyData({
       BATTING: {
         title: "BATTING",
@@ -639,9 +627,7 @@ const DroppableCard: React.FC<{
           {
             key: "STRIKE RATE",
             value:
-              maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(
-                2
-              ),
+              maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(2),
           },
           {
             key: "HIGHEST SCORE",
@@ -675,9 +661,7 @@ const DroppableCard: React.FC<{
           {
             key: "STRIKE RATE",
             value:
-              maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(
-                2
-              ),
+              maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(2),
           },
           {
             key: "MAIDENS",
@@ -794,7 +778,6 @@ const DroppableCard: React.FC<{
       },
     ]);
 
-
     setnewradarData([
       maindata["stats"]["batting"][0]["previous_strike_rate"],
       maindata["stats"]["bowling"][0]["previous_wickets"],
@@ -806,78 +789,95 @@ const DroppableCard: React.FC<{
       maindata["stats"]["batting"][0]["previous_average"],
     ]);
 
-    setnewfantasygraphData([
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    const result = [];
+
+    for (let i = 0; i < maindata["stats"]["batting"].length; i++) {
+      const format = model; // Replace with the actual model value
+
+      result.push({
+        date: maindata["stats"]["batting"][i]["date"],
+        value: maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][1]["date"],
-        value:
-          maindata["stats"]["batting"][1][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: maindata["stats"]["batting"][0]["date"],
-        value:
-          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-    ]);
+            : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
+      });
+    }
+    // console.log('result here',result);
+    // console.log('result here2',model.toLowerCase);
+
+    setnewfantasygraphData(result);
+
+    // setnewfantasygraphData([
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][1]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][1][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: maindata["stats"]["batting"][0]["date"],
+    //     value:
+    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    // ]);
 
     setnewvenueData(
       Array.from({ length: 10 }, (_, index) => {
@@ -904,15 +904,6 @@ const DroppableCard: React.FC<{
 
     console.log("maindata", maindata["stats"]);
   };
-
-
-
-
-
-
-
-
-
 
   return !isCardExpanded ? (
     <div
@@ -980,7 +971,6 @@ const DroppableCard: React.FC<{
         <button className="remove-button" onClick={() => onRemove(card)}>
           <RemoveCircleOutline style={{ width: "13px", height: "13px" }} />
         </button>
-
       )}
 
       {isedit && (
@@ -1031,41 +1021,41 @@ const DroppableCard: React.FC<{
   ) : (
     // <div></div>
     <DisplayCardExpanded
-        containerRef={containerRef}
-        isExpanded={isCardExpanded}
-        setExpanded={setCardExpanded}
-        playerImage={playerImage}
-        card={card}
-        handleLeftClick={handleLeftClick}
-        handleRightClick={handleRightClick}
-        handleLeftClickTypes={handleLeftClickTypes}
-        handleRightClickTypes={handleRightClickTypes}
-        data={data}
-        typeData={typeData}
-        typeData_2={typeData_2}
-        currentIndex={currentIndex}
-        currentIndexTypes={currentIndexTypes}
-        suggestions={suggestions}
-        handleSearch={handleSearch}
-        handleClose={handleClose}
-        open={isCardExpanded}
-        selectedFilter={selectedFilter}
-        selectedFilter2={selectedFilter2}
-        selectedFilter3={selectedFilter3}
-        filters={filters}
-        filters2={filters2}
-        filters3={filters3}
-        handleFilterChange={handleFilterChange}
-        handleFilterChange2={handleFilterChange2}
-        handleFilterChange3={handleFilterChange3}
-        newpiedata={newpiedata}
-        venuechartdata={newvenuedata}
-        radarnumbers={newradardata}
-        fantasygraphdata={newfantasygraphdata}
-        percentages={newpercentages}
-        impactdata={newimpactdata} 
-        matchupsdata={newmatchupsdata}    
-      />
+      containerRef={containerRef}
+      isExpanded={isCardExpanded}
+      setExpanded={setCardExpanded}
+      playerImage={playerImage}
+      card={card}
+      handleLeftClick={handleLeftClick}
+      handleRightClick={handleRightClick}
+      handleLeftClickTypes={handleLeftClickTypes}
+      handleRightClickTypes={handleRightClickTypes}
+      data={data}
+      typeData={typeData}
+      typeData_2={typeData_2}
+      currentIndex={currentIndex}
+      currentIndexTypes={currentIndexTypes}
+      suggestions={suggestions}
+      handleSearch={handleSearch}
+      handleClose={handleClose}
+      open={isCardExpanded}
+      selectedFilter={selectedFilter}
+      selectedFilter2={selectedFilter2}
+      selectedFilter3={selectedFilter3}
+      filters={filters}
+      filters2={filters2}
+      filters3={filters3}
+      handleFilterChange={handleFilterChange}
+      handleFilterChange2={handleFilterChange2}
+      handleFilterChange3={handleFilterChange3}
+      newpiedata={newpiedata}
+      venuechartdata={newvenuedata}
+      radarnumbers={newradardata}
+      fantasygraphdata={newfantasygraphdata}
+      percentages={newpercentages}
+      impactdata={newimpactdata}
+      matchupsdata={newmatchupsdata}
+    />
   );
 };
 
