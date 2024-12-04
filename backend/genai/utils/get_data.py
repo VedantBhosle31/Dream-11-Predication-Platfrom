@@ -5,7 +5,7 @@ db = db()
 
 
 def batter_data(player_name, date, model, player_opponents, player_type):
-    player_data = player_service.get_player_data(player_name, date, model)
+    player_data = player_service.get_player_stats(player_name, date, model)
     matchups = (
         db["matchup"][model.upper()]
         .objects.filter(
@@ -60,7 +60,7 @@ def batter_data(player_name, date, model, player_opponents, player_type):
                     player_data["batting"][0]["previous_4s"]
                     + player_data["batting"][0]["previous_6s"]
                 )
-                / player_data["batting"][0]["previous_balls"]
+                / player_data["batting"][0]["previous_balls_involved"]
             )
             * 100,
         },
@@ -70,7 +70,7 @@ def batter_data(player_name, date, model, player_opponents, player_type):
 
 
 def bowler_data(player_name, date, model, player_opponents, player_type):
-    player_data = player_service.get_player_data(player_name, date, model)
+    player_data = player_service.get_player_stats(player_name, date, model)
     matchups = (
         db["matchup"][model.upper()]
         .objects.filter(
@@ -127,7 +127,7 @@ def allrounder_data(player_name, date, model, player_opponents, player_type):
 
 
 def wicketkeeper_data(player_name, date, model, player_opponents, player_type):
-    player_data = player_service.get_player_data(player_name, date, model)
+    player_data = player_service.get_player_stats(player_name, date, model)
     matchups = (
         db["matchup"][model.upper()]
         .objects.filter(
@@ -157,8 +157,8 @@ def wicketkeeper_data(player_name, date, model, player_opponents, player_type):
             "catches_per_game": player_data["fielding"][0]["pfa_catches"],
             "runouts_per_game": player_data["fielding"][0]["pfa_runouts"],
             "stumpings_per_game": player_data["fielding"][0]["pfa_stumpings"],
-            "total_stumpings": player_data["fielding"][0]["total_stumpings"],
-            "total_catches": player_data["fielding"][0]["total_catches"],
+            "total_stumpings": player_data["fielding"][0]["previous_stumpings"],
+            "total_catches": player_data["fielding"][0]["previous_catches"],
         },
         "bowler_indices": {
             "consistency": player_data["bowling"][0]["consistency"],
@@ -180,10 +180,10 @@ def wicketkeeper_data(player_name, date, model, player_opponents, player_type):
             / player_data["batting"][0]["tbahp_economy_agg"],
             "average_against_pace": player_data["batting"][0]["tbahp_economy_agg"] * 100,
             "career_strike_rate": player_data["batting"][0]["previous_strike_rate"],
-            "total_balls_faced": player_data["batting"][0]["previous_balls"],
-            "total_catches_taken": player_data["fielding"][0]["total_catches"],
-            "total_run_outs": player_data["fielding"][0]["total_runouts"],
-            "total_stumpings": player_data["fielding"][0]["total_stumpings"],
+            "total_balls_faced": player_data["batting"][0]["previous_balls_involved"],
+            " _catches_taken": player_data["fielding"][0]["previous_catches"],
+            "total_run_outs": player_data["fielding"][0]["previous_runouts"],
+            "total_stumpings": player_data["fielding"][0]["previous_stumpings"],
         },
     }
 

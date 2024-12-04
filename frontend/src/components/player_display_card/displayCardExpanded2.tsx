@@ -974,7 +974,9 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     title={temptitleexplain}
                     explaindate={explaindate}
                     opponents={opponents}
-                    typeofplayer={typeofplayer}
+                    typeofplayer={typeofplayer} 
+                    player_name={card.name} 
+                    model="Odi"                 
                   />
                 </div>
 
@@ -1101,7 +1103,9 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   <ExplainGraphButton
                     // title={data[currentIndex].title}
                     title={card.type === 'BAT' ? 'spider_chart_bat' : (card.type === 'BOWL' ? 'spider_chart_bowl' : 'spider_chart_all')}
+                    player_name={card.name}
                     explaindate={explaindate}
+                    model={'Odi'}
                     opponents={opponents}
                     typeofplayer={typeofplayer}
                   />

@@ -424,7 +424,7 @@ const DroppableCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        "http://127.0.0.1:8080/players/get-player-matchups",
+        "http://127.0.0.1:8000/players/get-player-matchups",
         {
           method: "POST",
           headers: {
@@ -432,7 +432,7 @@ const DroppableCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: "V Kohli",
-            player_opponents:
+            player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: "2025-01-01",
             model: "Odi",
           }), // Convert the data to a JSON string
@@ -455,7 +455,7 @@ const DroppableCard: React.FC<{
 
     if (currentIndex === 1) {
       const response = await fetch(
-        "http://127.0.0.1:8080/players/get-player-matchups",
+        "http://127.0.0.1:8000/players/get-player-matchups",
         {
           method: "POST",
           headers: {
@@ -562,7 +562,7 @@ const DroppableCard: React.FC<{
     setCardExpanded(true);
 
     const response = await fetch(
-      "http://127.0.0.1:8080/players/get-player-data",
+      "http://127.0.0.1:8000/players/get-player-data",
       {
         method: "POST",
         headers: {

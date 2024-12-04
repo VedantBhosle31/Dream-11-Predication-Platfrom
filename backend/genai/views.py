@@ -26,7 +26,7 @@ def explain_graph(request):
                 return JsonResponse({'error': 'player_opponents is required'}, status=400)
             if not player_type:
                 player_type = 'batter'
-            data = json.dumps(get_data(player_type, graph_name, player_name, date, model, player_opponents))
+            data = json.dumps(get_data(player_type, player_name, date, model, player_opponents))
             explanation = graph_explain(graph_name, data)
             return JsonResponse({'explanation': explanation}, status=200)
         except json.JSONDecodeError:

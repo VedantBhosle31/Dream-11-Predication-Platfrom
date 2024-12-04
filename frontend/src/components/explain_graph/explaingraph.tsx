@@ -34,10 +34,12 @@ interface ExplainGraphProps {
   title: string;
   explaindate: string;
   opponents: string;
-  typeofplayer: string
+  typeofplayer: string;
+  player_name:string;
+  model:string
 }
 
-const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  opponents, typeofplayer}) => {
+const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  opponents, typeofplayer, model, player_name}) => {
   var [isExplainExpanded, setExplainExpanded] = useState(false);
   var [graphdescription, setgraphdescription] = useState();
   const [isLoading, setisLoading] =  useState(false);
@@ -55,9 +57,11 @@ const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  
       },
       body: JSON.stringify({
         graph_name: title,
-        data: explaindate,
-        opponents:opponents,
-        type:typeofplayer,
+        date: explaindate,
+        player_opponents:opponents,
+        player_type:typeofplayer,
+        player_name:player_name,
+        model:model
       }), // Convert the data to a JSON string
     });
 
