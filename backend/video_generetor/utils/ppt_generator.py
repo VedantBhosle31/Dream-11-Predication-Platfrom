@@ -17,18 +17,16 @@ from pptx.oxml.ns import qn
 from pptx.oxml.xmlchemy import OxmlElement
 from pptx.util import Pt
 from pptx.enum.text import PP_ALIGN
+from players.utils.player_service import get_player_stats
+from video_generetor.utils.get_requirement import get_requirements_object
 
-from backend.players.utils.player_service import get_player_stats
-
-#@title Functions:
 def create_dict(ppt_file,pointer):
-    # """
-    # Deletes existing images and inserts new ones in the same position.
-
-    # :param ppt_file: Path to the input PowerPoint file.
-    # :param output_file: Path to save the updated PowerPoint file.
-    # :param image_replacements: Dictionary with shape names as keys and new image paths as values.
-    # """
+    """
+    Deletes existing images and inserts new ones in the same position.
+    :param ppt_file: Path to the input PowerPoint file.
+    :param output_file: Path to save the updated PowerPoint file.
+    :param image_replacements: Dictionary with shape names as keys and new image paths as values.
+    """
     presentation = Presentation(ppt_file)
     pointer2={}
     for slide in presentation.slides:
@@ -37,12 +35,9 @@ def create_dict(ppt_file,pointer):
                 try:
                   for i in pointer:
                     if str(pointer[i]) in str(shape.text).strip():
-                      #print(str(shape.text))
-                      if i=='50/100':
-                        print(shape.text)
                       pointer2[i]=shape.name
                 except(AttributeError):
-                  pass
+                  print(ArithmeticError)
     return pointer2
 
 def map2_creation(mapper):
@@ -64,9 +59,8 @@ def extract_text_format(shape):
 
     # Get the text frame and first paragraph
     text_frame = shape.text_frame
-    run=text_frame
-    # paragraph = text_frame.paragraphs[0]
-    # run = paragraph.runs[0] if paragraph.runs else None
+    paragraph = text_frame.paragraphs[0]
+    run = paragraph.runs[0] if paragraph.runs else None
 
     if not run:
         return None
@@ -312,10 +306,6 @@ def get_picto(ppt_path):
               # Access the alt text via the XML
               alt_text = shape._element.xpath(".//p:cNvPr/@descr")
               if alt_text:  # Check if there's alt text
-                  try:
-                    print(picto['alt_text[0]'])
-                  except:
-                    pass
                   print(f"Slide {slide_number}, Shape {shape.name}: Alt text: {alt_text[0]}")
                   rico[alt_text[0]]=shape.name
               else:
@@ -643,7 +633,7 @@ def fill_text(template_file, output_file, mapping,replace,map3,n):
     # Remove the temporary copy of the template
     os.remove(temp_copy)
 
-    print(f"Updated presentation saved as: {output_file}")
+    # print(f"Updated presentation saved as: {output_file}")
 
 #@title (batting) pointer
 pointer = {
@@ -692,6 +682,7 @@ def map3_creation(picto):
   map3[picto["team_symbol"]]='team_symbol'
   return map3
 def PPT_GEN(n,replacements,pointer):#n is slide number
+  print(replacements)
   base_dir = Path(os.path.dirname(os.path.abspath(__file__)))
   template_dir = base_dir / "pptx_template"
   output_dir = base_dir / "pptx_out"
@@ -708,22 +699,19 @@ def PPT_GEN(n,replacements,pointer):#n is slide number
   mapper=create_dict(in_file, pointer)
 
   picto=get_picto(in_file)
-  #print(picto)
-  mapper["Player_img"]=picto["r_player"] #if there is error here you may have forgotten to import pickle from binary
+  mapper["Player_img"]=picto["r_player"]
   mapper["graph"]=picto["graph"]
   mapper["spiderman"]=picto["spiderman"]
   mapper["team_symbol"]=picto["team_symbol"]
   #mapper["team_name"]=picto["team_name"]
   #mapper["team_symbol"]=picto["team_symbol"]
-  print(mapper)
+#   print(mapper)
   #mapper completion
   map3=map3_creation(picto)
   map2=map2_creation(mapper)
   fill_text(in_file, out_file,map2,replacements,map3,n)#inputfile,output file, mapping(shape.name->human_name),replacements(human_name->value)
   #replace_images(mapper,image_file)
 #####################################
-#@title example replacement data
-#@title replacements
 replacements = {
     "name":"Bob ",
     "player_id":"VIRAT001",
@@ -766,90 +754,10 @@ replacements = {
 }
 
 
-def get_requirements_object(n, name, match_date, format, team, predictions):
-    data = get_player_stats(name, match_date, format)
-    player_type = predictions['player_type']
-    ps = data['stats'][player_type]
-    ps0 = data['stats']['player_type'][0]
-    basic_requirements={
-        "name": name,
-        "team": team,
-        "expct_pts": predictions["expected_points"],
-        "cost": predictions["cost"],
-        "expct_runs": ps0["runs"],
-        "expct_4s_and_6s": ps0["boundaries"],
-        "runs": ps0["runs"],
-        "strike_rate": ps0["strike_rate"],
-        "boundaries": ps0["boundaries"],
-        "wickets": ps0["wickets"],
-        "economy": ps0["economy"],
-        "catches": ps0["catches"],
-        "run_outs": ps0["run_outs"],
-        "form": ps0["form"],
-    }
-
-    basic_requirements["Matches"] = ps0["innings_played"]
-    basic_requirements["cruns"] = ps0["previous_runs"]
-    basic_requirements["hstrike_rate"] = ps0["previous_strike_rate"]
-    basic_requirements["4s/6s"] = ps0["previous_4s"]+ps0["previous_6s"]
-    basic_requirements["highest_score"] = ps0["highest_score"]
-    basic_requirements["innings"] = ps0["innings_played"]
-    basic_requirements["Average"] = ps0["average"]
-    basic_requirements["50/100"] = ps0["previous_fifties"]+ps0["previous_centuries"]
-    if n == 1:
-        fantasy_points = []
-        match_dates = []
-        for i in range(1, 11):
-            fantasy_points.append(ps[i][f"{format}_fantasy_points"])
-            match_date.append(ps[i])
-        basic_requirements["graph"] = {
-            "fantasy": {
-                "points": fantasy_points,
-                "date": match_dates
-            }
-        }
-    if n == 2:
-        basic_requirements["graph"] = {
-            "consistancy": [ps[0]["consistency"], ps[1]["consistency"], ps["consistency"]]
-        }
-    if n == 3:
-        vpis = []
-        for i in range(1, 11):
-            vpis.append(ps[i]["venue"])
-        basic_requirements["graph"] = {
-            "vpi": vpis
-        }
-    if n == 4:
-        vpis = []
-        for i in range(1, 11):
-            vpis.append(ps[i]["venue"])
-        basic_requirements["graph"] = {
-            "vpi": vpis
-        }
-
-    return basic_requirements
-
-
-
-
-#n==1: overall
-#n==2: past 10 days
-#n==3: in given venue
-#n==4: against given opponent
-    # "Matches": 244,
-    # "cruns":324089,
-    # "hstrike_rate":23,
-    # "4s/6s":'134/45',
-    # "highest_score": 55,
-    # "innings": 3489,
-    # "Average":78,
-    # "50/100":'133/44'
-#search IMG in fill text to find  player and symbol image path code
-
-# 4 REPLACEMENTS OVERALL, LAST 10 DAYS, VENUE, OPONENT PLAYER
 def generate_ppts(name, match_date, format, team, predictions):
     for n in range(1, 5):
-        replacement_obj = get_requirements_object(n, name, match_date, format, team, predictions)
-        PPT_GEN(n, pointer, replacements=replacement_obj)
+        # replacements = get_requirements_object(n, name, match_date, format, team, predictions)
+        
+        PPT_GEN(n, replacements, pointer)
 
 #output_file='/content/file.png' here i store the graphs temporarily. have not written deletion code.(note this file is created automatically by my code)
