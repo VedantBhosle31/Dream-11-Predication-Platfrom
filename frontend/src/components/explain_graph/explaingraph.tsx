@@ -50,7 +50,9 @@ const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  
     setisLoading(true);
     // setExplainExpanded(true);
 
-    const response = await fetch("http://127.0.0.1:8000/genai/explain-graph/", {
+    console.log("here got details", title, explaindate,  opponents, typeofplayer, model, player_name );
+
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/genai/explain-graph/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Tell the server it's JSON

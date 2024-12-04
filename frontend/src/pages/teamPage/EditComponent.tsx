@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import DragZone from "../../components/dragzone/DragZone";
-
-
 import "../teamPage/teamPage.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
-import VideoPlayer from "../../components/video_player/videoplayer";
 import Slideshow from "../../components/slide-show/SlideShow";
 import { CardData } from "../../SlidingPanels";
 import {motion} from 'framer-motion'
+import usePlayerStore from "../../store/playerStore";
 
 export interface EditComponentProps {
   showContainer: boolean;
@@ -36,10 +34,7 @@ const EditComponent: React.FC<EditComponentProps> = ({
 }) => {
   const navigation = useNavigate();
 
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-
-  // Replace this with the actual URL of your Django backend
-  const backendUrl = "http://127.0.0.1:8000/video/stream/stream_video.mp4";
+  const { displayscreencards, setdisplayscreencards } = usePlayerStore();
 
   const handleButtonClick = () => {
     // Check if Captain and Vice-Captain are assigned
@@ -57,7 +52,8 @@ const EditComponent: React.FC<EditComponentProps> = ({
       return;
     }
 
-    // Navigate to the player-info page if both conditions are satisfied
+    setdisplayscreencards(dropZoneCards);
+
     navigation("/player-info");
   };
 
@@ -67,7 +63,6 @@ const EditComponent: React.FC<EditComponentProps> = ({
         <div className="video-wrapper">
 
           <div className="video-card">
-            {/* {<VideoPlayer videoUrl={backendUrl} />} */}
             <Slideshow />
           </div>
 
@@ -102,10 +97,6 @@ const EditComponent: React.FC<EditComponentProps> = ({
         }} whileHover={{scale:1.02}} className="complete-team" onClick={handleButtonClick}>
             COMPLETE TEAM
           </motion.button>
-          
-          {/* <button className="complete-team" onClick={() => {}}>
-            Submit Team
-          </button> */}
         </div>
       </DndProvider>
     </div>

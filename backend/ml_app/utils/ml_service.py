@@ -6,6 +6,7 @@ from ml_app.utils.predictor import feature_columns_dict
 import numpy as np
 
 COST_CSV = "ml_app/utils/cost.csv"
+PLAYER_CSV = "players/utils/player_names.csv"
 
 # Function to recursively convert numpy types to Python native types
 def convert_numpy_types(data):
@@ -102,6 +103,7 @@ def predict(names,date,format):
     predictions = {}
     all_player_stats = fetch_all_player_features(names, date, format)
     cost_df = pd.read_csv(COST_CSV)  # Renaming `cost` to `cost_df`
+    player_names_df = pd.read_csv(PLAYER_CSV)
 
     for name in names:
         fantasy_points[name] = predict_for_one(all_player_stats[name], format)["fantasy_points"]
@@ -111,9 +113,20 @@ def predict(names,date,format):
         if player.empty:
             raise ValueError(f"Player '{name}' not found in cost CSV.")  # Handle missing players gracefully
 
+
+        # Add player_id from player_names.csv
+        player2 = player_names_df[player_names_df['cricsheet_name'] == name]
+        if player2.empty:
+            raise ValueError(f"Player '{name}' not found in player_names CSV.")  # Handle missing players gracefully
+
+        player_id2 = player2['espn_id'].values[0]
+
+        
         player_id = player['id'].values[0]
         player_cost = player['cost'].values[0]  # Use `player_cost` to avoid overwriting `cost_df`
         position = player['position'].values[0]
+
+        # average = all_player_stats[name]['average']
 
         if position == "Unknown":
             position = "Batter"
@@ -121,6 +134,11 @@ def predict(names,date,format):
         predictions[name]["player_id"] = player_id
         predictions[name]["cost"] = player_cost
         predictions[name]["position"] = position
+
+        predictions[name]["player_id2"] = player_id2
+        # predictions[name]["average"] = average
+        # print(all_player_stats)
+
 
     # Sort the fantasy points in descending order and send the best 11
     fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))

@@ -3,13 +3,28 @@ import "./SearchBar.css";
 import { IconButton, InputBase, Paper, List, ListItem } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import SparklesIcon from "@mui/icons-material/AutoAwesome";
+import usePlayerStore from "../../store/playerStore";
 
 interface SearchBarProps {
   suggestions: string[];
-  onSearch: (query: string) => void;
+  feature_name: string;
+  player_name: string;
+  date: string;
+  model: string;
+  player_opponents: string;
+  player_type: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ suggestions, onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  suggestions,
+  feature_name,
+  // user_task,
+  player_name,
+  date,
+  model,
+  player_opponents,
+  player_type,
+}) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
 
@@ -18,9 +33,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ suggestions, onSearch }) => {
     setShowSuggestions(event.target.value.length > 0);
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (searchTerm.trim() !== "") {
-      onSearch(searchTerm);
+      // Directly using the searchTerm as user_task
+      const updatedUserTask = searchTerm;
+
+      // Call the fetchData function with updated user_task
+      await fetchData(updatedUserTask);
+      
       setSearchTerm("");
       setShowSuggestions(false);
     }
@@ -29,7 +49,39 @@ const SearchBar: React.FC<SearchBarProps> = ({ suggestions, onSearch }) => {
   const handleSuggestionClick = (suggestion: string) => {
     setSearchTerm(suggestion);
     setShowSuggestions(false);
-    onSearch(suggestion);
+    // Call the fetchData function with the selected suggestion as user_task
+    fetchData(suggestion);
+  };
+
+  const { playerdescription, setplayerdescription } = usePlayerStore();
+
+
+  const fetchData = async (user_task: string) => {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/genai/describe-player/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Tell the server it's JSON
+      },
+      body: JSON.stringify({
+        feature_name: "query_answering",
+        user_task: user_task,
+        player_name: player_name,
+        date: date,
+        model: model,
+        player_opponents: player_opponents,
+        player_type: player_type,
+      }), // Convert the data to a JSON string
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const fetcheddata = await response.json();
+    console.log("Fetched Data:", fetcheddata["description"]);
+
+
+    setplayerdescription(fetcheddata["description"]);
   };
 
   return (
@@ -59,7 +111,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ suggestions, onSearch }) => {
       <IconButton
         type="button"
         style={{ marginLeft: "8px", color: "red", fillOpacity: "0.5" }}
-        onClick={() => alert("Example: Recent Form of Virat Kohli")}
+        onClick={handleSearch}
       >
         <SparklesIcon />
       </IconButton>
@@ -87,14 +139,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ suggestions, onSearch }) => {
             .map((suggestion, index) => (
               <ListItem
                 key={index}
-                // button
                 onClick={() => handleSuggestionClick(suggestion)}
                 style={{
                   padding: "10px",
                   borderBottom: "1px solid #555",
                   color: "white",
                   fontFamily: "Montserrat",
-
                 }}
               >
                 {suggestion}

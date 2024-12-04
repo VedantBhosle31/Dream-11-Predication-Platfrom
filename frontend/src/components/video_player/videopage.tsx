@@ -5,7 +5,7 @@ const VideoPage: React.FC = () => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   // Replace this with the actual URL of your Django backend
-  const backendUrl = "http://127.0.0.1:8000/video/stream/stream_video.mp4";
+  const backendUrl = `${process.env.REACT_APP_BACKEND_URL}/video/stream/stream_video.mp4`;
 
   const loadVideo = () => {
     setVideoUrl(backendUrl);
