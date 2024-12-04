@@ -10,6 +10,7 @@ import { CardData } from "../../SlidingPanels";
 import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
 import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import { DisplayCardData } from "../../pages/player_display_card/displayCard";
+import usePlayerStore from "../../store/playerStore";
 
 interface DropZoneProps {
   cards: CardData[];
@@ -118,6 +119,7 @@ const DroppableCard: React.FC<{
   selectedCard: CardData | null;
   handleSetCVC: (id: string, role: "C" | "VC") => void;
 }> = ({ card, onRemove, isedit, onSelectCard, selectedCard, handleSetCVC }) => {
+
   // const [ishovered, setShowButtons] = useState(false);
   var [isCardExpanded, setCardExpanded] = useState(false);
 
@@ -130,12 +132,12 @@ const DroppableCard: React.FC<{
   interface Stats {
     title: string;
     stats: Stat[];
-  }
+  }//
 
   interface Graphs {
     title: string;
     description: string;
-  }
+  }//
 
   // graphs
 
@@ -171,7 +173,7 @@ const DroppableCard: React.FC<{
       description:
         "Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum",
     },
-  ];
+  ];//
 
   // batting , bowling AND fielder
   const typeData: Stats[] = [
@@ -246,12 +248,12 @@ const DroppableCard: React.FC<{
   type Stat = {
     key: string;
     value: string;
-  };
+  };//
 
   type TypeData = {
     title: string;
     stats: Stat[];
-  };
+  };//
 
   const typesMap: { [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData } = {
     BATTING: {
@@ -284,7 +286,8 @@ const DroppableCard: React.FC<{
         { key: "Stumps", value: "3" },
       ],
     },
-  };
+  };//
+
   const piedata = [
     { name: "0", value: 400 },
     { name: "1", value: 300 },
@@ -292,7 +295,8 @@ const DroppableCard: React.FC<{
     { name: "3", value: 200 },
     { name: "4", value: 100 },
     { name: "6", value: 50 },
-  ];
+  ];//
+
   const venuedata: ChartData[] = [
     {
       match: "vs AUS",
@@ -391,7 +395,8 @@ const DroppableCard: React.FC<{
   const [mydata, setmyData] =
     useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>(
       typesMap
-    );
+    );//
+
   const [newpiedata, setnewpieData] =
     useState<{ name: string; value: number }[]>(piedata);
 
@@ -409,14 +414,15 @@ const DroppableCard: React.FC<{
   const [newmatchupsdata, setnewmatchupsdata] = useState<any>([]);
 
   // Prepare data for the `typeData_2` prop
+
   const typeData_2 = Object.values(mydata).map((type) => ({
     title: type.title,
     stats: type.stats,
-  }));
+  }));//
 
   interface DisplayCardExpandedProps {
     typeData_2: TypeData[];
-  }
+  }//
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexTypes, setCurrentIndexTypes] = useState(0);
@@ -487,7 +493,7 @@ const DroppableCard: React.FC<{
     setCurrentIndexTypes((prev) =>
       prev === 0 ? typeData_2.length - 1 : prev - 1
     );
-  };
+  };//
 
   const handleRightClickTypes = () => {
     setCurrentIndexTypes((prev) =>
@@ -501,39 +507,45 @@ const DroppableCard: React.FC<{
     "React Native",
     "JavaScript",
     "Node.js",
-  ];
+  ];//
 
   const handleSearch = (query: string) => {
     console.log("Search Query:", query);
     alert(`You searched for: ${query}`);
-  };
+  };//
 
   //for filterBar(All,T20I, T20)
   const [selectedFilter, setSelectedFilter] = useState("All"); // State for the selected filter
   const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // State for the selected filter
   const [selectedFilter3, setSelectedFilter3] = useState("venue"); // State for the selected filter
 
-  const [format, setformat] = useState("Odi");
+  // const [format, setformat] = useState("Odi");//
+
+  const { model } = usePlayerStore();
+  const { matchDate } = usePlayerStore();
+  // const { model } = usePlayerStore();
+
 
   // const filters = ["All", "T20I", "T20"]; // Filter options
   const filters =
-    format === "T20"
+  model === "T20"
       ? ["All", "T20I", "T20"]
-      : format === "Odi"
+      : model === "Odi"
       ? ["All", "OdiI", "Odi"]
       : ["All", "TestI", "Test"]; // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
+//
 
   const handleFilterChange = (filter: string) => {
     setSelectedFilter(filter); // Update the selected filter
-  };
+  };//
   const handleFilterChange2 = (filter: string) => {
     setSelectedFilter2(filter); // Update the selected filter
-  };
+  };//
   const handleFilterChange3 = (filter: string) => {
     setSelectedFilter3(filter); // Update the selected filter
-  };
+  };//
 
   interface somecarddata {
     name: string;
@@ -558,6 +570,14 @@ const DroppableCard: React.FC<{
   //   setDetails(["newDetail1", "newDetail2"]);
   // };
 
+
+  const { allmaindata, setallmaindata } = usePlayerStore();
+  
+
+
+
+
+
   const fetchData = async (url: string) => {
     setCardExpanded(true);
 
@@ -578,8 +598,8 @@ const DroppableCard: React.FC<{
           // name: "R Ashwin",
           name: "SR Tendulkar",
           // name: "HH Pandya",
-          date: "2025-01-01",
-          model: "Odi",
+          date: matchDate,
+          model: model,
         }), // Convert the data to a JSON string
       }
     );
@@ -591,6 +611,9 @@ const DroppableCard: React.FC<{
     const fetcheddata = await response.json();
 
     maindata = fetcheddata;
+
+    // storing the fetched data to maindata
+    setallmaindata(maindata);
 
     setmyData({
       BATTING: {
@@ -881,6 +904,15 @@ const DroppableCard: React.FC<{
 
     console.log("maindata", maindata["stats"]);
   };
+
+
+
+
+
+
+
+
+
 
   return !isCardExpanded ? (
     <div

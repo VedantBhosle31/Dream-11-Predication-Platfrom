@@ -31,6 +31,7 @@ import FilterBar from "../filterBar/filterBar";
 import ImpactChart from "../impactindexchart/impactchart";
 import { BarPlot } from "@mui/x-charts/BarChart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
+import usePlayerStore from "../../store/playerStore";
 
 const COLORS = [
   "#0088FE",
@@ -240,134 +241,178 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   matchupsdata,
 }) => {
 
+  const { model } = usePlayerStore();
+  const { matchDate } = usePlayerStore();
+
   var temptitleexplain: string = "";
-  var explaindate: string = "2025-01-01";
-  var opponents: string ="RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson";
+  var explaindate: string = matchDate;
+  var opponents: string =
+    "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson";
   var typeofplayer: string = "";
 
+  const { playerdescription, setplayerdescription } = usePlayerStore();
 
-  if (card.type === 'BAT') {
-    typeofplayer ='BAT';
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "http://127.0.0.1:8000/genai/describe-player/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Tell the server it's JSON
+          },
+          body: JSON.stringify({
+            feature_name: "player_description",
+            // user_task: user_task,
+            player_name: card.name,
+            date: matchDate,
+            model: model,
+            player_opponents:
+              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_type: card.type,
+          }), // Convert the data to a JSON string
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const fetcheddata = await response.json();
+      console.log("Fetched Data:", fetcheddata["description"]);
+
+      setplayerdescription(fetcheddata["description"]);
+    };
+
+    fetchData();
+  }, []);
+
+  if (card.type === "BAT") {
+    typeofplayer = "BATTER";
     if (currentIndex === 0) {
-      temptitleexplain = 'fantasy_points_vs_matches';
-    }
-    else if (currentIndex === 1) {
-      temptitleexplain = 'recent_performance';
-    } 
-    else if (currentIndex === 2 ) {
-      temptitleexplain = 'matchups_bat';
-    } 
-    else if (currentIndex === 3 ) {
-      temptitleexplain = 'demography_bat';
-    } 
-    else if (currentIndex === 4) {
-      if(selectedFilter2 === "venue"){
-        temptitleexplain = 'differential_exp_venue';
-      }else if (selectedFilter2 === "opposition"){
-        temptitleexplain = 'differential_exp_opposition';
-
-      }else if (selectedFilter2 === "form"){
-        temptitleexplain = 'differential_exp_form';
+      temptitleexplain = "fantasy_points_vs_matches";
+    } else if (currentIndex === 1) {
+      temptitleexplain = "recent_performance";
+    } else if (currentIndex === 2) {
+      temptitleexplain = "matchups_bat";
+    } else if (currentIndex === 3) {
+      temptitleexplain = "demography_bat";
+    } else if (currentIndex === 4) {
+      if (selectedFilter2 === "venue") {
+        temptitleexplain = "differential_exp_venue";
+      } else if (selectedFilter2 === "opposition") {
+        temptitleexplain = "differential_exp_opposition";
+      } else if (selectedFilter2 === "form") {
+        temptitleexplain = "differential_exp_form";
       }
-    }
-    else if (currentIndex === 5) {
-      if(selectedFilter3 === "Overall"){
-        temptitleexplain = 'impact_index_overall_bat';
-      }else if (selectedFilter3 === "Powerplay"){
-        temptitleexplain = 'impact_index_pp_bat';
-
-      }else if (selectedFilter3 === "Middle"){
-        temptitleexplain = 'impact_index_middle_bat';
-
-      }else if (selectedFilter3 === "Death"){
-        temptitleexplain = 'impact_index_death_bat';
-      }
-    }else {
-      temptitleexplain = 'Graph not relevant for Batter';
-    }
-  }
-
-  else if (card.type === 'BOWL') {
-    typeofplayer ='BOWL';
-    if (currentIndex === 0) {
-      temptitleexplain = 'fantasy_points_vs_matches';
-    }
-    else if (currentIndex === 1) {
-      temptitleexplain = 'recent_performance';
-    } 
-    else if (currentIndex === 2 ) {
-      temptitleexplain = 'matchups_bowl';
-    } 
-    else if (currentIndex === 3 ) {
-      temptitleexplain = 'demography_bowl';
-    } 
-    else if (currentIndex === 4) {
-      if(selectedFilter3 === "venue"){
-        temptitleexplain = 'differential_exp_venue';
-      }else if (selectedFilter3 === "opposition"){
-        temptitleexplain = 'differential_exp_opposition';
-
-      }else if (selectedFilter3 === "form"){
-        temptitleexplain = 'differential_exp_form';
-      }
-    }
-    else if (currentIndex === 5) {
-      if(selectedFilter2 === "Overall"){
-        temptitleexplain = 'impact_index_overall_bowl';
-      }else if (selectedFilter2 === "Powerplay"){
-        temptitleexplain = 'impact_index_pp_bowl';
-      }else if (selectedFilter2 === "Middle"){
-        temptitleexplain = 'impact_index_middle_bowl';
-      }else if (selectedFilter2 === "Death"){
-        temptitleexplain = 'impact_index_death_bowl';
+    } else if (currentIndex === 5) {
+      if (selectedFilter3 === "Overall") {
+        temptitleexplain = "impact_index_overall_bat";
+      } else if (selectedFilter3 === "Powerplay") {
+        temptitleexplain = "impact_index_pp_bat";
+      } else if (selectedFilter3 === "Middle") {
+        temptitleexplain = "impact_index_middle_bat";
+      } else if (selectedFilter3 === "Death") {
+        temptitleexplain = "impact_index_death_bat";
       }
     } else {
-      temptitleexplain = 'Graph not relevant for Bowler';
+      temptitleexplain = "Graph not relevant for Batter";
     }
-  } 
-  
-  else if (card.type === 'ALL') {
-    typeofplayer ='ALL';
+  } else if (card.type === "BOWL") {
+    typeofplayer = "BOWLER";
     if (currentIndex === 0) {
-      temptitleexplain = 'fantasy_points_vs_matches';
+      temptitleexplain = "fantasy_points_vs_matches";
+    } else if (currentIndex === 1) {
+      temptitleexplain = "recent_performance";
+    } else if (currentIndex === 2) {
+      temptitleexplain = "matchups_bowl";
+    } else if (currentIndex === 3) {
+      temptitleexplain = "demography_bowl";
+    } else if (currentIndex === 4) {
+      if (selectedFilter3 === "venue") {
+        temptitleexplain = "differential_exp_venue";
+      } else if (selectedFilter3 === "opposition") {
+        temptitleexplain = "differential_exp_opposition";
+      } else if (selectedFilter3 === "form") {
+        temptitleexplain = "differential_exp_form";
+      }
+    } else if (currentIndex === 5) {
+      if (selectedFilter2 === "Overall") {
+        temptitleexplain = "impact_index_overall_bowl";
+      } else if (selectedFilter2 === "Powerplay") {
+        temptitleexplain = "impact_index_pp_bowl";
+      } else if (selectedFilter2 === "Middle") {
+        temptitleexplain = "impact_index_middle_bowl";
+      } else if (selectedFilter2 === "Death") {
+        temptitleexplain = "impact_index_death_bowl";
+      }
+    } else {
+      temptitleexplain = "Graph not relevant for Bowler";
     }
-    else if (currentIndex === 1) {
-      temptitleexplain = 'recent_performance';
-    }
-    else if (currentIndex === 2 ) {
-      temptitleexplain = 'matchups_bat';
-    }
-    else if (currentIndex === 3 ) {
-      temptitleexplain = 'demography_bat';
-    }
-    else if (currentIndex === 4) {
-      if(selectedFilter2 === "venue"){
-        temptitleexplain = 'differential_exp_venue';
-      }else if (selectedFilter2 === "opposition"){
-        temptitleexplain = 'differential_exp_opposition';
-
-      }else if (selectedFilter2 === "form"){
-        temptitleexplain = 'differential_exp_form';
+  } else if (card.type === "ALL") {
+    typeofplayer = "ALLROUNDER";
+    if (currentIndex === 0) {
+      temptitleexplain = "fantasy_points_vs_matches";
+    } else if (currentIndex === 1) {
+      temptitleexplain = "recent_performance";
+    } else if (currentIndex === 2) {
+      temptitleexplain = "matchups_bat";
+    } else if (currentIndex === 3) {
+      temptitleexplain = "demography_bat";
+    } else if (currentIndex === 4) {
+      if (selectedFilter2 === "venue") {
+        temptitleexplain = "differential_exp_venue";
+      } else if (selectedFilter2 === "opposition") {
+        temptitleexplain = "differential_exp_opposition";
+      } else if (selectedFilter2 === "form") {
+        temptitleexplain = "differential_exp_form";
+      }
+    } else if (currentIndex === 5) {
+      if (selectedFilter3 === "Overall") {
+        temptitleexplain = "impact_index_overall_bat";
+      } else if (selectedFilter3 === "Powerplay") {
+        temptitleexplain = "impact_index_pp_bat";
+      } else if (selectedFilter3 === "Middle") {
+        temptitleexplain = "impact_index_middle_bat";
+      } else if (selectedFilter3 === "Death") {
+        temptitleexplain = "impact_index_death_bat";
       }
     }
-    else if (currentIndex === 5) {
-      if(selectedFilter3 === "Overall"){
-        temptitleexplain = 'impact_index_overall_bat';
-      }else if (selectedFilter3 === "Powerplay"){
-        temptitleexplain = 'impact_index_pp_bat';
-
-      }else if (selectedFilter3 === "Middle"){
-        temptitleexplain = 'impact_index_middle_bat';
-
-      }else if (selectedFilter3 === "Death"){
-        temptitleexplain = 'impact_index_death_bat';
+  } else if (card.type === "WICKETKEEPER") {
+    typeofplayer = "WICKETKEEPER";
+    if (currentIndex === 0) {
+      temptitleexplain = "fantasy_points_vs_matches";
+    } else if (currentIndex === 1) {
+      temptitleexplain = "recent_performance";
+    } else if (currentIndex === 2) {
+      temptitleexplain = "matchups_bat";
+    } else if (currentIndex === 3) {
+      temptitleexplain = "demography_bat";
+    } else if (currentIndex === 4) {
+      if (selectedFilter2 === "venue") {
+        temptitleexplain = "differential_exp_venue";
+      } else if (selectedFilter2 === "opposition") {
+        temptitleexplain = "differential_exp_opposition";
+      } else if (selectedFilter2 === "form") {
+        temptitleexplain = "differential_exp_form";
       }
+    } else if (currentIndex === 5) {
+      if (selectedFilter3 === "Overall") {
+        temptitleexplain = "impact_index_overall_bat";
+      } else if (selectedFilter3 === "Powerplay") {
+        temptitleexplain = "impact_index_pp_bat";
+      } else if (selectedFilter3 === "Middle") {
+        temptitleexplain = "impact_index_middle_bat";
+      } else if (selectedFilter3 === "Death") {
+        temptitleexplain = "impact_index_death_bat";
+      }
+    } else {
+      temptitleexplain = "Graph not relevant for Batter";
     }
-
   } else {
-    temptitleexplain = '';
+    temptitleexplain = "";
   }
-  
+
   return (
     <Modal
       open={open}
@@ -550,32 +595,43 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
               <Box
                 sx={{
                   width: "100%",
-                  height: "100%",
+                  maxHeight: 200,
                   padding: "16px",
-                  display: "flex",
-                  flexDirection: "column",
+                  // display: "flex",
+                  // flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "stretch",
-                  gap: "8px",
+                  // gap: "8px",
                   boxSizing: "border-box",
+                  overflowY: "auto", // Enable vertical scrolling
+  overflowX: "hidden",
+  marginTop: "25px",
+  scrollbarColor:"grey",
+  scrollbarWidth:"5px"
                 }}
               >
-                <Skeleton
-                  animation="pulse"
-                  sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
-                />
-                <Skeleton
-                  animation="wave"
-                  sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
-                />
-                <Skeleton
-                  animation="pulse"
-                  sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
-                />
-                <Skeleton
-                  animation="wave"
-                  sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
-                />
+                {playerdescription !== "" ? (
+                  playerdescription
+                ) : (
+                  <>
+                    <Skeleton
+                      animation="pulse"
+                      sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
+                    />
+                    <Skeleton
+                      animation="wave"
+                      sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
+                    />
+                    <Skeleton
+                      animation="pulse"
+                      sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
+                    />
+                    <Skeleton
+                      animation="wave"
+                      sx={{ bgcolor: "white", opacity: 0.8, height: "20px" }}
+                    />
+                  </>
+                )}
               </Box>
             </div>
 
@@ -587,7 +643,17 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 marginTop: "50px",
               }}
             >
-              <SearchBar suggestions={exampleQueries} onSearch={handleSearch} />
+              <SearchBar
+                suggestions={exampleQueries}
+                feature_name={"query_answering"}
+                player_name={card.name}
+                date={matchDate}
+                model={model}
+                player_opponents={
+                  "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson"
+                }
+                player_type={card.type}
+              />
             </div>
           </div>
         </div>
@@ -746,10 +812,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   </div>
                 )}
 
-
-
-
-
                 {currentIndex === 0 && (
                   <ResponsiveContainer width="90%" height={250}>
                     <BarChart
@@ -868,8 +930,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                       marginTop: "10px",
                     }}
                   >
-                    <MatchupsComponent matchupsdata={matchupsdata}/>
-                    
+                    <MatchupsComponent matchupsdata={matchupsdata} />
 
                     <div></div>
                   </div>
@@ -950,7 +1011,10 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                       backgroundColor: "#1A1A1A",
                     }}
                   >
-                    <ImpactChart battingStats={impactdata} filter={selectedFilter2} />
+                    <ImpactChart
+                      battingStats={impactdata}
+                      filter={selectedFilter2}
+                    />
                   </div>
                 )}
 
@@ -974,12 +1038,11 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     title={temptitleexplain}
                     explaindate={explaindate}
                     opponents={opponents}
-                    typeofplayer={typeofplayer} 
-                    player_name={card.name} 
-                    model="Odi"                 
+                    typeofplayer={typeofplayer}
+                    player_name={card.name}
+                    model={model}
                   />
                 </div>
-
               </div>
             </div>
           </div>
@@ -1102,14 +1165,19 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 >
                   <ExplainGraphButton
                     // title={data[currentIndex].title}
-                    title={card.type === 'BAT' ? 'spider_chart_bat' : (card.type === 'BOWL' ? 'spider_chart_bowl' : 'spider_chart_all')}
+                    title={
+                      card.type === "BAT"
+                        ? "spider_chart_bat"
+                        : card.type === "BOWL"
+                        ? "spider_chart_bowl"
+                        : "spider_chart_all"
+                    }
                     player_name={card.name}
                     explaindate={explaindate}
-                    model={'Odi'}
+                    model={model}
                     opponents={opponents}
                     typeofplayer={typeofplayer}
                   />
-
                 </div>
               </div>
             </div>
@@ -1117,9 +1185,8 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
         </div>
       </Box>
     </Modal>
-)};
-
-
+  );
+};
 
 // interface PlayerStats {
 //   previous_runs?: number | null;
@@ -1171,8 +1238,9 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
 //   matchupsdata:any;
 // }
 
-
-const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({ matchupsdata }) => {
+const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
+  matchupsdata,
+}) => {
   const stats = matchupsdata["stats"];
 
   return (
@@ -1180,8 +1248,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({ matchupsdata }) =>
       {Object.keys(stats).map((playerName, index) => {
         const playerStats = stats[playerName]; // Access the stats for the player
 
-        return (
-          playerStats !== null ?
+        return playerStats !== null ? (
           <div
             key={index}
             style={{
@@ -1205,7 +1272,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({ matchupsdata }) =>
             >
               <div style={{ width: "50%", height: "100%" }}>
                 <img
-                src={player2Image}
+                  src={player2Image}
                   alt="player"
                   style={{
                     width: "100%",
@@ -1250,7 +1317,15 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({ matchupsdata }) =>
               BALLS
               <div style={{ color: "#FA2433" }}>
                 {/* {playerStats?.balls ?? "N/A"} */}
-                {(playerStats["previous_runs"] !== null && playerStats["previous_runs"] !== 0) && (playerStats["previous_avg_strike_rate"] !== null && playerStats["previous_avg_strike_rate"] !== 0) ? Math.round(playerStats["previous_runs"]*100/playerStats["previous_avg_strike_rate"]) : 0}
+                {playerStats["previous_runs"] !== null &&
+                playerStats["previous_runs"] !== 0 &&
+                playerStats["previous_avg_strike_rate"] !== null &&
+                playerStats["previous_avg_strike_rate"] !== 0
+                  ? Math.round(
+                      (playerStats["previous_runs"] * 100) /
+                        playerStats["previous_avg_strike_rate"]
+                    )
+                  : 0}
               </div>
             </div>
 
@@ -1327,7 +1402,9 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({ matchupsdata }) =>
                   : "N/A"}
               </div>
             </div>
-          </div>: <div></div>
+          </div>
+        ) : (
+          <div></div>
         );
       })}
     </>

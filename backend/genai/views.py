@@ -54,7 +54,7 @@ def describe_player(request):
                 return JsonResponse({'error': 'feature_name is required'}, status=400)
             if not player_name or not date or not model:
                 return JsonResponse({'error': 'player_name, date and model are required'}, status=400)
-            data = json.dumps(get_data(player_type, feature_name, player_name, date, model, player_opponents))
+            data = json.dumps(get_data(player_type, player_name, date, model, player_opponents)) #removed feature name
             description = player_description(data,feature_name, user_task)
             return JsonResponse({'description': description}, status=200)
         except json.JSONDecodeError:

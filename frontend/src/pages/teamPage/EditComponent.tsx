@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import VideoPlayer from "../../components/video_player/videoplayer";
 import Slideshow from "../../components/slide-show/SlideShow";
 import { CardData } from "../../SlidingPanels";
+import usePlayerStore from "../../store/playerStore";
 
 export interface EditComponentProps {
   showContainer: boolean;
@@ -35,6 +36,9 @@ const EditComponent: React.FC<EditComponentProps> = ({
 }) => {
   const navigation = useNavigate();
 
+  const { displayscreencards, setdisplayscreencards } = usePlayerStore();
+
+
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   // Replace this with the actual URL of your Django backend
@@ -55,6 +59,8 @@ const EditComponent: React.FC<EditComponentProps> = ({
       alert("Complete 11 players of your dream team!");
       return;
     }
+
+    setdisplayscreencards(dropZoneCards);
 
     // Navigate to the player-info page if both conditions are satisfied
     navigation("/player-info");
