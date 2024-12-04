@@ -52,7 +52,13 @@ const usePlayerStore = create<PlayerStore>((set, get) => ({
     console.log("API response:", data);
 
     if (data.fantasy_points && data.predictions) {
-      set({ best11Players: data.fantasy_points });
+      // set({ best11Players: data.fantasy_points });
+      // fantasy points is an object of 22 key value pairs with player name as key and fantasy points as value select only top 11
+      const best11 = Object.entries(data.fantasy_points)
+        .sort((a: any, b: any) => b[1] - a[1])
+        .slice(0, 11)
+        .map((player) => player[0]);
+      set({ best11Players: best11 });
       set({ playerStats: data.predictions });
     } else {
       console.error("API errors:", data.errors);

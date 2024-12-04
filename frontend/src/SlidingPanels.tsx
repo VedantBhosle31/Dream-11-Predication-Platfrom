@@ -353,6 +353,8 @@ const SlidingPanels = () => {
     },
   ];
 
+  
+
   const [dropZoneCards, setDropZoneCards] =
     useState<CardData[]>(initialDropZoneCards);
 

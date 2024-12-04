@@ -124,7 +124,6 @@ def predict(names,date,format):
 
     # Sort the fantasy points in descending order and send the best 11
     fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))
-    fantasy_points = dict(list(fantasy_points.items())[:11])
 
     result = {
         "fantasy_points": fantasy_points,
