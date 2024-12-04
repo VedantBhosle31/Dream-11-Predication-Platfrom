@@ -1,13 +1,14 @@
+from players.models import PlayerNames, TeamDetails
 import pandas as pd
 from difflib import get_close_matches
 
-def validate_uploaded_csv(file, players_csv_path, teams_csv_path):
+def validate_uploaded_csv(file):
     errors = []
-    team_logos = {}
+    team_logos = []
     final_players_unique_names = []
 
     try:
-        # Load the uploaded CSV file
+        # Read the uploaded CSV file
         try:
             uploaded_df = pd.read_csv(file)
             if uploaded_df.empty:
@@ -26,23 +27,19 @@ def validate_uploaded_csv(file, players_csv_path, teams_csv_path):
 
         # Load reference data
         try:
-            players_df = pd.read_csv(players_csv_path)
-            teams_df = pd.read_csv(teams_csv_path)
-        except FileNotFoundError as e:
-            errors.append(f"Reference file not found: {str(e)}")
+            players_df = pd.DataFrame(list(PlayerNames.objects.all().values()))
+            teams_df = pd.DataFrame(list(TeamDetails.objects.all().values()))
+        except Exception as e:
+            errors.append(f"Error loading reference data: {str(e)}")
             return {"errors": errors, "team_logos": team_logos, "final_players_unique_names": final_players_unique_names}
 
-        # Combine all player name variations into a dictionary with cricsheet_unique_name as the value
-        player_name_columns = [
-            "name", "full_name", "display_name", "cricsheet_name", "cricsheet_unique_name"
-        ]
-        valid_players = {}
-        for col in player_name_columns:
-            if col in players_df.columns:
-                for _, row in players_df.iterrows():
-                    name = str(row[col]).strip().lower() if pd.notna(row[col]) else None
-                    if name:
-                        valid_players[name] = row.get("cricsheet_unique_name", name)
+        # Build valid players dictionary
+        player_name_columns = ["name", "full_name", "display_name", "cricsheet_name", "cricsheet_unique_name"]
+        valid_players = {
+            str(row[col]).strip().lower(): row["cricsheet_unique_name"]
+            for _, row in players_df.iterrows()
+            for col in player_name_columns if col in row and pd.notna(row[col])
+        }
 
         # Function to find the closest match for a player name
         def get_player_unique_name(player_name, valid_players, threshold=0.8):
@@ -52,15 +49,13 @@ def validate_uploaded_csv(file, players_csv_path, teams_csv_path):
             close_matches = get_close_matches(player_name, valid_players.keys(), n=1, cutoff=threshold)
             return valid_players[close_matches[0]] if close_matches else None
 
-        # Prepare valid teams with their logos
-        team_name_columns = [
-            "name", "nickname", "abbreviation", "display_name", "short_display_name"
-        ]
-        valid_teams = {}
-        for _, row in teams_df.iterrows():
-            for col in team_name_columns:
-                if col in row and pd.notna(row[col]):
-                    valid_teams[row[col].strip().lower()] = row.get("logo", "")
+        # Build valid teams dictionary
+        team_name_columns = ["name", "nickname", "abbreviation", "display_name", "short_display_name"]
+        valid_teams = {
+            str(row[col]).strip().lower(): row.get("logo", "")
+            for _, row in teams_df.iterrows()
+            for col in team_name_columns if col in row and pd.notna(row[col])
+        }
 
         # Validate each row in the uploaded CSV
         for index, row in uploaded_df.iterrows():
@@ -92,7 +87,6 @@ def validate_uploaded_csv(file, players_csv_path, teams_csv_path):
             if len(unique_teams) != 2:
                 errors.append(f"Expected players from exactly 2 teams, but got {len(unique_teams)} teams: {', '.join(unique_teams)}.")
             else:
-                # Get the logos for the two valid teams
                 team_logos = [valid_teams[team] for team in unique_teams]
 
             # Ensure all match dates are the same

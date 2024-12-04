@@ -9,6 +9,7 @@ from players.utils.player_service import get_player_stats, matchup_stats, player
 # from services.player_service import get_player_stats
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import parser_classes
+from players.utils.validators import validate_uploaded_csv
 
 import json
 
@@ -26,29 +27,24 @@ def home(request):
 @csrf_exempt
 @parser_classes([MultiPartParser, FormParser])
 def verify_csv(request):
-    if request.method == "POST":
-        print("request", request.body)
-        print("request", request.FILES)
-        from .utils.validators import validate_uploaded_csv
-
-        if request.method == "POST" and request.FILES.get("file"):
-            file = request.FILES["file"]
-            result = validate_uploaded_csv(file, PLAYER_NAMES_PATH, TEAM_NAMES_PATH)
-            errors = result["errors"]
-            logos = result["team_logos"]
-            final_players_unique_names = result["final_players_unique_names"]
-            if errors:
-                return JsonResponse({"status": "error", "errors": errors}, status=400)
-            return JsonResponse(
-                {"status": "success", "message": "File is valid.", "team_logos": logos, "final_players_unique_names": final_players_unique_names}
-            )
+    if request.method == "POST" and request.FILES.get("file"):
+        file = request.FILES["file"]
+        result = validate_uploaded_csv(file)
+        errors = result["errors"]
+        logos = result["team_logos"]
+        final_players_unique_names = result["final_players_unique_names"]
+        if errors:
+            return JsonResponse({"status": "error", "errors": errors}, status=400)
         return JsonResponse(
-            {
-                "status": "error",
-                "message": "No file provided or invalid request method.",
-            },
-            status=400,
+            {"status": "success", "message": "File is valid.", "team_logos": logos, "final_players_unique_names": final_players_unique_names}
         )
+    return JsonResponse(
+        {
+            "status": "error",
+            "message": "No file provided or invalid request method.",
+        },
+        status=400,
+    )
 
 
 @csrf_exempt
