@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from players.utils.player_service import get_player_stats, matchup_stats, player_features
+from players.utils.player_service import get_player_stats, matchup_stats, player_features, player_names, team_names
 # from services.player_service import get_player_stats
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import parser_classes
@@ -13,11 +13,6 @@ from players.utils.validators import validate_uploaded_csv
 
 import json
 
-
-# Create your views here.
-PLAYER_NAMES_PATH = "players/utils/player_names.csv"
-TEAM_NAMES_PATH = "players/utils/team_details.csv"
-PLAYER_DATA_PATH = "players/utils/player_datails.json"
 
 
 def home(request):
@@ -53,7 +48,7 @@ def get_players(request):
         user_input = request.GET.get("user_input")
         # If user_input is greater than 3 characters, search for player names
         if len(user_input) > 3:
-            player_names = pd.read_csv(PLAYER_NAMES_PATH)
+            player_names = pd.DataFrame(player_names())
             player_names = player_names[
                 player_names["cricsheet_name"].str.contains(user_input, case=False)
             ]
@@ -67,7 +62,7 @@ def get_teams(request):
         user_input = request.GET.get('user_input')
         # If user_input is greater than 3 characters, search for team names
         if len(user_input) > 3:
-            team_names = pd.read_csv(TEAM_NAMES_PATH)
+            team_names = pd.DataFrame(team_names())
             team_names = team_names[team_names['name'].str.contains(user_input, case=False)]
             team_names = team_names['name'].tolist()
             return JsonResponse({'team_names': team_names})
@@ -77,7 +72,7 @@ def get_team_logos_from_team_names(request):
     if request.method == "POST":
         data = json.loads(request.body)
         team_names = data['team_names']
-        team_details = pd.read_csv(TEAM_NAMES_PATH)
+        team_details = pd.DataFrame(team_names())
         team_logos = team_details[team_details['name'].isin(team_names)]
         team_logos = team_logos[['name', 'logo']].to_dict(orient='records')
         return JsonResponse({'team_logos': team_logos})
@@ -112,7 +107,7 @@ def get_player_features(request):
         user_input = request.GET.get('user_input')
         # If user_input is greater than 3 characters, search for team names
         if len(user_input) > 3:
-            team_names = pd.read_csv(TEAM_NAMES_PATH)
+            team_names = pd.DataFrame(team_names())
             team_names = team_names[team_names['name'].str.contains(user_input, case=False)]
             team_names = team_names['name'].tolist()
             return JsonResponse({'team_names': team_names})
@@ -122,7 +117,7 @@ def get_team_logos_from_team_names(request):
     if request.method == "POST":
         data = json.loads(request.body)
         team_names = data['team_names']
-        team_details = pd.read_csv(TEAM_NAMES_PATH)
+        team_details = pd.DataFrame(team_names())
         team_logos = team_details[team_details['name'].isin(team_names)]
         team_logos = team_logos[['name', 'logo']].to_dict(orient='records')
         return JsonResponse({'team_logos': team_logos})
