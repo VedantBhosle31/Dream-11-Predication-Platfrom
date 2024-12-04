@@ -26,7 +26,8 @@ import ImpactChart from "../impactindexchart/impactchart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 import usePlayerStore from "../../store/playerStore";
 import { CardData } from "../../SlidingPanels";
-import defaultimg from "../../assets/images/default.png"; // Replace with your player image
+// import defaultimg from "../../assets/images/default.png"; // Replace with your player image
+import defaultimg from "../../assets/images/default.png";
 
 const COLORS = [
   "#0088FE",
@@ -385,7 +386,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 objectFit: "contain", // Ensures the image scales properly
               }}
               src={card.team_url}
-              alt="Player"
+              alt={defaultimg}
             />
           </div>
 
@@ -409,7 +410,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
             <img
               className="display-card-expanded-player-image"
               src={card.img_url}
-              alt="Player"
+              alt={defaultimg}
               style={{
                 position: "absolute",
                 left: "50%",
@@ -427,7 +428,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     color: "green",
                   }}
                 >
-                  {card.points}
+                  {parseFloat(card.points).toFixed(2)}
                   <div
                     style={{
                       fontSize: "8px",
@@ -1194,7 +1195,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
               <div style={{ width: "50%", height: "100%" }}>
                 <img
                   src={defaultimg}
-                  alt="player"
+                  alt={defaultimg}
                   style={{
                     width: "100%",
                     height: "100%",

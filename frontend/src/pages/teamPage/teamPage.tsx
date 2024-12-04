@@ -23,8 +23,8 @@ export interface TeamPageProps {
   toggleContainer: () => void;
   dragZoneCards: CardData[];
   dropZoneCards: CardData[];
-  filterType: "points" | "cost";
-  applyFilter: (filter: "points" | "cost") => void;
+  filterType: "runs" | "cost";
+  applyFilter: (filter: "runs" | "cost") => void;
   handleSwapCards: (card: CardData) => void;
   selectedCard: CardData | null;
   removeFromDropZone: (card: CardData) => void;

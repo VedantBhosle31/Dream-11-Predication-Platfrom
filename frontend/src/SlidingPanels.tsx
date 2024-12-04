@@ -481,12 +481,12 @@ const SlidingPanels = () => {
      const [dragZoneCards, setDragZoneCards] =
     useState<CardData[]>(remainingPlayers);
 
-  const [filterType, setFilterType] = useState<"points" | "cost">("points");
+  const [filterType, setFilterType] = useState<"runs" | "cost">("runs");
 
   // selected card
   const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
 
-  const applyFilter = (filter: "points" | "cost") => {
+  const applyFilter = (filter: "runs" | "cost") => {
     setFilterType(filter);
   };
 

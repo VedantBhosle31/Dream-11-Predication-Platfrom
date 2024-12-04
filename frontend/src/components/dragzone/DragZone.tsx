@@ -10,9 +10,9 @@ import defaultimg from "../../assets/images/default.png"; // Replace with your p
 
 interface DragZoneProps {
   cards: CardData[];
-  filterType: "points" | "cost";
+  filterType: "runs" | "cost";
   onDrag: (card: CardData) => void;
-  applyFilter: (filter: "points" | "cost") => void;
+  applyFilter: (filter: "runs" | "cost") => void;
   onSwap: (card: CardData) => void;
   selectedCard: CardData | null;
   addToDropZone: (card: CardData) => void;
@@ -22,7 +22,7 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
 
   const [ascending, setAscending] = useState(true);
 
-  const handleFilterClick = (filter: "points" | "cost") => {
+  const handleFilterClick = (filter: "runs" | "cost") => {
     if (filterType === filter) {
       setAscending(!ascending);
     } else {
@@ -33,8 +33,8 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
   
   // Filter cards based on selected filterType
   const filteredCards = [...cards].sort((a, b) => {
-    const valueA = filterType === "points" ? Number(a.points) : Number(a.cost);
-    const valueB = filterType === "points" ? Number(b.points) : Number(b.cost);
+    const valueA = filterType === "runs" ? Number(a.runs) : Number(a.cost);
+    const valueB = filterType === "runs" ? Number(b.runs) : Number(b.cost);
     return ascending ? valueA - valueB : valueB - valueA;
   });
   
@@ -49,10 +49,10 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
 
         <div style={{display: "flex", alignContent: "center", justifyContent: "space-between", width: "54%"}}>
           
-          <button className={`score-filter-button ${filterType === "points" ? "selected" : ""}`} onClick={() => handleFilterClick("points")}>
+          <button className={`score-filter-button ${filterType === "runs" ? "selected" : ""}`} onClick={() => handleFilterClick("runs")}>
             EXPT<br></br>SCORE
-            <div className={filterType === "points" && ascending ? "selected" : ""}>
-              {filterType === "points" && ascending ? (
+            <div className={filterType === "runs" && ascending ? "selected" : ""}>
+              {filterType === "runs" && ascending ? (
                 <ArrowUpward />
               ): <ArrowDownward />
             }
@@ -149,7 +149,8 @@ const DraggableCard: React.FC<{
 
       <div style={{display: "flex", width: "60%", height: "100%", justifyContent: "space-around"}}>
         <div style={{alignContent:"center", color: "red", fontSize: "100%", fontWeight: "800"}}>
-          {card.points}
+        {parseFloat(card.runs).toFixed()}
+
         </div>
 
         <div style={{alignContent:"center", color: "white", fontSize: "100%", fontWeight: "15px"}}>

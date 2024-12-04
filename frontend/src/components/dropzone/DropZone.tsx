@@ -933,7 +933,7 @@ const DroppableCard: React.FC<{
         {card.name}
         <div className="card-overlay-row">
           <div style={{ fontSize: "9px", display: "flex" }}>
-            {card.score}
+            {parseFloat(card.runs).toFixed()}
             <div style={{ color: "red" }}>RNS</div>
           </div>
           <div style={{ fontSize: "9px", fontWeight: 900 }}>{card.type}</div>
