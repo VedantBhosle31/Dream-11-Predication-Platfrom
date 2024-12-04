@@ -6,7 +6,6 @@ import "./displayCard.css";
 import DisplayCardExpanded from "../../components/player_display_card/displayCardExpanded2";
 import usePlayerStore from "../../store/playerStore";
 import { CardData } from "../../SlidingPanels";
-import { round } from "lodash";
 import defaultimg from "../../assets/images/default.png"; // Replace with your player image
 
 export interface DisplayCardData {
@@ -45,9 +44,9 @@ const DisplayScreen: React.FC = () => {
 
 
 
-  const { displayscreencards } = usePlayerStore();
+  const {displayscreencards} = usePlayerStore();
 
-
+  
   const sortedCards = [...displayscreencards].sort((a, b) => {
     if (a.cvc === "C" && b.cvc !== "C") return -1; // Prioritize "C"
     if (a.cvc === "VC" && b.cvc !== "VC" && b.cvc !== "C") return -1;
@@ -59,35 +58,35 @@ const DisplayScreen: React.FC = () => {
   const row2 = sortedCards.slice(3, 7); // Next 4 cards
   const row3 = sortedCards.slice(7, 11); // Last 4 cards
 
-
+  
   return (
+    
+      <div className="main-display">
+        <div className="display-container">
+          <div className="display-card-row">
+            {row1.map((card) => (
 
-    <div className="main-display">
-      <div className="display-container">
-        <div className="display-card-row">
-          {row1.map((card) => (
 
-
-            <DisplayCard key={card.id} card={card} />
-
-          ))}
+                <DisplayCard key={card.id} card={card} />
+              
+            ))}
+          </div>
+        </div>
+        <div className="display-container">
+          <div className="display-card-row-2">
+            {row2.map((card) => (
+              <DisplayCard key={card.id} card={card} />
+            ))}
+          </div>
+        </div>
+        <div className="display-container">
+          <div className="display-card-row-2">
+            {row3.map((card) => (
+              <DisplayCard key={card.id} card={card} />
+            ))}
+          </div>
         </div>
       </div>
-      <div className="display-container">
-        <div className="display-card-row-2">
-          {row2.map((card) => (
-            <DisplayCard key={card.id} card={card} />
-          ))}
-        </div>
-      </div>
-      <div className="display-container">
-        <div className="display-card-row-2">
-          {row3.map((card) => (
-            <DisplayCard key={card.id} card={card} />
-          ))}
-        </div>
-      </div>
-    </div>
   );
 };
 
@@ -97,13 +96,13 @@ const DisplayCard: React.FC<{
 }> = ({ card }) => {
   const containerRef = useRef<HTMLDivElement | null>(null); //
 
+  
 
 
-
-  const { allmaindata } = usePlayerStore();
+  const {allmaindata} = usePlayerStore();
   console.log("here we got allmaindata", allmaindata);
 
-  const { displayscreencards } = usePlayerStore();
+  const {displayscreencards} = usePlayerStore();
 
 
 
@@ -267,15 +266,15 @@ const DisplayCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: card.name,
-            player_opponents: "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: matchDate,
             model: model,
           }),
         }
       );
-
+      
       const matchupsdata = await response.json();
-      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
+      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -301,13 +300,13 @@ const DisplayCard: React.FC<{
           }), // Convert the data to a JSON string
         }
       );
-
+      
       const matchupsdata = await response.json();
 
 
 
 
-      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
+      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -351,11 +350,11 @@ const DisplayCard: React.FC<{
     model === "T20"
       ? ["All", "T20I", "T20"]
       : model === "Odi"
-        ? ["All", "OdiI", "Odi"]
-        : ["All", "TestI", "Test"]; // Filter options
+      ? ["All", "OdiI", "Odi"]
+      : ["All", "TestI", "Test"]; // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
-  //
+//
 
   const handleFilterChange = (filter: string) => {
     setSelectedFilter(filter); // Update the selected filter
@@ -500,7 +499,7 @@ const DisplayCard: React.FC<{
       typesMap
     );//
 
-  const [newpiedata, setnewpieData] =
+    const [newpiedata, setnewpieData] =
     useState<{ name: string; value: number }[]>(piedata);
 
   const [newradardata, setnewradarData] = useState<number[]>(radardata);
@@ -508,8 +507,8 @@ const DisplayCard: React.FC<{
   const [newfantasygraphdata, setnewfantasygraphData] =
     useState<{ date: string; value: number }[]>(fantasygraphdata);
 
-  const [newvenuedata, setnewvenueData] = useState<ChartData[]>(venuedata);
-
+    const [newvenuedata, setnewvenueData] = useState<ChartData[]>(venuedata);
+  
   const [newpercentages, setnewpercentages] = useState<number[]>(percentages);
 
   const [newimpactdata, setnewimpactdata] = useState<any>([]);
@@ -531,9 +530,7 @@ const DisplayCard: React.FC<{
 
   useEffect(() => {
 
-    const maindata: any = allmaindata;
-
-    console.log("maindata", maindata);
+    const maindata:any = allmaindata;
 
     setmyData({
       BATTING: {
@@ -842,23 +839,24 @@ const DisplayCard: React.FC<{
 
 
   return (
-    !isExpanded ? (
-      <div
-        ref={containerRef}
-        className={`display-card ${card.cvc === "C"
-            ? "big"
-            : card.id === "5" ||
-              card.id === "6" ||
-              card.id === "9" ||
-              card.id === "10"
+      !isExpanded ? (
+        <div
+          ref={containerRef}
+          className={`display-card ${
+            card.cvc === "C"
+              ? "big"
+              : card.id === "5" ||
+                card.id === "6" ||
+                card.id === "9" ||
+                card.id === "10"
               ? "middle"
               : ""
           }`}
-      >
-        <div className="background-overlay"></div>
+        >
+          <div className="background-overlay"></div>
 
-        <div className="display-card-overlay">
-          {card.name}
+          <div className="display-card-overlay">
+            {card.name}
 
             <div className="display-card-overlay-row">
               <div
@@ -894,7 +892,6 @@ const DisplayCard: React.FC<{
                 </div>
                 {parseFloat(card.strike_rate).toFixed(0)}
               </div>
-              {round(parseInt(card.strike_rate), 2)}
             </div>
           </div>
 
@@ -933,80 +930,44 @@ const DisplayCard: React.FC<{
 
           <img className="display-card-image" src={card.img_url} alt={defaultimg} />
         </div>
-
-        <div className="display-card-points">
-          <div>
-            207
-            <div style={{ fontSize: 20 }}>PTS</div>
-          </div>
-
-          <img
-            className="display-card-team-logo"
-            src={card.team === "RCB" ? rcblogo : milogo}
-            alt="Player"
-          />
-
-          <div style={{ fontSize: 13 }}>{card.type}</div>
-        </div>
-
-        <button
-          className="info-button"
-          onClick={
-            () => {
-              setExpanded(true);
-              // handleClick();
-            }
-            // fetchData("http://127.0.0.1:8000/players/get-player-data")
-          }
-          aria-label="Info Button"
-        >
-          i
-        </button>
-
-        {card.cvc === "C" && <div className="display-card-c">C</div>}
-
-        {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
-
-        <img className="display-card-image" src={playerImage} alt="Player" />
-      </div>
-    ) : (
-      <DisplayCardExpanded
-        containerRef={containerRef}
-        isExpanded={isExpanded}
-        setExpanded={setExpanded}
-        playerImage={playerImage}
-        card={card}
-        handleLeftClick={handleLeftClick}
-        handleRightClick={handleRightClick}
-        handleLeftClickTypes={handleLeftClickTypes}
-        handleRightClickTypes={handleRightClickTypes}
-        data={data}
-        typeData={typeData}
-        typeData_2={typeData_2}
-        currentIndex={currentIndex}
-        currentIndexTypes={currentIndexTypes}
-        suggestions={suggestions}
-        handleSearch={handleSearch}
-        handleClose={handleClose}
-        open={isExpanded}
-        selectedFilter={selectedFilter}
-        selectedFilter2={selectedFilter2}
-        selectedFilter3={selectedFilter3}
-        filters={filters}
-        filters2={filters2}
-        filters3={filters3}
-        handleFilterChange={handleFilterChange}
-        handleFilterChange2={handleFilterChange2}
-        handleFilterChange3={handleFilterChange3}
-        newpiedata={newpiedata}
+      ) : (
+        <DisplayCardExpanded
+          containerRef={containerRef}
+          isExpanded={isExpanded}
+          setExpanded={setExpanded}
+          playerImage={playerImage}
+          card={card}
+          handleLeftClick={handleLeftClick}
+          handleRightClick={handleRightClick}
+          handleLeftClickTypes={handleLeftClickTypes}
+          handleRightClickTypes={handleRightClickTypes}
+          data={data}
+          typeData={typeData}
+          typeData_2={typeData_2}
+          currentIndex={currentIndex}
+          currentIndexTypes={currentIndexTypes}
+          suggestions={suggestions}
+          handleSearch={handleSearch}
+          handleClose={handleClose}
+          open={isExpanded}
+          selectedFilter={selectedFilter}
+          selectedFilter2={selectedFilter2}
+          selectedFilter3={selectedFilter3}
+          filters={filters}
+          filters2={filters2}
+          filters3={filters3}
+          handleFilterChange={handleFilterChange}
+          handleFilterChange2={handleFilterChange2}
+          handleFilterChange3={handleFilterChange3}
+          newpiedata={newpiedata}
         venuechartdata={newvenuedata}
         radarnumbers={newradardata}
         fantasygraphdata={newfantasygraphdata}
         percentages={newpercentages}
-        impactdata={newimpactdata}
-        matchupsdata={newmatchupsdata}
-      />
-    )
+        impactdata={newimpactdata} 
+        matchupsdata={newmatchupsdata}        
+        />
+      )
   );
 
 };
