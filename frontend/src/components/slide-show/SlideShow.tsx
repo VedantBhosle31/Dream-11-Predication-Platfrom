@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
 
 const Slideshow = () => {
   // Array of image and audio files
