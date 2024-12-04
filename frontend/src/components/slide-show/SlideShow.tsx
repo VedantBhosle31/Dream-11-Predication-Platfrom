@@ -18,13 +18,12 @@ const Slideshow = () => {
     setCurrentIndex(index);
   };
 
-  // Auto-switch slide every 30 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
     }, 15000);
 
-    return () => clearInterval(timer); // Cleanup on unmount
+    return () => clearInterval(timer); 
   }, [slides.length]);
 
   return (
@@ -67,7 +66,6 @@ const Slideshow = () => {
   );
 };
 
-// extract audio such tht it doesnt rerender
 const AudioPlayer = ({ audio }: { audio: string }) => {
   return (
     <audio controls playsInline autoPlay className="mt-3 w-3/4 max-w-md h-8">
