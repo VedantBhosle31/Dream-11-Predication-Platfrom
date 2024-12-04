@@ -653,47 +653,45 @@ def points_calculator(
             )
             + calculate_fielder_points_test(catches, stumpings)
         )
-    # else:
-    #     raise ValueError("Unsupported format")
 
     return total_points
 
 
 # Define file paths
 data_paths = {
-    "ODI_batting": "all_data_final_1/all_data_final/ODI/batter.csv",
-    "ODI_bowling": "all_data_final_1/all_data_final/ODI/bowler.csv",
-    "ODI_fielding": "all_data_final_1/all_data_final/ODI/fielder.csv",
-    "ODM_batting": "all_data_final_1/all_data_final/ODM/batter.csv",
-    "ODM_bowling": "all_data_final_1/all_data_final/ODM/bowler.csv",
-    "ODM_fielding": "all_data_final_1/all_data_final/ODM/fielder.csv",
-    "T20_batting": "all_data_final_1/all_data_final/T20/batter.csv",
-    "T20_bowling": "all_data_final_1/all_data_final/T20/bowler.csv",
-    "T20_fielding": "all_data_final_1/all_data_final/T20/fielder.csv",
-    "IT20_batting": "all_data_final_1/all_data_final/IT20/batter.csv",
-    "IT20_bowling": "all_data_final_1/all_data_final/IT20/bowler.csv",
-    "IT20_fielding": "all_data_final_1/all_data_final/IT20/fielder.csv",
-    "Test_batting": "all_data_final_1/all_data_final/Test/batter.csv",
-    "Test_bowling": "all_data_final_1/all_data_final/Test/bowler.csv",
-    "Test_fielding": "all_data_final_1/all_data_final/Test/fielder.csv",
-    "MDM_batting": "all_data_final_1/all_data_final/MDM/batter.csv",
-    "MDM_bowling": "all_data_final_1/all_data_final/MDM/bowler.csv",
-    "MDM_fielding": "all_data_final_1/all_data_final/MDM/fielder.csv",
-    "WODI_batting": "all_data_final_1/all_data_final/WODI/batter.csv",
-    "WODI_bowling": "all_data_final_1/all_data_final/WODI/bowler.csv",
-    "WODI_fielding": "all_data_final_1/all_data_final/WODI/fielder.csv",
-    "WT20_batting": "all_data_final_1/all_data_final/WT20/batter.csv",
-    "WT20_bowling": "all_data_final_1/all_data_final/WT20/bowler.csv",
-    "WT20_fielding": "all_data_final_1/all_data_final/WT20/fielder.csv",
-    "WTest_batting": "all_data_final_1/all_data_final/WTest/batter.csv",
-    "WTest_bowling": "all_data_final_1/all_data_final/WTest/bowler.csv",
-    "WTest_fielding": "all_data_final_1/all_data_final/WTest/fielder.csv",
-    "WODM_batting": "all_data_final_1/all_data_final/WODM/batter.csv",
-    "WODM_bowling": "all_data_final_1/all_data_final/WODM/bowler.csv",
-    "WODM_fielding": "all_data_final_1/all_data_final/WODM/fielder.csv",
-    "WIT20_batting": "all_data_final_1/all_data_final/WIT20/batter.csv",
-    "WIT20_bowling": "all_data_final_1/all_data_final/WIT20/bowler.csv",
-    "WIT20_fielding": "all_data_final_1/all_data_final/WIT20/fielder.csv",
+    "ODI_batting": "all_data/ODI/batter.csv",
+    "ODI_bowling": "all_data/ODI/bowler.csv",
+    "ODI_fielding": "all_data/ODI/fielder.csv",
+    "ODM_batting": "all_data/ODM/batter.csv",
+    "ODM_bowling": "all_data/ODM/bowler.csv",
+    "ODM_fielding": "all_data/ODM/fielder.csv",
+    "T20_batting": "all_data/T20/batter.csv",
+    "T20_bowling": "all_data/T20/bowler.csv",
+    "T20_fielding": "all_data/T20/fielder.csv",
+    "IT20_batting": "all_data/IT20/batter.csv",
+    "IT20_bowling": "all_data/IT20/bowler.csv",
+    "IT20_fielding": "all_data/IT20/fielder.csv",
+    "Test_batting": "all_data/Test/batter.csv",
+    "Test_bowling": "all_data/Test/bowler.csv",
+    "Test_fielding": "all_data/Test/fielder.csv",
+    "MDM_batting": "all_data/MDM/batter.csv",
+    "MDM_bowling": "all_data/MDM/bowler.csv",
+    "MDM_fielding": "all_data/MDM/fielder.csv",
+    "WODI_batting": "all_data/WODI/batter.csv",
+    "WODI_bowling": "all_data/WODI/bowler.csv",
+    "WODI_fielding": "all_data/WODI/fielder.csv",
+    "WT20_batting": "all_data/WT20/batter.csv",
+    "WT20_bowling": "all_data/WT20/bowler.csv",
+    "WT20_fielding": "all_data/WT20/fielder.csv",
+    "WTest_batting": "all_data/WTest/batter.csv",
+    "WTest_bowling": "all_data/WTest/bowler.csv",
+    "WTest_fielding": "all_data/WTest/fielder.csv",
+    "WODM_batting": "all_data/WODM/batter.csv",
+    "WODM_bowling": "all_data/WODM/bowler.csv",
+    "WODM_fielding": "all_data/WODM/fielder.csv",
+    "WIT20_batting": "all_data/WIT20/batter.csv",
+    "WIT20_bowling": "all_data/WIT20/bowler.csv",
+    "WIT20_fielding": "all_data/WIT20/fielder.csv",
 }
 
 # Define target columns for each player type
@@ -3791,7 +3789,7 @@ if __name__ == "__main__":
     date = [date1, date2, date3, date4]  # fat
     model.run_training(
         *date
-    )  # /content/drive/MyDrive/all_data_final/all_data_final/IT20/batter.csv
+    )  # /content/drive/MyDrive/all_data/IT20/batter.csv
 
     output = pd.read_csv("predictions_output.csv")
 
