@@ -710,7 +710,6 @@ target_columns_dict = {
         "ODI_match_maidens",
     ],
     "ODI_fielding": ["match_runouts", "match_catches", "match_stumpings"],
-    # ODM statistics (domestic or other format)
     "ODM_batting": [
         "ODM_match_runs",
         "ODM_match_4s",
