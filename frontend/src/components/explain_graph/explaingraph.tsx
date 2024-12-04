@@ -50,6 +50,8 @@ const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  
     setisLoading(true);
     // setExplainExpanded(true);
 
+    console.log("here got details", title, explaindate,  opponents, typeofplayer, model, player_name );
+
     const response = await fetch("http://127.0.0.1:8000/genai/explain-graph/", {
       method: "POST",
       headers: {
