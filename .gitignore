@@ -17,8 +17,7 @@ db.sqlite3
 node_modules/
 
 # To be removed later
-temp
-**/*.csv
+temp/
 graphsml_app
 
 db/
