@@ -1,21 +1,16 @@
-import React, { useState, useRef, useEffect } from "react"; //
 import rcblogo from "../../assets/images/rcb_logo.png";
 import bccilogo from "../../assets/images/bcci_logo.png";
 import dream11background from "../../assets/images/dream11bg.png";
 import "./displayCard2.css";
 import RadarChart from "../radar_chart/radar";
-import FormBar from "../player_form/formbar";
 import SearchBar from "../search_bar/searchbar";
 import VenueGraph from "../points_chart/pointschart";
-import { Box, Modal, Skeleton, Typography } from "@mui/material";
-import { ChartContainer } from "@mui/x-charts/ChartContainer";
-// import { BarChart, BarPlot } from "@mui/x-charts/BarChart";
+import { Box, Modal, Skeleton } from "@mui/material";
 import player2Image from "../../assets/images/virat_kohli.png"; // Replace with your player image
-
+import { useEffect } from "react";
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Cell,
   Legend,
   Pie,
@@ -26,10 +21,8 @@ import {
   YAxis,
 } from "recharts";
 import CircularProgress from "../circular_preformance/circularBar";
-import FilterButton from "../filterButton/filterButton";
 import FilterBar from "../filterBar/filterBar";
 import ImpactChart from "../impactindexchart/impactchart";
-import { BarPlot } from "@mui/x-charts/BarChart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 import usePlayerStore from "../../store/playerStore";
 
@@ -68,82 +61,6 @@ const style = {
   transition: "0.5s all ease",
   fontFamily: "Montserrat",
 };
-
-const datatitles = [
-  "FANTASY POINTS VS MATCHES",
-  "RECENT PERFORMANCE",
-  "MATCHUPS",
-  "PLAYER DEMOGRAPHY",
-];
-
-const uData = [50, 30, 20, 27, 18, 23, 34, 50, 30, 20, 27, 18, 23, 34];
-const xLabels = [
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-];
-
-// const yValues = graphdata.map((data) => data.value);
-
-// yValues.sort((a, b) => a - b);
-
-// export interface Matchups {
-//   name: string;
-//   balls: string;
-//   runs: string;
-//   out: string;
-//   strikerate: string;
-// }
-
-// const MatchupsData: Matchups[] = [
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-// ];
 
 interface ChartData {
   match: string;
@@ -255,7 +172,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "http://127.0.0.1:8000/genai/describe-player/",
+        `${process.env.REACT_APP_BACKEND_URL}/genai/describe-player/`,
         {
           method: "POST",
           headers: {

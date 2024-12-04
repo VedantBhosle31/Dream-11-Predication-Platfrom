@@ -2,18 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import milogo from "../../assets/images/mumbai_indians.png";
 import rcblogo from "../../assets/images/rcb_logo.png";
-import bccilogo from "../../assets/images/bcci_logo.png";
-import dream11background from "../../assets/images/dream11bg.png";
 import "./displayCard.css";
-import RadarChartComponent from "../../components/radar_chart/radar";
-import RadarChart from "../../components/radar_chart/radar";
-import FormBar from "../../components/player_form/formbar";
-import SearchBar from "../../components/search_bar/searchbar";
-import VenueGraph from "../../components/points_chart/pointschart";
 import DisplayCardExpanded from "../../components/player_display_card/displayCardExpanded2";
 import usePlayerStore from "../../store/playerStore";
 import { CardData } from "../../SlidingPanels";
-// import RadarChartComponent from "../radar_chart/radar"
 
 export interface DisplayCardData {
   id: string;
@@ -28,6 +20,7 @@ export interface DisplayCardData {
   strike_rate: string;
   cvc: string;
   country: string;
+  team_url: string;
 }
 
 interface Stat {
@@ -52,172 +45,6 @@ const DisplayScreen: React.FC = () => {
 
   const {displayscreencards} = usePlayerStore();
 
-  // const DisplayCards: DisplayCardData[] = [
-  //   {
-  //     id: "1",
-  //     name: "FAF DU PLESSIS",
-  //     type: "BATSMAN",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "199",
-  //     average: "49",
-  //     strike_rate: "120",
-  //     cvc: "VC",
-  //     country: "SOUTH AFRICA",
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "VIRAT KOHLI",
-  //     type: "BATSMAN",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "299",
-  //     average: "59",
-  //     strike_rate: "140",
-  //     cvc: "C",
-  //     country: "INDIA",
-  //   },
-  //   {
-  //     id: "3",
-  //     name: "GLENN MAXWELL",
-  //     type: "ALL-ROUNDER",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "4",
-  //     name: "DINESH KARTHIK",
-  //     type: "WICKETKEEPER-BATSMAN",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "5",
-  //     name: "MOHAMMED SIRAJ",
-  //     type: "BOWLER",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "6",
-  //     name: "WILL JACKS",
-  //     type: "ALL-ROUNDER",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "7",
-  //     name: "MAHIPAL LOMROR",
-  //     type: "ALL-ROUNDER",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "8",
-  //     name: "REECE TOPLEY",
-  //     type: "BOWLER",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "9",
-  //     name: "RAJAT PATIDAR",
-  //     type: "BATSMAN",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "10",
-  //     name: "ANUJ RAWAT",
-  //     type: "WICKETKEEPER-BATSMAN",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  //   {
-  //     id: "11",
-  //     name: "ALZARRI JOSEPH",
-  //     type: "BOWLER",
-  //     team: "RCB",
-  //     points: "207",
-  //     cost: "12",
-  //     score: "89",
-  //     runs: "150",
-  //     average: "39",
-  //     strike_rate: "135",
-  //     cvc: "",
-  //     country: "AUSTRALIA",
-  //   },
-  // ];
-
-  // const row1 = DisplayCards.slice(0, 3); // First 3 cards
-  // const row2 = DisplayCards.slice(3, 7); // Next 4 cards
-  // const row3 = DisplayCards.slice(7, 11); // Last 4 cards
-
-
-
-  // Sort cards so that captain and vc comes first
-  
-  
   
   const sortedCards = [...displayscreencards].sort((a, b) => {
     if (a.cvc === "C" && b.cvc !== "C") return -1; // Prioritize "C"
@@ -226,18 +53,9 @@ const DisplayScreen: React.FC = () => {
   });
 
 
-
-
-  // const row1 = displayscreencards.slice(0, 3); // First 3 cards
-  // const row2 = displayscreencards.slice(3, 7); // Next 4 cards
-  // const row3 = displayscreencards.slice(7, 11); // Last 4 cards
-
-
   const row1 = sortedCards.slice(0, 3); // First 3 cards
   const row2 = sortedCards.slice(3, 7); // Next 4 cards
   const row3 = sortedCards.slice(7, 11); // Last 4 cards
-
-  // const { allmaindata, setallmaindata } = usePlayerStore();
 
   
   return (
@@ -272,11 +90,6 @@ const DisplayScreen: React.FC = () => {
 };
 
 
-
-
-
-
-
 const DisplayCard: React.FC<{
   card: CardData;
 }> = ({ card }) => {
@@ -285,7 +98,6 @@ const DisplayCard: React.FC<{
   
 
 
-  // const { allmaindata, setallmaindata } = usePlayerStore();
   const {allmaindata} = usePlayerStore();
   console.log("here we got allmaindata", allmaindata);
 
@@ -445,26 +257,22 @@ const DisplayCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", // Tell the server it's JSON
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             player_name: card.name,
             player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: matchDate,
             model: model,
-          }), // Convert the data to a JSON string
+          }),
         }
       );
       
       const matchupsdata = await response.json();
-
-
-
-
       console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
@@ -476,7 +284,7 @@ const DisplayCard: React.FC<{
 
     if (currentIndex === 1) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
@@ -565,70 +373,20 @@ const DisplayCard: React.FC<{
     id: number;
   }
 
-  //   type BattingStats = {
-  //     player_name: string,
-  //                 previous_average: number,
-  //                 previous_strike_rate: number,
-  //                 innings_played:number,
-  //                 previous_runs: number,
-  //                 previous_4s: number,
-  //                 previous_6s: number,
-  //                 previous_fifties: number,
-  //                 previous_centuries: number,
-  //                 highest_score: number,
-  //                 form: number,
-  //                 venue_avg: number,
-  //                 opposition: number,
-  //                 previous_zeros: number,
-  //                 tbahs_economy_agg: number,
-  //                 tbahs_4s_agg: number,
-  //                 tbahp_dismissals_agg: number
-  // };
 
-  // type StatsData = {
-  //     batting: BattingStats[];
-  // };
-
-  // type ApiResponse = {
-  //     stats: StatsData;
-  // };
-
-  // var maindata: ApiResponse = {
-  //   stats: {
-  //       batting: [], // Example input; replace with real data
-  //   },
-  // };
 
   const typesMap: { [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData } = {
     BATTING: {
       title: "BATTING",
-      stats: [
-        // { key: "MATCHES", value: "56" },
-        // { key: "INNINGS", value: "50.0" },
-        // { key: "RUNS", value: "80%" },
-        // { key: "AVERAGE", value: "8989"},
-        // { key: "STRIKE RATE", value: "8" },
-        // { key: "HIGHEST SCORE", value: "8" },
-        // { key: "4s/6s", value: "8" },
-        // { key: "50/100", value: "8" },
-      ],
+      stats: [],
     },
     BOWLING: {
       title: "BOWLING",
-      stats: [
-        // { key: "Average", value: "30.0" },
-        // { key: "Economy Rate", value: "5.5" },
-        // { key: "Wickets", value: "15" },
-        // { key: "Five Wicket Hauls", value: "2" },
-      ],
+      stats: [],
     },
     FIELDING: {
       title: "FIELDING",
-      stats: [
-        // { key: "Catches", value: "10" },
-        // { key: "Run Outs", value: "5" },
-        // { key: "Stumps", value: "3" },
-      ],
+      stats: [],
     },
   };//
 
@@ -756,42 +514,6 @@ const DisplayCard: React.FC<{
 
   const [newmatchupsdata, setnewmatchupsdata] = useState<any>([]);
 
-  // const [allStats, setAllStats] = useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>({
-  //   BATTING: { title: '', stats: [] },
-  //   BOWLING: { title: '', stats: [] },
-  //   FIELDING: { title: '', stats: [] },
-  // });
-
-  //   const updateTypesMap = (data: any) => {
-  //   typesMap.BATTING.stats = [
-  //     { key: "MATCHES", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "INNINGS", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "RUNS", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "AVERAGE", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "STRIKE RATE", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "HIGHEST SCORE", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "4s/6s", value: `${data["stats"]["batting"][0]["previous_average"]}/${data["stats"]["batting"][0]["previous_average"]}` || "" },
-  //     { key: "50/100", value: `${data["stats"]["batting"][0]["previous_average"]}/${data["stats"]["batting"][0]["previous_average"]}` || "" },
-  //   ];
-
-  //   typesMap.BOWLING.stats = [
-  //     { key: "Average", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "Economy Rate", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "Wickets", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "Five Wicket Hauls", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //   ];
-
-  //   typesMap.FIELDING.stats = [
-  //     { key: "Catches", value:data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "Run Outs", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //     { key: "Stumps", value: data["stats"]["batting"][0]["previous_average"] || "" },
-  //   ];
-
-  //   console.log("Updated typesMap:", typesMap);
-  // };
-
-
-
   // Prepare data for the `typeData_2` prop
 
   const typeData_2 = Object.values(mydata).map((type) => ({
@@ -805,46 +527,9 @@ const DisplayCard: React.FC<{
 
 
 
-  // const handleClick = () => {
-  //   setExpanded(true);
-  //   // alert('Button clicked!');
-  // };
-
-
   useEffect(() => {
-    // const response = await fetch(
-    //   "http://127.0.0.1:8000/players/get-player-data",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json", // Tell the server it's JSON
-    //     },
-    //     body: JSON.stringify({
-    //       // name: "V Kohli",
-    //       // name: "GJ Maxwell",
-    //       // name: "MS Dhoni",
-    //       // name: "G Gambhir",
-    //       // name: "JJ Bumrah",
-    //       // name: "RG Sharma",
-    //       // name: "R Ashwin",
-    //       name: "SR Tendulkar",
-    //       // name: "HH Pandya",
-    //       date: "2025-01-01",
-    //       model: "Odi",
-    //     }), // Convert the data to a JSON string
-    //   }
-    // );
-
-    // if (!response.ok) {
-    //   throw new Error(`Error: ${response.statusText}`);
-    // }
-
-    // const fetcheddata = await response.json();
 
     const maindata:any = allmaindata;
-
-    // storing the fetched data to maindata
-    // setallmaindata(maindata);
 
     setmyData({
       BATTING: {
@@ -954,12 +639,9 @@ const DisplayCard: React.FC<{
     });
 
     let sums = { "0": 0, "4": 0, "6": 0 };
-    // let sumsrecent = { "form": 0, "opposition": 0, "venue": 0 };
 
     maindata["stats"]["batting"].forEach((battingData: any) => {
       sums["0"] += battingData["dots"];
-      // sums["4"] += battingData["previous_4s"];
-      // sums["6"] += battingData["sixes"];
     });
 
     var formRatio = 0;
@@ -1137,335 +819,6 @@ const DisplayCard: React.FC<{
   }, []);
 
 
-  // const handleClick = () => {
-  //   setExpanded(true);
-    
-
-  //   // const response = await fetch(
-  //   //   "http://127.0.0.1:8000/players/get-player-data",
-  //   //   {
-  //   //     method: "POST",
-  //   //     headers: {
-  //   //       "Content-Type": "application/json", // Tell the server it's JSON
-  //   //     },
-  //   //     body: JSON.stringify({
-  //   //       // name: "V Kohli",
-  //   //       // name: "GJ Maxwell",
-  //   //       // name: "MS Dhoni",
-  //   //       // name: "G Gambhir",
-  //   //       // name: "JJ Bumrah",
-  //   //       // name: "RG Sharma",
-  //   //       // name: "R Ashwin",
-  //   //       name: "SR Tendulkar",
-  //   //       // name: "HH Pandya",
-  //   //       date: "2025-01-01",
-  //   //       model: "Odi",
-  //   //     }), // Convert the data to a JSON string
-  //   //   }
-  //   // );
-
-  //   // if (!response.ok) {
-  //   //   throw new Error(`Error: ${response.statusText}`);
-  //   // }
-
-  //   // const fetcheddata = await response.json();
-
-  //   const maindata:any = allmaindata;
-
-  //   // storing the fetched data to maindata
-  //   // setallmaindata(maindata);
-
-  //   setmyData({
-  //     BATTING: {
-  //       title: "BATTING",
-  //       stats: [
-  //         {
-  //           key: "MATCHES",
-  //           value: maindata["stats"]["batting"][0]["innings_played"],
-  //         },
-  //         {
-  //           key: "INNINGS",
-  //           value: maindata["stats"]["batting"][0]["innings_played"],
-  //         },
-  //         {
-  //           key: "RUNS",
-  //           value: maindata["stats"]["batting"][0]["previous_runs"],
-  //         },
-  //         {
-  //           key: "AVERAGE",
-  //           value:
-  //             maindata["stats"]["batting"][0]["previous_average"].toFixed(2),
-  //         },
-  //         {
-  //           key: "STRIKE RATE",
-  //           value:
-  //             maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(
-  //               2
-  //             ),
-  //         },
-  //         {
-  //           key: "HIGHEST SCORE",
-  //           value: maindata["stats"]["batting"][0]["highest_score"],
-  //         },
-  //         {
-  //           key: "4s/6s",
-  //           value: `${maindata["stats"]["batting"][0]["previous_4s"]}/${maindata["stats"]["batting"][0]["previous_6s"]}`,
-  //         },
-  //         {
-  //           key: "50/100",
-  //           value: `${maindata["stats"]["batting"][0]["previous_fifties"]}/${maindata["stats"]["batting"][0]["previous_centuries"]}`,
-  //         },
-  //       ],
-  //     },
-  //     BOWLING: {
-  //       title: "BOWLING",
-  //       stats: [
-  //         {
-  //           key: "MATCHES",
-  //           value: maindata["stats"]["bowling"][0]["innings_played"],
-  //         },
-  //         {
-  //           key: "BALLS",
-  //           value: maindata["stats"]["bowling"][0]["previous_balls_involved"],
-  //         },
-  //         {
-  //           key: "WICKETS",
-  //           value: maindata["stats"]["bowling"][0]["previous_wickets"],
-  //         },
-  //         {
-  //           key: "STRIKE RATE",
-  //           value:
-  //             maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(
-  //               2
-  //             ),
-  //         },
-  //         {
-  //           key: "MAIDENS",
-  //           value: maindata["stats"]["bowling"][0]["previous_maidens"],
-  //         },
-  //         {
-  //           key: "ECONOMY",
-  //           value:
-  //             maindata["stats"]["bowling"][0]["previous_economy"].toFixed(2),
-  //         },
-  //         {
-  //           key: "AVERAGE",
-  //           value:
-  //             maindata["stats"]["bowling"][0]["previous_average"].toFixed(2),
-  //         },
-  //         {
-  //           key: "3/4/5 WICKETS",
-  //           value: `${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}`,
-  //         },
-  //       ],
-  //     },
-  //     FIELDING: {
-  //       title: "FIELDING",
-  //       stats: [
-  //         {
-  //           key: "MATCHES",
-  //           value: maindata["stats"]["bowling"][0]["innings_played"],
-  //         },
-  //         {
-  //           key: "INNINGS",
-  //           value: maindata["stats"]["bowling"][0]["innings_played"],
-  //         },
-  //         {
-  //           key: "RUN OUTS",
-  //           value: maindata["stats"]["fielding"][0]["previous_runouts"],
-  //         },
-  //         {
-  //           key: "CATCHES",
-  //           value: maindata["stats"]["fielding"][0]["previous_catches"],
-  //         },
-  //       ],
-  //     },
-  //   });
-
-  //   let sums = { "0": 0, "4": 0, "6": 0 };
-  //   // let sumsrecent = { "form": 0, "opposition": 0, "venue": 0 };
-
-  //   maindata["stats"]["batting"].forEach((battingData: any) => {
-  //     sums["0"] += battingData["dots"];
-  //     // sums["4"] += battingData["previous_4s"];
-  //     // sums["6"] += battingData["sixes"];
-  //   });
-
-  //   var formRatio = 0;
-  //   var oppositionRatio = 0;
-  //   var venueRatio = 0;
-
-  //   const processData = (data: any[]) => {
-  //     // Initialize the variables to track the max values and sums
-  //     let formMax = -Infinity;
-  //     let oppositionMax = -Infinity;
-  //     let venueMax = -Infinity;
-
-  //     let formSum = 0;
-  //     let oppositionSum = 0;
-  //     let venueSum = 0;
-
-  //     // Loop through the data to find max values and sum the corresponding fields
-  //     data.forEach((item) => {
-  //       // Max value for form
-  //       if (item.form > formMax) {
-  //         formMax = item.form;
-  //       }
-  //       // Max value for opposition
-  //       if (item.opposition > oppositionMax) {
-  //         oppositionMax = item.opposition;
-  //       }
-  //       // Max value for venue
-  //       if (item.venue > venueMax) {
-  //         venueMax = item.venue;
-  //       }
-
-  //       // Summing values
-  //       formSum += item.form;
-  //       oppositionSum += item.opposition;
-  //       venueSum += item.venue;
-  //     });
-
-  //     // Calculate ratios
-  //     formRatio = formMax !== 0 ? (formSum * 10) / formMax : 0;
-  //     oppositionRatio =
-  //       oppositionMax !== 0 ? (oppositionSum * 10) / oppositionMax : 0;
-  //     venueRatio = venueMax !== 0 ? (venueSum * 10) / venueMax : 0;
-
-  //     return {
-  //       formRatio,
-  //       oppositionRatio,
-  //       venueRatio,
-  //     };
-  //   };
-
-  //   processData(maindata["stats"]["batting"]);
-
-  //   setnewpieData([
-  //     { name: "0", value: sums["0"] },
-  //     { name: "4", value: maindata["stats"]["batting"][0]["previous_4s"] },
-  //     { name: "6", value: maindata["stats"]["batting"][0]["previous_6s"] },
-  //     {
-  //       name: "1,2,3",
-  //       value:
-  //         maindata["stats"]["batting"][0]["previous_balls_involved"] -
-  //         (maindata["stats"]["batting"][0]["previous_4s"] +
-  //           maindata["stats"]["batting"][0]["previous_6s"]),
-  //     },
-  //   ]);
-
-
-  //   setnewradarData([
-  //     maindata["stats"]["batting"][0]["previous_strike_rate"],
-  //     maindata["stats"]["bowling"][0]["previous_wickets"],
-  //     maindata["stats"]["bowling"][0]["previous_economy"],
-
-  //     maindata["stats"]["batting"][0]["opposition"],
-
-  //     maindata["stats"]["fielding"][0]["pfa_catches"],
-  //     maindata["stats"]["batting"][0]["previous_average"],
-  //   ]);
-
-  //   setnewfantasygraphData([
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][0]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][1]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][2]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][2]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][3]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][3]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][4]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][4]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][5]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][5]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][6]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][6]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][7]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][7]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][8]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][8]["odi_match_fantasy_points"],
-  //     },
-  //     {
-  //       date: "13 Nov",
-  //       value:
-  //         maindata["stats"]["batting"][9]["odi_match_fantasy_points"] < 0
-  //           ? 0
-  //           : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
-  //     },
-  //   ]);
-
-  //   setnewvenueData(
-  //     Array.from({ length: 10 }, (_, index) => {
-  //       return {
-  //         match: `${index}`,
-  //         id: index,
-  //         venue: maindata["stats"]["batting"][index]["venue_avg"],
-  //         opposition: maindata["stats"]["batting"][index]["opposition"],
-  //         form: maindata["stats"]["batting"][index]["form"],
-  //       };
-  //     })
-  //   );
-
-  //   setnewpercentages([
-  //     Math.round(formRatio * 100) / 100,
-  //     Math.round(oppositionRatio * 100) / 100,
-  //     Math.round(venueRatio * 100) / 100,
-  //   ]);
-
-  //   // Extract stats from maindata
-  //   const battingStats = maindata["stats"]["batting"];
-
-  //   setnewimpactdata(battingStats);
-
-  //   console.log("maindata", maindata["stats"]);
-  // };
-
-
 
   return (
       !isExpanded ? (
@@ -1556,10 +909,6 @@ const DisplayCard: React.FC<{
 
           {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
 
-          {/* {( (card.cvc === "C" || card.cvc === "VC") && <div className="display-card-cvc">
-                {( card.cvc === "C" ? "C" : (card.cvc === "VC" ? "VC" : "") )}
-              </div>)} */}
-
           <img className="display-card-image" src={playerImage} alt="Player" />
         </div>
       ) : (
@@ -1576,7 +925,6 @@ const DisplayCard: React.FC<{
           data={data}
           typeData={typeData}
           typeData_2={typeData_2}
-          // newpiedata={piedata}
           currentIndex={currentIndex}
           currentIndexTypes={currentIndexTypes}
           suggestions={suggestions}
@@ -1603,133 +951,6 @@ const DisplayCard: React.FC<{
       )
   );
 
-  // <div ref={containerRef} className="display-card-expanded" style={{position: isExpanded ? 'absolute' : 'relative', transition: 'all 0.5s ease'}}>
-  //   <button className="closeButton" onClick={() => setExpanded(false)}>
-  //     &times;
-  //   </button>
-  //   <img src={dream11background} alt="dream11bg" className="dream11bg"/>
-
-  //   <div className="display-card-top-left">
-
-  //     <div style={{height: "100%"}}>
-  //       <img className="display-card-expanded-player-image" src={playerImage} alt="Player" />
-  //       <div className="display-card-expanded-overlay">
-  //         {card.name}
-  //       </div>
-  //     </div>
-
-  //     <div className="display-card-expanded-points">
-
-  //       <div>
-  //         207
-  //         <div style={{fontSize: 20, textAlign: "center"}}>
-  //           PTS
-  //         </div>
-  //       </div>
-
-  //       <div style={{width: "80%", height: "30%", alignItems: "center", justifyItems: "center"}}>
-  //         <img className="display-expanded-card-team-logo" src={card.country === "INDIA" ? bccilogo : rcblogo} alt="Player" />
-  //         <div style={{fontSize: 20, textAlign: "center"}}>
-  //           {card.country}
-  //         </div>
-  //       </div>
-
-  //       <div style={{fontSize: 17}}>
-  //         {card.type}
-  //       </div>
-
-  //     </div>
-
-  //     {(card.cvc === "C" &&
-  //     <div className="display-card-expanded-c" style={{display: "flex"}}>
-  //       C
-  //     </div>)}
-
-  //     {(card.cvc === "VC" &&
-  //     <div className="display-card-expanded-vc" style={{display: "flex"}}>
-  //       VC
-  //     </div>)}
-
-  //   </div>
-
-  //   <div className="display-card-bottom-left">
-
-  //     <div style={{height: "100%", width: "70%", display: "flex", flexDirection: "column"}}>
-  //       <FormBar hotness={90} />
-  //       <RadarChart />
-  //       <div style={{fontFamily: "Montserrat", fontWeight: "bolder", fontSize: "24px", color: "white", width: "100%", textAlign: "center"}}>
-  //         PLAYER PROFILE
-  //       </div>
-  //     </div>
-
-  //     <div className="stats">
-
-  //       {/* Header */}
-  //       <div style={{ display: 'flex', justifyContent: "space-between", marginBottom: '10px', width: "100%"}}>
-  //         <div
-  //         onClick={handleLeftClick}
-  //         style={{
-  //           width: '0',
-  //           height: '0',
-  //           borderLeft: '10px solid transparent',
-  //           borderRight: '10px solid transparent',
-  //           borderBottom: '15px solid black',
-  //           cursor: 'pointer',
-  //           transform: 'rotate(270deg)',
-  //         }}
-  //         ></div>
-
-  //         <div style={{fontSize: "10px", marginLeft: "17px", marginRight: "17px"}}>
-  //           {data[currentIndex].title}
-  //         </div>
-
-  //         <div
-  //         onClick={handleRightClick}
-  //         style={{
-  //           width: '0',
-  //           height: '0',
-  //           borderLeft: '10px solid transparent',
-  //           borderRight: '10px solid transparent',
-  //           borderBottom: '15px solid black',
-  //           cursor: 'pointer',
-  //           transform: 'rotate(90deg)',
-  //         }}
-  //       ></div>
-  //       </div>
-
-  //       {/* Stats Column */}
-  //       <div style={{height: "70%", width: "100%"}}>
-  //         {data[currentIndex].stats.map((stat, index) => (
-  //           <div key={index} style={{ display: 'flex', justifyContent: "space-between", paddingBottom: '14px', height: "5%", width: "100%"}}>
-  //             <div style={{ fontSize: '12px', color: "gray"}}>{stat.key}</div>
-  //             <div style={{ fontSize: '12px' }}>{stat.value}</div>
-  //           </div>
-  //         ))}
-  //       </div>
-
-  //    </div>
-
-  //   </div>
-
-  //   <div className="display-card-top-right">
-  //     <SearchBar suggestions={suggestions} onSearch={handleSearch} />
-  //     <FantasyPointsChart />
-  //     <div style={{width: "80%", height: "2px", backgroundColor: "white"}}></div>
-  //   </div>
-
-  //   <div className="display-card-bottom-right">
-  //     <div style={{display: "flex", width: "90%", height: "20%", justifyContent: "space-evenly"}}>
-  //       <div className="quote-card-1"></div>
-  //       <div className="quote-card-1"></div>
-  //     </div>
-
-  //     <div style={{border:"2px solid white", width: "80%", height: "70%"}}>
-
-  //     </div>
-
-  //   </div>
-
-  // </div>
 };
 
 

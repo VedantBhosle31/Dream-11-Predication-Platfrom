@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import playerImg from "../../assets/images/virat_kohli.png";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import "./Comparison.css";
+
 
 interface Player {
   id: number;
@@ -261,86 +263,86 @@ const Comparision: React.FC = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center h-[100%] pl-4 bg-black">
-      <div className="h-[90%] w-full bg-[#1A1A1A] rounded-sm p-3 flex flex-col">
-        <div className="flex w-full bg-black px-2 h-[12%]">
-          {/* Left Card */}
-          <div className="flex-1 flex items-center py-2 justify-between">
-            <div className="flex items-center h-full bg-black">
-              <div className="h-full w-6 bg-red-600"></div>
-              {/* Increased the width of the gap container */}
-              <div className="w-6"></div>
-              <img
-                src={leftPlayer.imageUrl}
-                alt={leftPlayer.name}
-                className="h-full"
-              />
+    <div className="comparison-section">
+      <div className="comparison-wrapper">
+
+        <div className="row1">
+
+          <div className="selector-container">
+
+              <div className="selector-wrapper">
+
+                  <div className="compare-title">COMPARE PLAYERS</div>
+                  {/* Left Card */}
+                  <div className="selector-top">
+                    <div className="sel-col-1">
+                      <div className="h-full w-[1vh] bg-red-600"></div>
+                      {/* Increased the width of the gap container */}
+                  
+                      <img
+                        src={leftPlayer.imageUrl}
+                        alt={leftPlayer.name}
+                        className="h-full"
+                      />
+                    </div>
+                    <div className="flex h-full justify-center items-end flex-col text-white w-full">
+                      <CustomDropdown
+                        options={filteredLeftPlayers}
+                        card="left"
+                        selected={leftPlayer}
+                        onSelect={setLeftPlayer}
+                      />
+                      {/* <div className="font-semibold uppercase">{leftPlayer.role}</div> */}
+                    </div>
+                  </div>
+
+                  {/* Right Card (Reversed Order) */}
+                  <div className="selector-bottom">
+                                    
+                      <div className="sel-col-1">
+                        <div className="h-full w-[1vh] bg-[#8B24FA]"></div>
+                        <img  
+                          src={rightPlayer.imageUrl}
+                          alt={rightPlayer.name}
+                          className="h-full"
+                        />
+                      </div>
+                      {/* Increased the width of the gap container */}
+                      <div className="flex h-full justify-center items-end flex-col text-white w-full">
+                      <CustomDropdown
+                        options={filteredRightPlayers}
+                        selected={rightPlayer}
+                        card="right"
+                        onSelect={setRightPlayer}
+                      />
+                      {/* <div className="font-semibold uppercase">{rightPlayer.role}</div> */}
+                    
+                    </div>
+                  </div>
             </div>
-            <div className="flex h-full justify-center items-end flex-col text-white w-full  pr-4">
-              <CustomDropdown
-                options={filteredLeftPlayers}
-                card="left"
-                selected={leftPlayer}
-                onSelect={setLeftPlayer}
-              />
-              {/* <div className="font-semibold uppercase">{leftPlayer.role}</div> */}
-            </div>
+            
           </div>
 
-          {/* Center Red Line */}
-          <div className="w-4 bg-red-600"></div>
-
-          {/* Right Card (Reversed Order) */}
-          <div className="flex-1 flex items-center py-2 justify-between ">
-            <div className="flex h-full justify-center items-start flex-col text-white w-full pl-4">
-              <CustomDropdown
-                options={filteredRightPlayers}
-                selected={rightPlayer}
-                card="right"
-                onSelect={setRightPlayer}
-              />
-              {/* <div className="font-semibold uppercase">{rightPlayer.role}</div> */}
-            </div>
-            <div className="flex items-center h-full bg-black">
-              <img
-                src={rightPlayer.imageUrl}
-                alt={rightPlayer.name}
-                className="h-full"
-              />
-              {/* Increased the width of the gap container */}
-              <div className="w-6"></div>
-              <div className="h-full w-6 bg-red-600"></div>
-            </div>
+          {/* Radar Chart */}
+          <div className="radar-container">
+            <ReactApexChart
+              options={chartOptions}
+              series={chartSeries}
+              type="radar"
+              height="100%"
+              
+            />
           </div>
         </div>
 
-        {/* Separator with "COMPARISON" */}
-        <div className="flex items-center justify-center w-full my-1">
-          <div className="flex-1 h-[1px] bg-white"></div>
-          <span className="px-4 text-white text-semibold text-2xl">
-            COMPARISON
-          </span>
-          <div className="flex-1 h-[1px] bg-white"></div>
-        </div>
+        <div className="row2">
 
-        {/* Radar Chart */}
-        <div className="w-[65%]">
-          <ReactApexChart
-            options={chartOptions}
-            series={chartSeries}
-            type="radar"
-            // height={150}
-            // width="100%"
-          />
-        </div>
-
-        {/* Separator with "STATISTICS" */}
         <div className="flex items-center justify-center w-full">
-          <div className="flex-1 h-[1px] bg-white"></div>
-          <span className="px-4 text-white text-semibold text-2xl">
+          <div className="flex-1 h-[0.3vh] bg-[#363636] ml-[2vh]"></div>
+          <span className="stats-title">
             STATISTICS
           </span>
-          <div className="flex-1 h-[1px] bg-white"></div>
+          <div className="flex-1 h-[0.3vh] bg-[#363636] mr-[2vh]"></div>
         </div>
 
         <div className="flex flex-col px-8">
@@ -385,6 +387,15 @@ const Comparision: React.FC = () => {
             rightValue={rightPlayer.stats.form}
           />
         </div>
+
+        </div>
+
+        
+
+      
+
+      
+        
       </div>
     </div>
   );

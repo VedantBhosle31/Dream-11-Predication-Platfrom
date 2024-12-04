@@ -95,15 +95,15 @@
 
 
 .edit-team {
-  /* display: flex; */
+  
   justify-content: center;
   color: black;
   font-weight: 700;
-  width: 85%;
-  padding: 20px;
-  border-radius: 5px;
+  height: 13%;
+  width: 100%;
+  border-radius: 1vh;
   background-color: #FA2433;
-  margin-top: 5px;
+  margin-top: 2vh;
   border: none;
   font-family: "Montserrat";
   cursor: pointer;
@@ -129,24 +129,7 @@
   border: 1px #ffffff solid;
 }
 
-.complete-team {
-  display: flex;
-  justify-content: center;
-  color: #000000;
-  width: 100%;
-  padding: 20px;
-  border-radius: 5px;
-  background-color: #FA2433;
-  margin-top: 5px;
-  border: none;
-  font-family: "Montserrat";
-  font-weight: 700;
-  cursor: pointer;
-}
 
-.complete-team:hover {
-  border: 2px #ffffff solid;
-}
 
 .complete-and-submit-team {
   color: #ffffff;
@@ -166,61 +149,94 @@
 
 /* Side Container */
 .team-container {
-  height: 90%;
-  width: 85%;
-  background-color: #000000;
-  margin-right: 20px;
-  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  
+
 }
 
 
-.side-container {
-  width: 85%;
-  margin-right: auto;
-  height: 90%;
-  background: black;
-  color: white;
-  border-radius: 5px;
-  align-content: center;
-}
 
 .main-container {
   display: flex;
-  flex-direction: column;
   height: 100%;
+  width: 100%;
   background-color: black;
-  /* margin-top: 40px ; */
   align-items: center;
   align-content: center;
-  /* margin-right: 50px; */
-  /* margin-bottom: 40px; */
+  padding: 5vh;
+  padding-right: 1vh;
+ 
 }
 
 
 .bottom-stats {
   display: flex;
   justify-content: space-evenly;
-  background-color: #101010;
+  background-color: #9b2626;
+  border-bottom-left-radius: 1vh;
   height: 15%;
   width: 100%;
 }
 
-.video-card {
+.video-section {
   display: flex;
-  justify-content: center;
-
-  flex-direction: column;
-  /* background-color: #ffffff; */
   height: 100%;
   width: 100%;
-  /* justify-items: center; */
-  /* align-items: center; */
+  background-color: rgb(0, 0, 0);
+  align-items: center;
   align-content: center;
+  padding: 5vh;
+  padding-left: 1vh;
 }
 
-.video-section {
-  height: 80%;
-  width: 85%;
+.video-wrapper{
+  height: 100%;
+  width: 100%;
+}
+
+.video-card {
+
+  width: 100%;
+  height: calc(87% - 2vh);
+  align-content: center;
   background-color: #1f1f1f;
-  border-radius: 5px;
+  border-radius: 1vh;
+}
+
+
+.dragzone-section{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  align-items: center;
+  align-content: center;
+  padding: 5vh;
+  padding-left: 1vh;
+}
+
+.dragzone-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.complete-team {
+  
+  justify-content: center;
+  color: black;
+  font-weight: 700;
+  height: 13%;
+  width: 100%;
+  border-radius: 1vh;
+  background-color: #FA2433;
+  margin-top: 2vh;
+  border: none;
+  font-family: "Montserrat";
+  cursor: pointer;
+}
+
+.complete-team:hover {
+  border: 2px #ffffff solid;
 }

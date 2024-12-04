@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ml_app',
     'players',
-    'graphs',
     "corsheaders",
     'video_generetor',
     'genai',

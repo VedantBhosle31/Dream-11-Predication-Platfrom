@@ -292,7 +292,6 @@ label {
   /* Tailwind: object-contain */
 }
 
-
 .devtools {
   position: fixed;
   height: 50px;
@@ -305,6 +304,8 @@ label {
   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
   z-index: 100;
   justify-items: center;
+  top: 0.5rem;
+  right: 0;
 }
 
 .custom-select-container {

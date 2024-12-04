@@ -9,7 +9,7 @@ from players.models import (
     MatchupWit20, MatchupWodi, MatchupWodm, MatchupWt20, MatchupWtest,
     PlayerNames, TeamDetails, FantasyBowl7
 )
-from django.views.decorators.csrf import csrf_exempt
+
 
 def model_mapping(name):
     models = {
@@ -63,7 +63,6 @@ def model_mapping(name):
     }
     return models.get(name)
 
-@csrf_exempt
 def get_player_stats(name,match_date,format):
     '''
         take player_name and format(type of match + gender)

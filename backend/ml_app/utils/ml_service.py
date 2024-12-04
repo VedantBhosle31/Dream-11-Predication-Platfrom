@@ -20,16 +20,10 @@ def convert_numpy_types(data):
         return data
 
 try:
-    with open("ml_app/pickles/models.pkl", "rb") as file:
-        models = pickle.load(file)
-except FileNotFoundError:
-    print("Pickle file not found.")
-except pickle.UnpicklingError:
-    print("Error while loading the pickle file.")
-
-try:
-    with open("ml_app/pickles/scalers.pkl", "rb") as file:
-        scalers = pickle.load(file)
+    with open("ml_app/pickle.pkl", "rb") as file:
+        pickle = pickle.load(file)
+        models = pickle['models']
+        scalers = pickle['scalers']
 except FileNotFoundError:
     print("Pickle file not found.")
 except pickle.UnpicklingError:
@@ -54,7 +48,11 @@ def predict_for_one(player_stats,format):
     features = player_stats
     predictions = {}
     for target in targets:
-        s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+        if 'format' == 'Test':
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format+'_match_'+target
+        else:
+            s= 'match_'+target if target in ['runouts', 'catches', 'stumpings'] else format.upper()+'_match_'+target
+
         model = models[s]
         scaler = scalers[s]
         feature_column= feature_columns_dict[s]
@@ -114,7 +112,6 @@ def predict(names,date,format):
     for name in names:
         fantasy_points[name] = predict_for_one(all_player_stats[name], format)["fantasy_points"]
         predictions[name] = predict_for_one(all_player_stats[name], format)["predictions"]
-
         # Add player_id, cost, position for each player from cost csv
         player = cost_df[cost_df['cricsheet_name'] == name]
         if player.empty:
@@ -133,7 +130,7 @@ def predict(names,date,format):
         player_cost = player['cost'].values[0]  # Use `player_cost` to avoid overwriting `cost_df`
         position = player['position'].values[0]
 
-        # average = all_player_stats[name]["batting"]['average']
+
 
         if position == "Unknown":
             position = "Batter"
@@ -149,7 +146,6 @@ def predict(names,date,format):
 
     # Sort the fantasy points in descending order and send the best 11
     fantasy_points = dict(sorted(fantasy_points.items(), key=lambda item: item[1], reverse=True))
-    fantasy_points = dict(list(fantasy_points.items())[:11])
 
     result = {
         "fantasy_points": fantasy_points,

@@ -1,16 +1,18 @@
 import React, { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import "./DropZone.css";
 import MyImage from "../../assets/images/virat_kohli.png";
 import milogo from "../../assets/images/mumbai_indians.png";
 import rcblogo from "../../assets/images/rcb_logo.png";
 import { IconButton } from "@mui/material";
-import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
+import { AddCircleOutline } from "@mui/icons-material";
 import { CardData } from "../../SlidingPanels";
 import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
 import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import { DisplayCardData } from "../../pages/player_display_card/displayCard";
 import usePlayerStore from "../../store/playerStore";
+import { round } from "lodash";
 
 interface DropZoneProps {
   cards: CardData[];
@@ -429,7 +431,7 @@ const DroppableCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
@@ -457,7 +459,7 @@ const DroppableCard: React.FC<{
   const handleRightClick = async () => {
     if (currentIndex === 1) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
@@ -512,8 +514,6 @@ const DroppableCard: React.FC<{
   const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // State for the selected filter
   const [selectedFilter3, setSelectedFilter3] = useState("venue"); // State for the selected filter
 
-  // const [format, setformat] = useState("Odi");//
-
   const { model } = usePlayerStore();
   const { matchDate } = usePlayerStore();
   // const { model } = usePlayerStore();
@@ -554,21 +554,13 @@ const DroppableCard: React.FC<{
     id: number;
   }
 
-  // const { details } = useUserContext();
-
-  // const { setDetails } = useUserContext();
-
-  // const updateDetails = () => {
-  //   setDetails(["newDetail1", "newDetail2"]);
-  // };
-
   const { allmaindata, setallmaindata } = usePlayerStore();
 
   const fetchData = async (url: string) => {
     setCardExpanded(true);
 
     const response = await fetch(
-      "http://127.0.0.1:8000/players/get-player-data",
+      `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`,
       {
         method: "POST",
         headers: {
@@ -707,12 +699,9 @@ const DroppableCard: React.FC<{
     });
 
     let sums = { "0": 0, "4": 0, "6": 0 };
-    // let sumsrecent = { "form": 0, "opposition": 0, "venue": 0 };
 
     maindata["stats"]["batting"].forEach((battingData: any) => {
       sums["0"] += battingData["dots"];
-      // sums["4"] += battingData["previous_4s"];
-      // sums["6"] += battingData["sixes"];
     });
 
     var formRatio = 0;
@@ -917,13 +906,13 @@ const DroppableCard: React.FC<{
 
       <div className="droppable-card-points">
         <div>
-          {card.points}
+          {round(parseInt(card.points), 2)}
           <div style={{ fontSize: 6, color: "red" }}>PTS</div>
         </div>
 
         <img
-          className="team-logo"
-          src={card.team === "RCB" ? rcblogo : milogo}
+          className="team-logo h-6 object-contain"
+          src={card.team_url}
           alt="Player"
         />
       </div>
@@ -932,7 +921,7 @@ const DroppableCard: React.FC<{
         {card.name}
         <div className="card-overlay-row">
           <div style={{ fontSize: "9px", display: "flex" }}>
-            {card.score}
+            {round(parseInt(card.runs), 2)}
             <div style={{ color: "red" }}>RNS</div>
           </div>
           <div style={{ fontSize: "9px", fontWeight: 900 }}>{card.type}</div>
@@ -977,7 +966,7 @@ const DroppableCard: React.FC<{
         <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
           <button
             onClick={() => handleSetCVC(card.id, "C")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%]"
             style={{
               backgroundColor: "rgb(235, 134, 2)",
               fontFamily: "Montserrat",
@@ -989,37 +978,51 @@ const DroppableCard: React.FC<{
 
           <button
             onClick={() => handleSetCVC(card.id, "VC")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%]"
             style={{
               backgroundColor: "rgb(2, 157, 235)",
               fontFamily: "Montserrat",
               fontSize: "70%",
             }}
           >
-            Make Vice-Captain
+            Make Vice-Cap
           </button>
 
           <button
-            // onClick={updateDetails}
             onClick={() =>
-              fetchData("http://127.0.0.1:8080/players/get-player-data")
+              fetchData(
+                `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`
+              )
             }
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%] bg-gray-900 text-white"
             style={{
-              backgroundColor: "rgb(235, 134, 2)",
               fontFamily: "Montserrat",
               fontSize: "70%",
             }}
           >
             Show Info
           </button>
+          <button
+            // onClick={updateDetails}
+            onClick={() => onRemove(card)}
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%] bg-gray-900 text-white"
+            style={{
+              fontFamily: "Montserrat",
+              fontSize: "70%",
+            }}
+          >
+            Remove
+          </button>
         </div>
       )}
 
-      <img className="card-image" src={MyImage} alt="Player" />
+      <img
+        className="card-image"
+        src={MyImage}
+        alt="Player"
+      />
     </div>
   ) : (
-    // <div></div>
     <DisplayCardExpanded
       containerRef={containerRef}
       isExpanded={isCardExpanded}

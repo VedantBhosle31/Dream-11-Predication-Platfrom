@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import DropZone from "../../components/dropzone/DropZone";
-import DragZone from "../../components/dragzone/DragZone";
 import "./teamPage.css";
-import EditComponent from "./EditComponent";
 import { getSessionData } from "../../utils/sessionStorageUtils";
 import { BackendData } from "../../api/fetchData";
 import { CardData } from "../../SlidingPanels";
@@ -69,9 +67,8 @@ const TeamPage: React.FC<TeamPageProps> = ({
         {
           <div
             className="main-container"
-            style={{ justifyContent: showContainer ? "center" : "center" }}
           >
-            <div className={`team-container ${showContainer ? "shifted" : ""}`}>
+            <div className="team-container">
                 <DropZone
                   cards={dropZoneCards}
                   onRemove={removeFromDropZone}
@@ -81,7 +78,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
                   handleSetCVC={handleSetCVC}
                 />
 
-              <div className="bottom-stats">
+              {/*<div className="bottom-stats">
                 <div
                   style={{
                     color: "red",
@@ -113,7 +110,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
                     TEAM COST
                   </div>
                 </div>
-              </div>
+              </div>*/}
             </div>
           </div>
         }

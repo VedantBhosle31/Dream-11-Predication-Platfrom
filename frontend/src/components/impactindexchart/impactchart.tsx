@@ -1,209 +1,15 @@
-// // import React from "react";
-// // import {
-// //   BarChart,
-// //   Bar,
-// //   XAxis,
-// //   YAxis,
-// //   CartesianGrid,
-// //   Tooltip,
-// //   Legend,
-// //   ResponsiveContainer,
-// // } from "recharts";
-
-// // const data = [
-// //   {
-// //     name: "Strike Rate",
-// //     values: [156.7, -188.5],
-// //   },
-// //   {
-// //     name: "Boundaries",
-// //     values: [7, -5],
-// //   },
-// //   {
-// //     name: "Dismissals",
-// //     values: [1, -3],
-// //   },
-// // ];
-
-// // const ImpactChart: React.FC = () => {
-// //   return (
-// //     <div style={{width:"85%", height:"80%", alignContent:"center", alignItems:"center", justifyItems:"end"}}>
-// //       {/* Title */}
-// //       <div style={{ marginBottom: "20px", color: "white", height:"5%", textAlign:"center", fontSize:"20px" }}>
-// //       vs Spin   vs Pace
-// //       </div>
-// //       {/* Chart */}
-// //       <ResponsiveContainer width="85%" height="80%" >
-// //         <BarChart
-// //           data={data}
-// //           layout="vertical"
-// //           margin={{
-// //             top: 20,
-// //             right: 30,
-// //             left: 50,
-// //             bottom: 5,
-// //           }}
-// //         >
-// //           {/* <CartesianGrid strokeDasharray="3 3" /> */}
-// //           <XAxis type="number" hide domain={[-200, 200]} />
-// //           <YAxis
-// //             type="category"
-// //             dataKey="name"
-// //             color="white"
-// //             style={{ fontSize: "15px", color: "white" }}
-// //             axisLine={false}
-// //             tickLine={false}
-// //           />
-// //           <Tooltip />
-// //           {/* <Legend
-// //             style={{ fontSize: "15px", color: "white" }}
-// //             formatter={(value) =>
-// //               value === "Spin"
-// //                 ? "Vs Spin"
-// //                 : value === "Pace"
-// //                 ? "Vs Pace"
-// //                 : value
-// //             }
-// //           /> */}
-// //           <Bar dataKey="values" fill="#FA2433" barSize={20} />
-// //           <Bar dataKey="values" fill="#FA2433" barSize={20} />
-// //           <Bar dataKey="values" fill="#FA2433" barSize={20} />
-// //           {/* <Bar dataKey="values" fill="#f3722c" barSize={20} /> */}
-// //         </BarChart>
-// //       </ResponsiveContainer>
-// //     </div>
-// //   );
-// // };
-
-// // export default ImpactChart;
-
-// // import React from "react";
-// // import {
-// //   BarChart,
-// //   Bar,
-// //   XAxis,
-// //   YAxis,
-// //   CartesianGrid,
-// //   Tooltip,
-// //   Legend,
-// //   ResponsiveContainer,
-// // } from "recharts";
-
-// // const data = [
-// //     {
-// //       name: "Strike Rate",
-// //       values: [156.7, -188.5],
-// //     },
-// //     {
-// //       name: "Boundaries",
-// //       values: [7, -5],
-// //     },
-// //     {
-// //       name: "Dismissals",
-// //       values: [1, -3],
-// //     },
-// //   ];
-
-// // const ImpactChart: React.FC = () => {
-// //   return (
-// //     <div style={{ width: "100%", textAlign: "center" }}>
-// //       {/* Title */}
-// //       {/* <h2 style={{ marginBottom: "20px", color: "#333" }}>
-// //         Performance vs Spin and Pace
-// //       </h2> */}
-// //       {/* Chart */}
-// //       <ResponsiveContainer width="80%" height={250}>
-// //         <BarChart
-// //         layout="vertical"
-// //           data={data}
-// //           margin={{
-// //             top: 20,
-// //             right: 50,
-// //             left: 50,
-// //             bottom: 20,
-// //           }}
-// //         >
-// //           {/* <CartesianGrid strokeDasharray="3 3" /> */}
-// //           <XAxis
-// //           type="number"
-// //             domain={[-200, 200]}
-// //             tickFormatter={(value) => Math.abs(value).toString()}  hide/>
-// //           <YAxis
-// //           type="category"
-// //           dataKey="name"
-// //           tickLine={false}
-// //           axisLine={false}
-// //           width={100}
-// //           tick={{ fontSize: 14 }}
-// //           />
-// //           <Tooltip />
-// //           {/* <Legend
-// //           formatter={(value) =>
-// //             value === "Spin" ? "Vs Spin" : value === "Pace" ? "Vs Pace" : value
-// //           }
-// //           /> */}
-
-// //           {/* Bars for different metrics */}
-// //           <Bar dataKey="values" fill="#f94144" barSize={20} name="Vs Spin" />
-// //           {/* <Bar dataKey="Pace" fill="#f3722c" barSize={20} name="Vs Pace" /> */}
-// //         </BarChart>
-// //       </ResponsiveContainer>
-// //     </div>
-// //   );
-// // };
-
-// // export default ImpactChart;
-
-// import * as React from 'react';
-// import { BarChart } from '@mui/x-charts/BarChart';
-
-// const seriesA = {
-//   data: [2, 3, 1],
-//   label: 'vs Spin',
-// };
-// const seriesB = {
-//   data: [-3, -1, -4],
-//   label: 'vs Pace',
-// };
-// const yLabels = ['Strike rate', 'Dismissals', 'Boundaries'];
-
-// export default function BasicStacking() {
-//   return (
-//     <BarChart
-//     layout='horizontal'
-//       width={600}
-//       height={300}
-//       series={[
-//         { ...seriesA, stack: 'total' },
-//         { ...seriesB, stack: 'total' },
-//       ]}
-//       yAxis={}
-
-//       // yAxis={}
-//     />
-
-//   );
-// }
-
 import React from "react";
 import {
   BarChart,
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
   LabelList,
   ReferenceLine,
 } from "recharts";
 
-// const data = [
-//   { category: "Strike Rate", values:[156.7, -188.5 ] },
-//   { category: "Boundaries", values:[7, -5 ]  },
-//   { category: "Dismissals", values:[1, -3]},
-// ];
 
 interface ImpactChartProps {
   battingStats: any;
@@ -407,22 +213,9 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
               color: "black",
               padding: "5px", // Decrease padding inside the tooltip
             }}
-            // formatter={(value) => {
-            //   // const numericValue = parseFloat(value as string); // Try converting the value to a number
-            //   // if (!isNaN(numericValue)) {
-            //   //   return numericValue.toFixed(2); // Format to 2 decimal places if it's a valid number
-            //   // }
-            //   return value; // Return the original value if it's not a number
-            // }}
-            // formatter={(value: number) => Math.abs(value)} // Display absolute values
+            
             labelStyle={{ color: "#black", fontSize: "10px" }} // Customize label styling
           />
-          {/* <Legend
-            wrapperStyle={{ color: "#FFFFFF" }}
-            formatter={(value) =>
-              value === "vsSpin" ? "vs Spin (Right)" : "vs Pace (Left)"
-            }
-          /> */}
 
           <Bar dataKey="values" fill="#FA2433" />
           {/* <Bar dataKey="vsPace" fill="#A00000" name="vs Pace" /> */}
@@ -442,13 +235,7 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
           <LabelList
             dataKey="values"
             position="top"
-            // formatter={(value: any) => {
-            //   const numericValue = parseFloat(value); // Convert value to number
-            //   // if (!isNaN(numericValue)) {
-            //   //   return Math.abs(numericValue).toFixed(2); // Format to 2 decimal places
-            //   // }
-            //   return (Math.abs(numericValue)).toFixed(2); // Return original value if not a number
-            // }}
+
             formatter={(value: any) => {
               const numericValue = Math.abs(parseFloat(value)); // Get the absolute value
               return numericValue.toFixed(2); // Format to 2 decimal places

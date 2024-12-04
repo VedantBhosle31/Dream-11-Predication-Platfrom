@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import DragZone from "../../components/dragzone/DragZone";
-
-
 import "../teamPage/teamPage.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
-import VideoPlayer from "../../components/video_player/videoplayer";
 import Slideshow from "../../components/slide-show/SlideShow";
 import { CardData } from "../../SlidingPanels";
+import {motion} from 'framer-motion'
 import usePlayerStore from "../../store/playerStore";
 
 export interface EditComponentProps {
@@ -38,12 +36,6 @@ const EditComponent: React.FC<EditComponentProps> = ({
 
   const { displayscreencards, setdisplayscreencards } = usePlayerStore();
 
-
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-
-  // Replace this with the actual URL of your Django backend
-  const backendUrl = "http://127.0.0.1:8000/video/stream/stream_video.mp4";
-
   const handleButtonClick = () => {
     // Check if Captain and Vice-Captain are assigned
     const hasCaptain = dropZoneCards.some((card) => card.cvc === "C");
@@ -62,28 +54,34 @@ const EditComponent: React.FC<EditComponentProps> = ({
 
     setdisplayscreencards(dropZoneCards);
 
-    // Navigate to the player-info page if both conditions are satisfied
     navigation("/player-info");
   };
 
   if (!showContainer) {
     return (
-      <div className="video-card">
-        <div className="video-section">
-          {/* {<VideoPlayer videoUrl={backendUrl} />} */}
-          <Slideshow />
+      <div className="video-section">
+        <div className="video-wrapper">
+
+          <div className="video-card">
+            <Slideshow />
+          </div>
+
+          <motion.button   whileTap={{
+          scale: 0.98,
+        }} whileHover={{scale:1.02}} className="edit-team" onClick={toggleContainer}>
+            EDIT TEAM
+          </motion.button>
+
         </div>
-        <button className="edit-team" onClick={toggleContainer}>
-          EDIT TEAM
-        </button>
+        
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center h-full border-10 -mb-10 border-red-600">
+    <div className="dragzone-section">
       <DndProvider backend={HTML5Backend}>
-        <div className="side-container">
+        <div className="dragzone-wrapper">
           <DragZone
             cards={dragZoneCards}
             filterType={filterType}
@@ -93,15 +91,12 @@ const EditComponent: React.FC<EditComponentProps> = ({
             selectedCard={selectedCard}
             addToDropZone={addToDropZone}
           />
-          <button
-            className="complete-team"
-            onClick={handleButtonClick}
-          >
+      
+          <motion.button   whileTap={{
+          scale: 0.98,
+        }} whileHover={{scale:1.02}} className="complete-team" onClick={handleButtonClick}>
             COMPLETE TEAM
-          </button>
-          {/* <button className="complete-team" onClick={() => {}}>
-            Submit Team
-          </button> */}
+          </motion.button>
         </div>
       </DndProvider>
     </div>
