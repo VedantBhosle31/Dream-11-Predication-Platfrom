@@ -80,7 +80,7 @@ const Home: React.FC = () => {
         className="background-video"
         loop
         muted
-        src="bg_video.mp4"
+        src="loading2.mp4"
       ></video>
 
       {/* Title Section */}
@@ -121,10 +121,11 @@ const Home: React.FC = () => {
       <div className="spacer" />
 
       {/* dev tools */}
-      <motion.div className="devtools">
+      {/*<motion.div className="devtools">
         <Button onClick={handleDevOpen}>Dev Tools</Button>
         <DevTools open={devexpanded} handleDevClose={handleDevClose} />
       </motion.div>
+      */}
     </div>
   );
 };

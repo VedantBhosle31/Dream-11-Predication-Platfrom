@@ -41,7 +41,7 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
   
   
   return (
-    <div style={{display: "flex", flexDirection: "column", backgroundColor: "#1f1f1f", borderRadius: "2vh", height: "85%",  width: "100%", overflow: "clip"}}>
+    <div style={{display: "flex", flexDirection: "column", backgroundColor: "#1f1f1f", borderRadius: "1vh", height: "calc(90% - 2vh)",  width: "100%", overflow: "clip"}}>
       
       <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", alignContent: "center",padding: "4%", paddingLeft: "5%", paddingRight: "0%"}}>
         

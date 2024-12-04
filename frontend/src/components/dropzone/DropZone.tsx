@@ -524,8 +524,8 @@ const DroppableCard: React.FC<{
     model === "T20"
       ? ["All", "T20I", "T20"]
       : model === "Odi"
-      ? ["All", "OdiI", "Odi"]
-      : ["All", "TestI", "Test"]; // Filter options
+        ? ["All", "OdiI", "Odi"]
+        : ["All", "TestI", "Test"]; // Filter options
   const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
   const filters3 = ["venue", "opposition", "form"]; // Filter options
   //
@@ -569,7 +569,7 @@ const DroppableCard: React.FC<{
     setCardExpanded(true);
 
     const response = await fetch(
-      "http://127.0.0.1:8000/players/get-player-data",
+      `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`,
       {
         method: "POST",
         headers: {
@@ -596,6 +596,8 @@ const DroppableCard: React.FC<{
     }
 
     const fetcheddata = await response.json();
+
+    console.log("fetcheddata", fetcheddata);
 
     maindata = fetcheddata;
 
@@ -798,87 +800,13 @@ const DroppableCard: React.FC<{
       result.push({
         date: maindata["stats"]["batting"][i]["date"],
         value: maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
+          ? 0
+          : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
       });
     }
-    // console.log('result here',result);
-    // console.log('result here2',model.toLowerCase);
+
 
     setnewfantasygraphData(result);
-
-    // setnewfantasygraphData([
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][1]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][1][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: maindata["stats"]["batting"][0]["date"],
-    //     value:
-    //       maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    // ]);
 
     setnewvenueData(
       Array.from({ length: 10 }, (_, index) => {
@@ -909,7 +837,7 @@ const DroppableCard: React.FC<{
   return !isCardExpanded ? (
     <div
       className="droppable-card"
-      onClick={() => {}}
+      onClick={() => { }}
       style={{ border: selectedCard === card ? "2px solid white" : "none" }}
       onDropCapture={() => onSelectCard(card)}
     >
@@ -918,7 +846,7 @@ const DroppableCard: React.FC<{
 
       <div className="droppable-card-points">
         <div>
-        {parseFloat(card.points).toFixed(2)}
+          {parseFloat(card.points).toFixed(2)}
           <div style={{ fontSize: 6, color: "red" }}>PTS</div>
         </div>
 
@@ -1052,7 +980,8 @@ const DroppableCard: React.FC<{
       newpiedata={newpiedata}
       venuechartdata={newvenuedata}
       radarnumbers={newradardata}
-      fantasygraphdata={newfantasygraphdata}
+      // fantasygraphdata={newfantasygraphdata}
+      fantasygraphdata={fantasygraphdata}
       percentages={newpercentages}
       impactdata={newimpactdata}
       matchupsdata={newmatchupsdata}
@@ -1064,7 +993,7 @@ const Placeholder: React.FC = () => {
   return (
     <div className="placeholder-card">
       <div className="placeholder-border">
-        <IconButton onClick={() => {}}>
+        <IconButton onClick={() => { }}>
           <AddCircleOutline
             style={{
               color: "gray",

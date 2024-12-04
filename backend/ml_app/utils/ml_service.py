@@ -1,5 +1,5 @@
 from players.utils.fantacy_points import points_calculator
-from players.utils.player_service import fetch_all_player_features, player_features
+from players.utils.player_service import fetch_all_player_features, player_features,player_names
 import pickle
 import pandas as pd
 from ml_app.utils.predictor import feature_columns_dict
@@ -98,7 +98,6 @@ def predict_for_one(player_stats,format):
 
     fantasy_points = points_calculator(format=format.upper(), runouts_direct=runouts * 0.58
     ,runouts_indirect=runouts * 0.42, catches=catches, stumpings=stumpings, runs=runs, sixes=sixes, wickets=wickets, bowled_lbw=bowled_lbw, maidens=maidens, economy=economy, strike_rate=strike_rate, boundaries=boundary_runs)
-    # fantasy_points = 0
     print(fantasy_points)
     return {"predictions":predictions, "fantasy_points":fantasy_points}
 
@@ -107,7 +106,7 @@ def predict(names,date,format):
     predictions = {}
     all_player_stats = fetch_all_player_features(names, date, format)
     cost_df = pd.read_csv(COST_CSV)  # Renaming `cost` to `cost_df`
-    player_names_df = pd.read_csv(PLAYER_CSV)
+    player_names_df = pd.DataFrame(player_names())
 
     for name in names:
         fantasy_points[name] = predict_for_one(all_player_stats[name], format)["fantasy_points"]
@@ -140,8 +139,6 @@ def predict(names,date,format):
         predictions[name]["position"] = position
 
         predictions[name]["player_id2"] = player_id2
-        # predictions[name]["average"] = average
-        # print(all_player_stats)
 
 
     # Sort the fantasy points in descending order and send the best 11

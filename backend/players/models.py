@@ -5103,7 +5103,7 @@ class MatchupWtest(models.Model):
 
 
 class PlayerNames(models.Model):
-    cricsheet_id = models.TextField(blank=True, null=True)
+    cricsheet_id = models.TextField(blank=True, null=False, primary_key=True)
     espn_id = models.FloatField(blank=True, null=True)
     name = models.TextField(blank=True, null=True)
     first_name = models.TextField(blank=True, null=True)
@@ -5120,7 +5120,7 @@ class PlayerNames(models.Model):
 
 
 class TeamDetails(models.Model):
-    espn_team_id = models.BigIntegerField(blank=True, null=True)
+    espn_team_id = models.BigIntegerField(blank=True, null=False, primary_key=True)
     name = models.TextField(blank=True, null=True)
     nickname = models.TextField(blank=True, null=True)
     abbreviation = models.TextField(blank=True, null=True)

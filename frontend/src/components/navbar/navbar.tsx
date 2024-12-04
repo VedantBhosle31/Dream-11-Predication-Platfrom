@@ -7,20 +7,21 @@ const Navbar: React.FC = () => {
     <div className="navbar">
       <ul className="navlist">
         <li className="nav-item">
+          <img className="dream-logo" src="/logo.png"></img>
+        </li>
+        <li className="nav-item">
           <Link to="/" className="nav-link">Home</Link>
         </li>
         <li className="navItem">
-          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/team" className="nav-link">Team</Link>
         </li>
         <li className="navItem">
-          <Link to="/services" className="nav-link">Services</Link>
+          <Link to="/" className="nav-link">FAQs</Link>
         </li>
         <li className="navItem">
-          <Link to="/projects" className="nav-link">Projects</Link>
+          <Link to="/" className="nav-link">Help</Link>
         </li>
-        <li className="navItem">
-          <Link to="/contact" className="nav-link">Contact</Link>
-        </li>
+        
       </ul>
     </div>
   );

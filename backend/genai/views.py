@@ -1,9 +1,10 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, FileResponse
 import json
 from genai.utils.explain_graph import graph_explain
 from genai.utils.player_info import player_description
 from django.views.decorators.csrf import csrf_exempt
 from genai.utils.get_data import get_data
+from genai.utils.groq_client import get_audio
 
 def home(request):
     return HttpResponse("Hello, World!")
@@ -63,3 +64,16 @@ def describe_player(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=400)
+    
+def get_ai_audio(request):
+    body = json.loads(request.body)
+    feature_name = "player_description"
+    user_task = ""
+    for player in body:
+        data = json.dumps(get_data(player["player_type"], player["player_name"], player["date"], player["model"], player["player_opponents"])) 
+        description = player_description(data,feature_name, user_task)
+        final_text += description  
+
+    root = get_audio(final_text)
+
+    return FileResponse(open(root, 'rb'), content_type='audio/mpeg')
