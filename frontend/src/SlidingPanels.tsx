@@ -591,7 +591,7 @@ console.log("cardData here here b",cardData);
 
 
   return (
-        <div className="relative w-full h-screen overflow-hidden">
+        <div className="relative w-full h-screen overflow-hidden ">
         {/* Button with higher z-index and clear positioning */}
         {showContainer && (
           <button
@@ -616,8 +616,8 @@ console.log("cardData here here b",cardData);
           </div>  
   
           <div
-            className={`fixed top-0 h-full bg-white transition-transform duration-500 
-            ease-in-out ${
+            className={`fixed top-0 h-full bg-black transition-transform duration-500 
+            ease-in-out  ${
               isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[60%] translate-x-0"
             }`}
           >

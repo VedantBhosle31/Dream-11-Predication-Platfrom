@@ -9,14 +9,22 @@
     justify-content: center;
     align-items: center;
     align-content: center;
-    background: aqua;
+    background: transparent;
+    position: fixed;
+    z-index: 1;
+    top: 0;
 
 }
-
+.dream-logo {
+    height: 5vh;
+    
+}
 .navlist {
     display: flex;
+    width: 60%;
     justify-content: space-around;
+    align-items: center;
     font-family: "Montserrat";
     color: white;
-    background: aquamarine                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ;
+    background: transparent;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ;
 }
