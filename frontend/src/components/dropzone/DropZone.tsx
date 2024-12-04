@@ -430,7 +430,7 @@ const DroppableCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
@@ -458,7 +458,7 @@ const DroppableCard: React.FC<{
   const handleRightClick = async () => {
     if (currentIndex === 1) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {

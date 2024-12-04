@@ -896,44 +896,7 @@ const DisplayCard: React.FC<{
               </div>
               {round(parseInt(card.strike_rate), 2)}
             </div>
-          </div>
-
-          <div className="display-card-points">
-            <div>
-              207
-              <div style={{ fontSize: 20 }}>PTS</div>
-            </div>
-
-            <img
-              className="display-card-team-logo"
-              src={card.team_url}
-              alt="Player"
-            />
-
-            <div style={{ fontSize: 13 }}>{card.type}</div>
-          </div>
-
-          <button
-            className="info-button"
-            onClick={
-              () => {
-                setExpanded(true);
-                // handleClick();
-              }
-              // fetchData("http://127.0.0.1:8000/players/get-player-data")
-            }
-            aria-label="Info Button"
-          >
-            i
-          </button>
-
-          {card.cvc === "C" && <div className="display-card-c">C</div>}
-
-          {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
-
-          <img className="display-card-image" src={card.img_url} alt={defaultimg} />
         </div>
-
         <div className="display-card-points">
           <div>
             207
@@ -956,7 +919,6 @@ const DisplayCard: React.FC<{
               setExpanded(true);
               // handleClick();
             }
-            // fetchData("http://127.0.0.1:8000/players/get-player-data")
           }
           aria-label="Info Button"
         >
