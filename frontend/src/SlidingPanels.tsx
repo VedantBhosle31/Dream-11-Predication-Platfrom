@@ -63,7 +63,7 @@ const SlidingPanels = () => {
         score: playerStats.score || "0",
         cvc: index === 0 ? "C" : index === 1 ? "VC" : "",
         runs: playerStats.runs || "0",
-        average: playerStats.average || "0.0",
+        average: playerStats.average || "0",
         strike_rate: playerStats.strike_rate || "0.0",
         country: playerStats.country || "Unknown",
         espn_id: playerStats.player_id2 || "",

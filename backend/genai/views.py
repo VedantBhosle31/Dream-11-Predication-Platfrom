@@ -1,9 +1,10 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, FileResponse
 import json
 from genai.utils.explain_graph import graph_explain
 from genai.utils.player_info import player_description
 from django.views.decorators.csrf import csrf_exempt
 from genai.utils.get_data import get_data
+from genai.utils.groq_client import get_audio
 
 def home(request):
     return HttpResponse("Hello, World!")
@@ -67,14 +68,12 @@ def describe_player(request):
 def get_ai_audio(request):
     body = json.loads(request.body)
     feature_name = "player_description"
-    user_task = body.get('user_task', '')
-    player_name = body.get('player_name')
-    date = body.get('date')
-    model = body.get('model')
-    player_opponents = body.get('player_opponents').split(',') if body.get('player_opponents') else []
-    player_type = body.get('player_type')    
-    if not feature_name:
-        return JsonResponse({'error': 'feature_name is required'}, status=400)
-    if not player_name or not date or not model:
-        return JsonResponse({'error': 'player_name, date and model are required'}, status=400)
-    final_text = ''
+    user_task = ""
+    for player in body:
+        data = json.dumps(get_data(player["player_type"], player["player_name"], player["date"], player["model"], player["player_opponents"])) 
+        description = player_description(data,feature_name, user_task)
+        final_text += description  
+
+    root = get_audio(final_text)
+
+    return FileResponse(open(root, 'rb'), content_type='audio/mpeg')

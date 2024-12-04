@@ -12,11 +12,15 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from decouple import config
 from pathlib import Path
-
+from django.conf.urls.static import static
 import dj_database_url
 
+MEDIA_URL = '/audio/'
+MEDIA_ROOT = BASE_DIR / 'media'
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
 
 
 # Quick-start development settings - unsuitable for production
