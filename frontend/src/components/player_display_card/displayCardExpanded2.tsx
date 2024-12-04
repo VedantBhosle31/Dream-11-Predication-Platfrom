@@ -7,7 +7,7 @@ import SearchBar from "../search_bar/searchbar";
 import VenueGraph from "../points_chart/pointschart";
 import { Box, Modal, Skeleton } from "@mui/material";
 import player2Image from "../../assets/images/virat_kohli.png"; // Replace with your player image
-
+import { useEffect } from "react";
 import {
   Bar,
   BarChart,
@@ -61,32 +61,6 @@ const style = {
   transition: "0.5s all ease",
   fontFamily: "Montserrat",
 };
-
-const datatitles = [
-  "FANTASY POINTS VS MATCHES",
-  "RECENT PERFORMANCE",
-  "MATCHUPS",
-  "PLAYER DEMOGRAPHY",
-];
-
-const uData = [50, 30, 20, 27, 18, 23, 34, 50, 30, 20, 27, 18, 23, 34];
-const xLabels = [
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-  "13 Nov",
-];
 
 interface ChartData {
   match: string;
@@ -198,7 +172,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        "http://127.0.0.1:8000/genai/describe-player/",
+        `${process.env.REACT_APP_BACKEND_URL}/genai/describe-player/`,
         {
           method: "POST",
           headers: {

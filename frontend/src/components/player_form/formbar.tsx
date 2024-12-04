@@ -8,9 +8,7 @@ interface FormBarProps {
 const FormBar: React.FC<FormBarProps> = ({ hotness }) => {
   return (
     <div className="form-bar-container">
-      {/* Gradient Bar */}
       <div className="form-bar">
-        {/* Floating Triangle */}
         <div
           className="form-indicator"
           style={{ left: `${hotness}%` }}

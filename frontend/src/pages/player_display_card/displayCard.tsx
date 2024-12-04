@@ -256,26 +256,22 @@ const DisplayCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", // Tell the server it's JSON
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             player_name: "V Kohli",
             player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: matchDate,
             model: model,
-          }), // Convert the data to a JSON string
+          }),
         }
       );
       
       const matchupsdata = await response.json();
-
-
-
-
       console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
@@ -287,7 +283,7 @@ const DisplayCard: React.FC<{
 
     if (currentIndex === 1) {
       const response = await fetch(
-        "http://127.0.0.1:8000/players/get-player-matchups",
+        `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
         {
           method: "POST",
           headers: {
