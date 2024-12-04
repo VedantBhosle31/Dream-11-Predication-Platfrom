@@ -1,4 +1,3 @@
-// Loading.jsx
 import { motion } from "framer-motion";
 import "./Loading.css";
 import { useEffect, useState } from "react";

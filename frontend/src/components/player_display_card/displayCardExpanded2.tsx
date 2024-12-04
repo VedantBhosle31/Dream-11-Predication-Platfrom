@@ -1,21 +1,16 @@
-import React, { useState, useRef, useEffect } from "react"; //
 import rcblogo from "../../assets/images/rcb_logo.png";
 import bccilogo from "../../assets/images/bcci_logo.png";
 import dream11background from "../../assets/images/dream11bg.png";
 import "./displayCard2.css";
 import RadarChart from "../radar_chart/radar";
-import FormBar from "../player_form/formbar";
 import SearchBar from "../search_bar/searchbar";
 import VenueGraph from "../points_chart/pointschart";
-import { Box, Modal, Skeleton, Typography } from "@mui/material";
-import { ChartContainer } from "@mui/x-charts/ChartContainer";
-// import { BarChart, BarPlot } from "@mui/x-charts/BarChart";
+import { Box, Modal, Skeleton } from "@mui/material";
 import player2Image from "../../assets/images/virat_kohli.png"; // Replace with your player image
 
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Cell,
   Legend,
   Pie,
@@ -26,10 +21,8 @@ import {
   YAxis,
 } from "recharts";
 import CircularProgress from "../circular_preformance/circularBar";
-import FilterButton from "../filterButton/filterButton";
 import FilterBar from "../filterBar/filterBar";
 import ImpactChart from "../impactindexchart/impactchart";
-import { BarPlot } from "@mui/x-charts/BarChart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 
 const COLORS = [
@@ -93,56 +86,6 @@ const xLabels = [
   "13 Nov",
   "13 Nov",
 ];
-
-// const yValues = graphdata.map((data) => data.value);
-
-// yValues.sort((a, b) => a - b);
-
-// export interface Matchups {
-//   name: string;
-//   balls: string;
-//   runs: string;
-//   out: string;
-//   strikerate: string;
-// }
-
-// const MatchupsData: Matchups[] = [
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-// ];
 
 interface ChartData {
   match: string;

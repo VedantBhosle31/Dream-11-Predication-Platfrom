@@ -2,16 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import milogo from "../../assets/images/mumbai_indians.png";
 import rcblogo from "../../assets/images/rcb_logo.png";
-import bccilogo from "../../assets/images/bcci_logo.png";
-import dream11background from "../../assets/images/dream11bg.png";
 import "./displayCard.css";
-import RadarChartComponent from "../../components/radar_chart/radar";
-import RadarChart from "../../components/radar_chart/radar";
-import FormBar from "../../components/player_form/formbar";
-import SearchBar from "../../components/search_bar/searchbar";
-import VenueGraph from "../../components/points_chart/pointschart";
 import DisplayCardExpanded from "../../components/player_display_card/displayCardExpanded2";
-// import RadarChartComponent from "../radar_chart/radar"
 
 export interface DisplayCardData {
   id: string;

@@ -25,6 +25,7 @@ const usePlayerStore = create<PlayerStore>((set, get) => ({
   best11Players: [],
   matchDate: "",
   model: "",
+  graphData: [],
   setTeamLogos: (logos) => set({ teamLogos: logos }),
   setPlayerNames: (names) => set({ playerNames: names }),
   fetchBest11: async () => {
