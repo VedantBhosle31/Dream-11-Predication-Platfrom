@@ -9,7 +9,7 @@ from players.models import (
     MatchupWit20, MatchupWodi, MatchupWodm, MatchupWt20, MatchupWtest,
     PlayerNames, TeamDetails, FantasyBowl7
 )
-from django.views.decorators.csrf import csrf_exempt
+
 
 def model_mapping(name):
     models = {
@@ -63,7 +63,6 @@ def model_mapping(name):
     }
     return models.get(name)
 
-@csrf_exempt
 def get_player_stats(name,match_date,format):
     '''
         take player_name and format(type of match + gender)
@@ -73,9 +72,9 @@ def get_player_stats(name,match_date,format):
     model_bowler = model_mapping("Bowler" + format)
     model_fielder = model_mapping("Fielder"+format) 
     stats ={}
-    stats["batting"] = list(model_batter.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('player_name','previous_average','previous_strike_rate','innings_played','previous_runs','previous_average','previous_4s','previous_6s','previous_runs','previous_fifties','previous_centuries','highest_score','form','venue_avg','opposition','previous_zeros','tbahs_economy_agg', 'tbahs_4s_agg', 'tbahp_dismissals_agg', 'dots', 'venue', 'previous_average', 'odi_match_fantasy_points', 'venue_avg', 'opposition', 'form', 'consistency', 'previous_balls_involved', 'tbahs_economy_agg', 'tbahp_economy_agg', 'tbahs_4s_agg', 'tbahp_4s_agg', 'tbahs_dismissals_agg', 'dots', 'venue', 'previous_average', 'odi_match_fantasy_points', 'venue_avg', 'opposition', 'form', 'consistency', 'previous_balls_involved', 'tbahs_6s_agg', 'tbahp_6s_agg', 'tbahs_economy_1', 'tbahp_economy_1', 'tbahs_4s_1', 'tbahs_6s_1', 'tbahp_4s_1', 'tbahp_6s_1', 'tbahs_dismissals_1', 'tbahp_dismissals_1', 'tbahs_economy_2', 'tbahp_economy_2', 'tbahs_4s_2', 'tbahs_6s_2', 'tbahp_4s_2', 'tbahp_6s_2', 'tbahs_dismissals_2', 'tbahp_dismissals_2', 'tbahs_economy_3', 'tbahp_economy_3', 'tbahs_4s_3', 'tbahs_6s_3', 'tbahp_4s_3', 'tbahp_6s_3', 'tbahs_dismissals_3', 'tbahp_dismissals_3', 'tbahr_economy_agg'))
-    stats["bowling"] = list(model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('previous_wickets','previous_economy','previous_balls_involved','innings_played','previous_strike_rate','previous_maidens','previous_average', 'consistency','venue','form','opposition'))
-    stats["fielding"] = list(model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('pfa_catches','pfa_stumpings','pfa_runouts', 'previous_stumpings', 'previous_runouts', 'previous_catches','previous_stumpings',"previous_catches","previous_runouts"))
+    stats["batting"] = list(model_batter.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('player_name','previous_average','previous_strike_rate','innings_played','previous_runs','previous_average','previous_4s','previous_6s','previous_runs','previous_fifties','previous_centuries','highest_score','form','venue_avg','opposition','previous_zeros','tbahs_economy_agg', 'tbahs_4s_agg', 'tbahp_dismissals_agg', 'dots', 'venue', 'previous_average', 'odi_match_fantasy_points', 'venue_avg', 'opposition', 'form', 'consistency', 'previous_balls_involved', 'tbahs_economy_agg', 'tbahp_economy_agg', 'tbahs_4s_agg', 'tbahp_4s_agg', 'tbahs_dismissals_agg', 'dots', 'venue', 'previous_average', 'odi_match_fantasy_points', 'venue_avg', 'opposition', 'form', 'consistency', 'previous_balls_involved', 'tbahs_6s_agg', 'tbahp_6s_agg', 'tbahs_economy_1', 'tbahp_economy_1', 'tbahs_4s_1', 'tbahs_6s_1', 'tbahp_4s_1', 'tbahp_6s_1', 'tbahs_dismissals_1', 'tbahp_dismissals_1', 'tbahs_economy_2', 'tbahp_economy_2', 'tbahs_4s_2', 'tbahs_6s_2', 'tbahp_4s_2', 'tbahp_6s_2', 'tbahs_dismissals_2', 'tbahp_dismissals_2', 'tbahs_economy_3', 'tbahp_economy_3', 'tbahs_4s_3', 'tbahs_6s_3', 'tbahp_4s_3', 'tbahp_6s_3', 'tbahs_dismissals_3', 'tbahp_dismissals_3', "form"))
+    stats["bowling"] = list(model_bowler.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('previous_wickets','previous_economy','previous_balls_involved','innings_played','previous_strike_rate','previous_maidens','previous_average', "form"))
+    stats["fielding"] = list(model_fielder.objects.filter(player_name=name, date__lt = match_date).order_by('-date')[:10].values('pfa_catches','pfa_stumpings','pfa_runouts', 'previous_stumpings', 'previous_runouts', 'previous_catches'))
     return stats
 
 def matchup_stats_two_players(player_1, player_2, format, match_date):

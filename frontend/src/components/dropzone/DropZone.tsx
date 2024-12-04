@@ -1,4 +1,4 @@
-import React, {  useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import "./DropZone.css";
 import MyImage from "../../assets/images/virat_kohli.png";
@@ -438,13 +438,10 @@ const DroppableCard: React.FC<{
           }), // Convert the data to a JSON string
         }
       );
-      
+
       const matchupsdata = await response.json();
 
-
-
-
-      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -452,7 +449,6 @@ const DroppableCard: React.FC<{
   };
 
   const handleRightClick = async () => {
-
     if (currentIndex === 1) {
       const response = await fetch(
         "http://127.0.0.1:8000/players/get-player-matchups",
@@ -470,13 +466,10 @@ const DroppableCard: React.FC<{
           }), // Convert the data to a JSON string
         }
       );
-      
+
       const matchupsdata = await response.json();
 
-
-
-
-      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -561,28 +554,25 @@ const DroppableCard: React.FC<{
   const fetchData = async (url: string) => {
     setCardExpanded(true);
 
-    const response = await fetch(
-      "http://127.0.0.1:8000/players/get-player-data",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Tell the server it's JSON
-        },
-        body: JSON.stringify({
-          // name: "V Kohli",
-          // name: "GJ Maxwell",
-          // name: "MS Dhoni",
-          // name: "G Gambhir",
-          // name: "JJ Bumrah",
-          // name: "RG Sharma",
-          // name: "R Ashwin",
-          name: "SR Tendulkar",
-          // name: "HH Pandya",
-          date: "2025-01-01",
-          model: "Odi",
-        }), // Convert the data to a JSON string
-      }
-    );
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Tell the server it's JSON
+      },
+      body: JSON.stringify({
+        // name: "V Kohli",
+        // name: "GJ Maxwell",
+        // name: "MS Dhoni",
+        // name: "G Gambhir",
+        // name: "JJ Bumrah",
+        // name: "RG Sharma",
+        // name: "R Ashwin",
+        name: "SR Tendulkar",
+        // name: "HH Pandya",
+        date: "2025-01-01",
+        model: "Odi",
+      }), // Convert the data to a JSON string
+    });
 
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
@@ -944,18 +934,19 @@ const DroppableCard: React.FC<{
         </div>
       )}
 
-      {isedit && (
+      {/* {isedit && (
         <button className="remove-button" onClick={() => onRemove(card)}>
           <RemoveCircleOutline style={{ width: "13px", height: "13px" }} />
         </button>
 
       )}
+      */}
 
       {isedit && (
-        <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
+        <div className="absolute inset-0 bg-black bg-opacity-60 grid place-items-center grid-cols-2 opacity-0 hover:opacity-100 transition-opacity z-10 font-semibold text-xs">
           <button
             onClick={() => handleSetCVC(card.id, "C")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%]"
             style={{
               backgroundColor: "rgb(235, 134, 2)",
               fontFamily: "Montserrat",
@@ -967,29 +958,42 @@ const DroppableCard: React.FC<{
 
           <button
             onClick={() => handleSetCVC(card.id, "VC")}
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%]"
             style={{
               backgroundColor: "rgb(2, 157, 235)",
               fontFamily: "Montserrat",
               fontSize: "70%",
             }}
           >
-            Make Vice-Captain
+            Make Vice-Cap
           </button>
 
           <button
             // onClick={updateDetails}
             onClick={() =>
-              fetchData("http://127.0.0.1:8080/players/get-player-data")
+
+              fetchData(
+                `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`
+              )
             }
-            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%] bg-gray-900 text-white"
             style={{
-              backgroundColor: "rgb(235, 134, 2)",
               fontFamily: "Montserrat",
               fontSize: "70%",
             }}
           >
             Show Info
+          </button>
+          <button
+            // onClick={updateDetails}
+            onClick={() => onRemove(card)}
+            className=" py-1 px-3 rounded-lg mb-2 transition h-12 w-[90%] bg-gray-900 text-white"
+            style={{
+              fontFamily: "Montserrat",
+              fontSize: "70%",
+            }}
+          >
+            Remove
           </button>
         </div>
       )}
@@ -999,41 +1003,41 @@ const DroppableCard: React.FC<{
   ) : (
     // <div></div>
     <DisplayCardExpanded
-        containerRef={containerRef}
-        isExpanded={isCardExpanded}
-        setExpanded={setCardExpanded}
-        playerImage={playerImage}
-        card={card}
-        handleLeftClick={handleLeftClick}
-        handleRightClick={handleRightClick}
-        handleLeftClickTypes={handleLeftClickTypes}
-        handleRightClickTypes={handleRightClickTypes}
-        data={data}
-        typeData={typeData}
-        typeData_2={typeData_2}
-        currentIndex={currentIndex}
-        currentIndexTypes={currentIndexTypes}
-        suggestions={suggestions}
-        handleSearch={handleSearch}
-        handleClose={handleClose}
-        open={isCardExpanded}
-        selectedFilter={selectedFilter}
-        selectedFilter2={selectedFilter2}
-        selectedFilter3={selectedFilter3}
-        filters={filters}
-        filters2={filters2}
-        filters3={filters3}
-        handleFilterChange={handleFilterChange}
-        handleFilterChange2={handleFilterChange2}
-        handleFilterChange3={handleFilterChange3}
-        newpiedata={newpiedata}
-        venuechartdata={newvenuedata}
-        radarnumbers={newradardata}
-        fantasygraphdata={newfantasygraphdata}
-        percentages={newpercentages}
-        impactdata={newimpactdata} 
-        matchupsdata={newmatchupsdata}    
-      />
+      containerRef={containerRef}
+      isExpanded={isCardExpanded}
+      setExpanded={setCardExpanded}
+      playerImage={playerImage}
+      card={card}
+      handleLeftClick={handleLeftClick}
+      handleRightClick={handleRightClick}
+      handleLeftClickTypes={handleLeftClickTypes}
+      handleRightClickTypes={handleRightClickTypes}
+      data={data}
+      typeData={typeData}
+      typeData_2={typeData_2}
+      currentIndex={currentIndex}
+      currentIndexTypes={currentIndexTypes}
+      suggestions={suggestions}
+      handleSearch={handleSearch}
+      handleClose={handleClose}
+      open={isCardExpanded}
+      selectedFilter={selectedFilter}
+      selectedFilter2={selectedFilter2}
+      selectedFilter3={selectedFilter3}
+      filters={filters}
+      filters2={filters2}
+      filters3={filters3}
+      handleFilterChange={handleFilterChange}
+      handleFilterChange2={handleFilterChange2}
+      handleFilterChange3={handleFilterChange3}
+      newpiedata={newpiedata}
+      venuechartdata={newvenuedata}
+      radarnumbers={newradardata}
+      fantasygraphdata={newfantasygraphdata}
+      percentages={newpercentages}
+      impactdata={newimpactdata}
+      matchupsdata={newmatchupsdata}
+    />
   );
 };
 

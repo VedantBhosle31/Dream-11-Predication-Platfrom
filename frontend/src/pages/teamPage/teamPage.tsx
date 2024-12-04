@@ -67,9 +67,8 @@ const TeamPage: React.FC<TeamPageProps> = ({
         {
           <div
             className="main-container"
-            style={{ justifyContent: showContainer ? "center" : "center" }}
           >
-            <div className={`team-container ${showContainer ? "shifted" : ""}`}>
+            <div className="team-container">
                 <DropZone
                   cards={dropZoneCards}
                   onRemove={removeFromDropZone}
@@ -79,7 +78,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
                   handleSetCVC={handleSetCVC}
                 />
 
-              <div className="bottom-stats">
+              {/*<div className="bottom-stats">
                 <div
                   style={{
                     color: "red",
@@ -111,7 +110,7 @@ const TeamPage: React.FC<TeamPageProps> = ({
                     TEAM COST
                   </div>
                 </div>
-              </div>
+              </div>*/}
             </div>
           </div>
         }

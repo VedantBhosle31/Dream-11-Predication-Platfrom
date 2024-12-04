@@ -19,16 +19,10 @@ def convert_numpy_types(data):
         return data
 
 try:
-    with open("ml_app/pickles/models.pkl", "rb") as file:
-        models = pickle.load(file)
-except FileNotFoundError:
-    print("Pickle file not found.")
-except pickle.UnpicklingError:
-    print("Error while loading the pickle file.")
-
-try:
-    with open("ml_app/pickles/scalers.pkl", "rb") as file:
-        scalers = pickle.load(file)
+    with open("ml_app/pickle.pkl", "rb") as file:
+        pickle = pickle.load(file)
+        models = pickle['models']
+        scalers = pickle['scalers']
 except FileNotFoundError:
     print("Pickle file not found.")
 except pickle.UnpicklingError:
@@ -112,7 +106,6 @@ def predict(names,date,format):
     for name in names:
         fantasy_points[name] = predict_for_one(all_player_stats[name], format)["fantasy_points"]
         predictions[name] = predict_for_one(all_player_stats[name], format)["predictions"]
-
         # Add player_id, cost, position for each player from cost csv
         player = cost_df[cost_df['cricsheet_name'] == name]
         if player.empty:

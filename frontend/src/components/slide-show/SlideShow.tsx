@@ -1,5 +1,6 @@
 import  { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
 
 const Slideshow = () => {
   // Array of image and audio files
@@ -27,7 +28,7 @@ const Slideshow = () => {
   }, [slides.length]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full p-4 bg-transparent">
+    <div className="flex flex-col items-center justify-center h-full p-4 w-full">
       {/* Image with Framer Motion Animation */}
       <div className="relative w-full h-96">
         <AnimatePresence mode="wait">

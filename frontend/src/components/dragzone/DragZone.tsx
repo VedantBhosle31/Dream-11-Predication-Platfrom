@@ -40,16 +40,16 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
   
   
   return (
-    <div style={{display: "flex", flexDirection: "column", backgroundColor: "#1f1f1f", padding: "15px", borderRadius: "5px", height: "85%",  width: "100%"}}>
+    <div style={{display: "flex", flexDirection: "column", backgroundColor: "#1f1f1f", borderRadius: "2vh", height: "85%",  width: "100%", overflow: "clip"}}>
       
-      <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+      <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", alignContent: "center",padding: "4%", paddingLeft: "5%", paddingRight: "0%"}}>
         
-        <h3 className="dragzone-title">Player</h3>
+        <div className="dragzone-title">PLAYER</div>
 
-        <div style={{display: "flex", alignContent: "center", justifyContent: "space-between", width: "55%"}}>
+        <div style={{display: "flex", alignContent: "center", justifyContent: "space-between", width: "54%"}}>
           
           <button className={`score-filter-button ${filterType === "points" ? "selected" : ""}`} onClick={() => handleFilterClick("points")}>
-            EXPT SCORE
+            EXPT<br></br>SCORE
             <div className={filterType === "points" && ascending ? "selected" : ""}>
               {filterType === "points" && ascending ? (
                 <ArrowUpward />
@@ -68,7 +68,7 @@ const DragZone: React.FC<DragZoneProps> = ({ cards, filterType, onDrag, applyFil
             }
             </div>
           </button>
-          <div style={{width: "20%"}}>
+          <div style={{width: "35%"}}>
 
           </div>
           {/* <button className="score-filter-button" onClick={() => {}}>
@@ -126,7 +126,7 @@ const DraggableCard: React.FC<{
       className="draggable-card"
       style={{ opacity: isDragging ? 0.8 : 1}}
     >
-      <div style={{width: "5px", height: "90%", backgroundColor: "red"}}>
+      <div style={{width: "0.7vh", height: "calc(100% - 1vh)", backgroundColor: "red", marginLeft: "0.5vh"}}>
 
       </div>
       
@@ -136,17 +136,17 @@ const DraggableCard: React.FC<{
 
       <div className="draggable-card-name" style={{display: "flex",left: "0px"}}>
         
-        <div style={{fontSize: "70%"}}>
+        <div style={{fontSize: "100%"}}>
           {card.name}
         </div>
 
-        <div style={{fontSize: "65%", fontWeight: "100"}}>
+        <div style={{fontSize: "85%", fontWeight: "00"}}>
           {card.type}
         </div>
 
       </div>
 
-      <div style={{display: "flex", width: "50%", height: "100%", backgroundColor: "black", justifyContent: "space-around"}}>
+      <div style={{display: "flex", width: "60%", height: "100%", justifyContent: "space-around"}}>
         <div style={{alignContent:"center", color: "red", fontSize: "100%", fontWeight: "800"}}>
           {card.points}
         </div>
