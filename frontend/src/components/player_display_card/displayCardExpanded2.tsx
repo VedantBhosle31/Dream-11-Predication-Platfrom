@@ -26,6 +26,7 @@ import ImpactChart from "../impactindexchart/impactchart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 import usePlayerStore from "../../store/playerStore";
 import { CardData } from "../../SlidingPanels";
+import defaultimg from "../../assets/images/default.png"; // Replace with your player image
 
 const COLORS = [
   "#0088FE",
@@ -200,7 +201,13 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
     fetchData();
   }, []);
 
-  if (card.type === "BAT") {
+  const containsBat = (str:string) => str.includes("bat");
+  const containsbowl = (str:string) => str.includes("bowl");
+  const containsall = (str:string) => str.includes("all");
+  const containswk = (str:string) => str.includes("wicketkeeper");
+
+
+  if ( containsBat(card.type)) {
     typeofplayer = "BATTER";
     if (currentIndex === 0) {
       temptitleexplain = "fantasy_points_vs_matches";
@@ -231,7 +238,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
     } else {
       temptitleexplain = "Graph not relevant for Batter";
     }
-  } else if (card.type === "BOWL") {
+  } else if (containsbowl(card.type)) {
     typeofplayer = "BOWLER";
     if (currentIndex === 0) {
       temptitleexplain = "fantasy_points_vs_matches";
@@ -262,7 +269,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
     } else {
       temptitleexplain = "Graph not relevant for Bowler";
     }
-  } else if (card.type === "ALL") {
+  } else if (containsall(card.type)) {
     typeofplayer = "ALLROUNDER";
     if (currentIndex === 0) {
       temptitleexplain = "fantasy_points_vs_matches";
@@ -291,7 +298,8 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
         temptitleexplain = "impact_index_death_bat";
       }
     }
-  } else if (card.type === "WICKETKEEPER") {
+  const containswk = (str:string) => str.includes("wicketkeeper");
+} else if (containswk(card.type)) {
     typeofplayer = "WICKETKEEPER";
     if (currentIndex === 0) {
       temptitleexplain = "fantasy_points_vs_matches";
@@ -323,7 +331,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
       temptitleexplain = "Graph not relevant for Batter";
     }
   } else {
-    temptitleexplain = "";
+    temptitleexplain = "recent_performance";
   }
 
   return (
@@ -364,7 +372,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 {card.name}
               </div>
               <div style={{ fontSize: "14px", color: "gray" }}>
-                ROYAL CHALLENGERS BANGLORE
+                {card.country}
               </div>
             </div>
 
@@ -376,7 +384,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 height: "auto",
                 objectFit: "contain", // Ensures the image scales properly
               }}
-              src={card.country === "INDIA" ? bccilogo : rcblogo}
+              src={card.team_url}
               alt="Player"
             />
           </div>
@@ -1185,7 +1193,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
             >
               <div style={{ width: "50%", height: "100%" }}>
                 <img
-                  src={player2Image}
+                  src={defaultimg}
                   alt="player"
                   style={{
                     width: "100%",

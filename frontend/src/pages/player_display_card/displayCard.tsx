@@ -6,6 +6,7 @@ import "./displayCard.css";
 import DisplayCardExpanded from "../../components/player_display_card/displayCardExpanded2";
 import usePlayerStore from "../../store/playerStore";
 import { CardData } from "../../SlidingPanels";
+import defaultimg from "../../assets/images/default.png"; // Replace with your player image
 
 export interface DisplayCardData {
   id: string;
@@ -719,78 +720,95 @@ const DisplayCard: React.FC<{
       maindata["stats"]["batting"][0]["previous_average"],
     ]);
 
-    setnewfantasygraphData([
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][0]["odi_match_fantasy_points"] < 0
+    const result = [];
+
+    for (let i = 0; i < maindata["stats"]["batting"].length; i++) {
+      const format = model; // Replace with the actual model value
+
+      result.push({
+        date: maindata["stats"]["batting"][i]["date"],
+        value: maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][1]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][2]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][2]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][3]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][3]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][4]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][4]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][5]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][5]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][6]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][6]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][7]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][7]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][8]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][8]["odi_match_fantasy_points"],
-      },
-      {
-        date: "13 Nov",
-        value:
-          maindata["stats"]["batting"][9]["odi_match_fantasy_points"] < 0
-            ? 0
-            : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
-      },
-    ]);
+            : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
+      });
+    }
+    // console.log('result here',result);
+    // console.log('result here2',model.toLowerCase);
+
+    setnewfantasygraphData(result);
+
+    // setnewfantasygraphData([
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][0]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][1]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][2]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][2]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][3]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][3]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][4]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][4]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][5]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][5]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][6]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][6]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][7]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][7]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][8]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][8]["odi_match_fantasy_points"],
+    //   },
+    //   {
+    //     date: "13 Nov",
+    //     value:
+    //       maindata["stats"]["batting"][9]["odi_match_fantasy_points"] < 0
+    //         ? 0
+    //         : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
+    //   },
+    // ]);
 
     setnewvenueData(
       Array.from({ length: 10 }, (_, index) => {
@@ -851,14 +869,15 @@ const DisplayCard: React.FC<{
                 <div style={{ fontSize: "13px", marginBottom: "10px" }}>
                   RUNS
                 </div>
-                {card.runs}
+                {parseFloat(card.runs).toFixed(0)}
               </div>
               {/* <div className="divider"></div> */}
               <div className="overlay-row-section">
                 <div style={{ fontSize: "13px", marginBottom: "10px" }}>
                   AVERAGE
                 </div>
-                {card.average}
+                {/* {card.average} */}
+                54
               </div>
               {/* <div className="divider"></div> */}
               <div
@@ -871,7 +890,7 @@ const DisplayCard: React.FC<{
                 <div style={{ fontSize: "13px", marginBottom: "10px" }}>
                   STRIKE RATE
                 </div>
-                {card.strike_rate}
+                {parseFloat(card.strike_rate).toFixed(0)}
               </div>
             </div>
           </div>
@@ -884,7 +903,7 @@ const DisplayCard: React.FC<{
 
             <img
               className="display-card-team-logo"
-              src={card.team === "RCB" ? rcblogo : milogo}
+              src={card.team_url}
               alt="Player"
             />
 
@@ -909,7 +928,7 @@ const DisplayCard: React.FC<{
 
           {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
 
-          <img className="display-card-image" src={playerImage} alt="Player" />
+          <img className="display-card-image" src={card.img_url} alt={defaultimg} />
         </div>
       ) : (
         <DisplayCardExpanded

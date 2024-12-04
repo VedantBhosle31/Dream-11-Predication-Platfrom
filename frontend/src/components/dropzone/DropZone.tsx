@@ -924,7 +924,7 @@ const DroppableCard: React.FC<{
 
         <img
           className="team-logo"
-          src={card.team === "RCB" ? rcblogo : milogo}
+          src={card.team_url}
           alt={defaultimg}
         />
       </div>
