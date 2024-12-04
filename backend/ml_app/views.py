@@ -13,7 +13,7 @@ import json
 def get_predictions(request):
     if request.method == "POST":
         body = json.loads(request.body)
-        names = body['names']
+        names = body['names'].split(',')
         date = body['date']
         model = body['model']
         pred = predict(names,date,model)
