@@ -12,7 +12,8 @@ import VideoPage from "./components/video_player/videopage";
 const App = () => {
   return (
     <BrowserRouter>
-      <div style={{ width: "100%" }}>
+      <Navbar></Navbar>
+      <div style={{ width: "100%"}}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/loading" element={<Loading />} />

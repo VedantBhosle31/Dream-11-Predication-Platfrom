@@ -558,12 +558,12 @@ const SlidingPanels = () => {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* Button with higher z-index and clear positioning */}
-      {showContainer && (
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
+        <div className="relative w-full h-screen overflow-hidden ">
+        {/* Button with higher z-index and clear positioning */}
+        {showContainer && (
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="fixed left-0 top-1/2 transform -translate-y-1/2 z-50 px-1 py-3 bg-[#88000A] 
           text-white rounded-l-3xl shadow-lg transition-colors duration-200 -rotate-180 uppercase
           font-semibold text-lg"
           style={{ writingMode: "vertical-rl" }}
@@ -578,13 +578,13 @@ const SlidingPanels = () => {
             duration-500 ease-in-out  ${
               isOpen ? "translate-x-0" : "-translate-x-full"
             }`}
-        >
-          <Comparision />
-        </div>
-
-        <div
-          className={`fixed top-0 h-full bg-white transition-transform duration-500 
-            ease-in-out ${
+          >
+            <Comparision />
+          </div>  
+  
+          <div
+            className={`fixed top-0 h-full bg-black transition-transform duration-500 
+            ease-in-out  ${
               isOpen ? "w-[55%] translate-x-[81.8%]" : "w-[60%] translate-x-0"
             }`}
         >

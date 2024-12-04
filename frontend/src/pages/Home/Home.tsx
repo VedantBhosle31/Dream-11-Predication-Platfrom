@@ -121,10 +121,11 @@ const Home: React.FC = () => {
       <div className="spacer" />
 
       {/* dev tools */}
-      <motion.div className="devtools">
+      {/*<motion.div className="devtools">
         <Button onClick={handleDevOpen}>Dev Tools</Button>
         <DevTools open={devexpanded} handleDevClose={handleDevClose} />
       </motion.div>
+      */}
     </div>
   );
 };
