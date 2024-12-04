@@ -427,7 +427,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     color: "green",
                   }}
                 >
-                  86
+                  {card.points}
                   <div
                     style={{
                       fontSize: "8px",
@@ -440,7 +440,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 </div>
 
                 <div className="overlay-section" style={{ color: "red" }}>
-                  50
+                  {card.cost}
                   <div
                     style={{
                       fontSize: "8px",
@@ -480,7 +480,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     color: "grey",
                   }}
                 >
-                  157
+                  5
                   <div
                     style={{
                       fontSize: "8px",
