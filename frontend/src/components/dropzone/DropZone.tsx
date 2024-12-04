@@ -437,10 +437,10 @@ const DroppableCard: React.FC<{
             "Content-Type": "application/json", // Tell the server it's JSON
           },
           body: JSON.stringify({
-            player_name: "V Kohli",
+            player_name: card.name,
             player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
-            date: "2025-01-01",
-            model: "Odi",
+            date: matchDate,
+            model:model,
           }), // Convert the data to a JSON string
         }
       );
@@ -468,11 +468,11 @@ const DroppableCard: React.FC<{
             "Content-Type": "application/json", // Tell the server it's JSON
           },
           body: JSON.stringify({
-            player_name: "V Kohli",
+            player_name: card.name,
             player_opponents:
               "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
-            date: "2025-01-01",
-            model: "Odi",
+            date: matchDate,
+            model: model,
           }), // Convert the data to a JSON string
         }
       );
@@ -596,7 +596,7 @@ const DroppableCard: React.FC<{
           // name: "JJ Bumrah",
           // name: "RG Sharma",
           // name: "R Ashwin",
-          name: "SR Tendulkar",
+          name: card.name,
           // name: "HH Pandya",
           date: matchDate,
           model: model,
@@ -808,74 +808,74 @@ const DroppableCard: React.FC<{
 
     setnewfantasygraphData([
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][0]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
             : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][1]["date"],
         value:
-          maindata["stats"]["batting"][1]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][1][`${model}_match_fantasy_points`] < 0
             ? 0
             : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][2]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][2]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][3]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][3]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][4]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][4]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][5]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][5]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][6]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][6]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][7]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][7]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][8]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][8]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
       {
-        date: "13 Nov",
+        date: maindata["stats"]["batting"][0]["date"],
         value:
-          maindata["stats"]["batting"][9]["odi_match_fantasy_points"] < 0
+          maindata["stats"]["batting"][0][`${model}_match_fantasy_points`] < 0
             ? 0
-            : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
+            : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
       },
     ]);
 

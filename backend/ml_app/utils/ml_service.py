@@ -133,7 +133,7 @@ def predict(names,date,format):
         player_cost = player['cost'].values[0]  # Use `player_cost` to avoid overwriting `cost_df`
         position = player['position'].values[0]
 
-        average = all_player_stats[name]['average']
+        # average = all_player_stats[name]["batting"]['average']
 
         if position == "Unknown":
             position = "Batter"
@@ -143,7 +143,7 @@ def predict(names,date,format):
         predictions[name]["position"] = position
 
         predictions[name]["player_id2"] = player_id2
-        predictions[name]["average"] = average
+        # predictions[name]["average"] = average
         # print(all_player_stats)
 
 
