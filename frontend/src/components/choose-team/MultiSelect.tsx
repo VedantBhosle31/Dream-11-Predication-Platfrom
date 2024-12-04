@@ -41,7 +41,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       border: "2px solid rgba(255, 255, 255, 0.7)",
       color: "white",
       display: "flex",
-      overflowY: isMulti ? "auto" : "visible", // Allow horizontal scrolling for multi-select
+      overflowY: isMulti ? "auto" : "visible",
       maxHeight: isMulti && "100px",
     }),
     menu: (styles: any) => ({

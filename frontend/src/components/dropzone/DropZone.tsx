@@ -424,7 +424,7 @@ const DroppableCard: React.FC<{
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
-        "http://127.0.0.1:8080/players/get-player-matchups",
+        "http://127.0.0.1:8000/players/get-player-matchups",
         {
           method: "POST",
           headers: {
@@ -432,8 +432,7 @@ const DroppableCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: "V Kohli",
-            player_opponents:
-              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
             date: "2025-01-01",
             model: "Odi",
           }), // Convert the data to a JSON string
@@ -762,14 +761,6 @@ const DroppableCard: React.FC<{
       },
     ]);
 
-    // setnewpieData([
-    //   { name: "0", value: maindata["stats"]["batting"][0]["dots"] },
-    //   // { name: "1", value: 300 },
-    //   // { name: "2", value: 300 },
-    //   // { name: "3", value: 200 },
-    //   { name: "4", value: 100 },
-    //   { name: "6", value: 50 },
-    // ]);
 
     setnewradarData([
       maindata["stats"]["batting"][0]["previous_strike_rate"],
@@ -854,19 +845,6 @@ const DroppableCard: React.FC<{
             : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
       },
     ]);
-
-    // setnewvenueData([
-    //   maindata["stats"]["batting"].map((index: number) => {
-    //     // Perform operations on each element
-    //     return {
-    //       match: `${index}`,
-    //       id: index,
-    //       venue: maindata["stats"]["batting"][index]["venue_avg"],
-    //       opposition: maindata["stats"]["batting"][index]["opposition"],
-    //       form: maindata["stats"]["batting"][index]["form"],
-    //     };
-    //   }),
-    // ]);
 
     setnewvenueData(
       Array.from({ length: 10 }, (_, index) => {
@@ -960,9 +938,7 @@ const DroppableCard: React.FC<{
         <button className="remove-button" onClick={() => onRemove(card)}>
           <RemoveCircleOutline style={{ width: "13px", height: "13px" }} />
         </button>
-        //   <button className="remove-button" onClick={() => onSelectCard(card)} onDoubleClick={() => onRemove(card)}>
-        //   <RemoveCircleOutline style={{ width: "13px", height: "13px",}}/>
-        //  </button>
+
       )}
       */}
 
@@ -995,6 +971,7 @@ const DroppableCard: React.FC<{
           <button
             // onClick={updateDetails}
             onClick={() =>
+
               fetchData(
                 `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`
               )

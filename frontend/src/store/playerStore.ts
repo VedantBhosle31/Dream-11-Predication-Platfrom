@@ -27,6 +27,7 @@ const usePlayerStore = create<PlayerStore>((set, get) => ({
   best11Players: [],
   matchDate: "",
   model: "",
+  graphData: [],
   playerTeamMap: [],
   setPlayerTeamMap: (map) => set({ playerTeamMap: map }),
   setTeamLogos: (logos) => set({ teamLogos: logos }),

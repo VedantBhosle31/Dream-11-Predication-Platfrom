@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   Area,
   AreaChart,
   Label,
   ReferenceLine,
 } from "recharts";
-import {
-  getSessionData,
-  setSessionData,
-} from "../../utils/sessionStorageUtils";
-import { BackendData, fetchData } from "../../api/fetchData";
+
 
 type RunData = {
   Date: string; // ISO 8601 date string

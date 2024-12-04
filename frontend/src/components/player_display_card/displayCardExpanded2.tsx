@@ -1,21 +1,16 @@
-import React, { useState, useRef, useEffect } from "react"; //
 import rcblogo from "../../assets/images/rcb_logo.png";
 import bccilogo from "../../assets/images/bcci_logo.png";
 import dream11background from "../../assets/images/dream11bg.png";
 import "./displayCard2.css";
 import RadarChart from "../radar_chart/radar";
-import FormBar from "../player_form/formbar";
 import SearchBar from "../search_bar/searchbar";
 import VenueGraph from "../points_chart/pointschart";
-import { Box, Modal, Skeleton, Typography } from "@mui/material";
-import { ChartContainer } from "@mui/x-charts/ChartContainer";
-// import { BarChart, BarPlot } from "@mui/x-charts/BarChart";
+import { Box, Modal, Skeleton } from "@mui/material";
 import player2Image from "../../assets/images/virat_kohli.png"; // Replace with your player image
 
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Cell,
   Legend,
   Pie,
@@ -26,10 +21,8 @@ import {
   YAxis,
 } from "recharts";
 import CircularProgress from "../circular_preformance/circularBar";
-import FilterButton from "../filterButton/filterButton";
 import FilterBar from "../filterBar/filterBar";
 import ImpactChart from "../impactindexchart/impactchart";
-import { BarPlot } from "@mui/x-charts/BarChart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 
 const COLORS = [
@@ -93,56 +86,6 @@ const xLabels = [
   "13 Nov",
   "13 Nov",
 ];
-
-// const yValues = graphdata.map((data) => data.value);
-
-// yValues.sort((a, b) => a - b);
-
-// export interface Matchups {
-//   name: string;
-//   balls: string;
-//   runs: string;
-//   out: string;
-//   strikerate: string;
-// }
-
-// const MatchupsData: Matchups[] = [
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-//   {
-//     name: "JOfra Archer",
-//     balls: "150",
-//     runs: "60",
-//     out: "3",
-//     strikerate: "115",
-//   },
-// ];
 
 interface ChartData {
   match: string;
@@ -238,7 +181,137 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   percentages,
   impactdata,
   matchupsdata,
-}) => (
+}) => {
+
+  var temptitleexplain: string = "";
+  var explaindate: string = "2025-01-01";
+  var opponents: string ="RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson";
+  var typeofplayer: string = "";
+
+
+  if (card.type === 'BAT') {
+    typeofplayer ='BAT';
+    if (currentIndex === 0) {
+      temptitleexplain = 'fantasy_points_vs_matches';
+    }
+    else if (currentIndex === 1) {
+      temptitleexplain = 'recent_performance';
+    } 
+    else if (currentIndex === 2 ) {
+      temptitleexplain = 'matchups_bat';
+    } 
+    else if (currentIndex === 3 ) {
+      temptitleexplain = 'demography_bat';
+    } 
+    else if (currentIndex === 4) {
+      if(selectedFilter2 === "venue"){
+        temptitleexplain = 'differential_exp_venue';
+      }else if (selectedFilter2 === "opposition"){
+        temptitleexplain = 'differential_exp_opposition';
+
+      }else if (selectedFilter2 === "form"){
+        temptitleexplain = 'differential_exp_form';
+      }
+    }
+    else if (currentIndex === 5) {
+      if(selectedFilter3 === "Overall"){
+        temptitleexplain = 'impact_index_overall_bat';
+      }else if (selectedFilter3 === "Powerplay"){
+        temptitleexplain = 'impact_index_pp_bat';
+
+      }else if (selectedFilter3 === "Middle"){
+        temptitleexplain = 'impact_index_middle_bat';
+
+      }else if (selectedFilter3 === "Death"){
+        temptitleexplain = 'impact_index_death_bat';
+      }
+    }else {
+      temptitleexplain = 'Graph not relevant for Batter';
+    }
+  }
+
+  else if (card.type === 'BOWL') {
+    typeofplayer ='BOWL';
+    if (currentIndex === 0) {
+      temptitleexplain = 'fantasy_points_vs_matches';
+    }
+    else if (currentIndex === 1) {
+      temptitleexplain = 'recent_performance';
+    } 
+    else if (currentIndex === 2 ) {
+      temptitleexplain = 'matchups_bowl';
+    } 
+    else if (currentIndex === 3 ) {
+      temptitleexplain = 'demography_bowl';
+    } 
+    else if (currentIndex === 4) {
+      if(selectedFilter3 === "venue"){
+        temptitleexplain = 'differential_exp_venue';
+      }else if (selectedFilter3 === "opposition"){
+        temptitleexplain = 'differential_exp_opposition';
+
+      }else if (selectedFilter3 === "form"){
+        temptitleexplain = 'differential_exp_form';
+      }
+    }
+    else if (currentIndex === 5) {
+      if(selectedFilter2 === "Overall"){
+        temptitleexplain = 'impact_index_overall_bowl';
+      }else if (selectedFilter2 === "Powerplay"){
+        temptitleexplain = 'impact_index_pp_bowl';
+      }else if (selectedFilter2 === "Middle"){
+        temptitleexplain = 'impact_index_middle_bowl';
+      }else if (selectedFilter2 === "Death"){
+        temptitleexplain = 'impact_index_death_bowl';
+      }
+    } else {
+      temptitleexplain = 'Graph not relevant for Bowler';
+    }
+  } 
+  
+  else if (card.type === 'ALL') {
+    typeofplayer ='ALL';
+    if (currentIndex === 0) {
+      temptitleexplain = 'fantasy_points_vs_matches';
+    }
+    else if (currentIndex === 1) {
+      temptitleexplain = 'recent_performance';
+    }
+    else if (currentIndex === 2 ) {
+      temptitleexplain = 'matchups_bat';
+    }
+    else if (currentIndex === 3 ) {
+      temptitleexplain = 'demography_bat';
+    }
+    else if (currentIndex === 4) {
+      if(selectedFilter2 === "venue"){
+        temptitleexplain = 'differential_exp_venue';
+      }else if (selectedFilter2 === "opposition"){
+        temptitleexplain = 'differential_exp_opposition';
+
+      }else if (selectedFilter2 === "form"){
+        temptitleexplain = 'differential_exp_form';
+      }
+    }
+    else if (currentIndex === 5) {
+      if(selectedFilter3 === "Overall"){
+        temptitleexplain = 'impact_index_overall_bat';
+      }else if (selectedFilter3 === "Powerplay"){
+        temptitleexplain = 'impact_index_pp_bat';
+
+      }else if (selectedFilter3 === "Middle"){
+        temptitleexplain = 'impact_index_middle_bat';
+
+      }else if (selectedFilter3 === "Death"){
+        temptitleexplain = 'impact_index_death_bat';
+      }
+    }
+
+  } else {
+    temptitleexplain = '';
+  }
+  
+  return (
     <Modal
       open={open}
       onClose={handleClose}
@@ -840,8 +913,13 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   }}
                 >
                   <ExplainGraphButton
-                    title={data[currentIndex].title}
-                    description={data[currentIndex].description}
+                    // title={data[currentIndex].title}
+                    title={temptitleexplain}
+                    explaindate={explaindate}
+                    opponents={opponents}
+                    typeofplayer={typeofplayer} 
+                    player_name={card.name} 
+                    model="Odi"                 
                   />
                 </div>
 
@@ -949,13 +1027,40 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 }}
               >
                 <RadarChart numbers={radarnumbers} />
+
+                <div
+                  style={{
+                    width: "100%",
+                    height: "25px",
+                    bottom: "10px",
+                    // right: "15px",
+                    display: "flex",
+                    position: "relative",
+                    zIndex: "10",
+                    // backgroundColor:"white",
+                    justifyContent: "end",
+                    paddingRight: "10px",
+                    paddingBottom: "2px",
+                  }}
+                >
+                  <ExplainGraphButton
+                    // title={data[currentIndex].title}
+                    title={card.type === 'BAT' ? 'spider_chart_bat' : (card.type === 'BOWL' ? 'spider_chart_bowl' : 'spider_chart_all')}
+                    player_name={card.name}
+                    explaindate={explaindate}
+                    model={'Odi'}
+                    opponents={opponents}
+                    typeofplayer={typeofplayer}
+                  />
+
+                </div>
               </div>
             </div>
           </div>
         </div>
       </Box>
     </Modal>
-);
+)};
 
 
 

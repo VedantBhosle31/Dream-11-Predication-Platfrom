@@ -11,39 +11,7 @@ interface RadarChartProps {
 }
 
 const RadarChart: React.FC<RadarChartProps> = ({numbers}) => {
-  // const [numbers, setNumbers] = useState<number[]>([10, 20, 30, 40, 50, 60]);
 
-  // const fetchData = async (): Promise<RunData[]> => {
-  //   const response = await fetch(
-  //     "http://127.0.0.1:8000/graphs/get_player_radar_chart/1/"
-  //   );
-  //   if (!response.ok) {
-  //     throw new Error("Failed to fetch data");
-  //   }
-  //   console.log(response);
-
-  //   const jsonData = await response.json();
-
-  //   // Extracting only values from the JSON
-  //   const values = Object.values(jsonData) as number[];
-
-  //   setNumbers(values);
-
-  //   return response.json();
-  // };
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const data = await fetchData();
-  //       console.log("data: ", data);
-  //     } catch (err: any) {
-  //       console.log(err.message);
-  //     }
-  //   };
-
-  //   getData();
-  // }, []);
 
   const chartOptions: ApexOptions = {
     chart: {
