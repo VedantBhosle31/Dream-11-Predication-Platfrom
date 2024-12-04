@@ -966,7 +966,7 @@ const DroppableCard: React.FC<{
         </div>
       )}
 
-      {isedit && (
+     {/* {isedit && (
         <button className="remove-button" onClick={() => onRemove(card)}>
           <RemoveCircleOutline style={{ width: "13px", height: "13px" }} />
         </button>
@@ -974,6 +974,7 @@ const DroppableCard: React.FC<{
         //   <RemoveCircleOutline style={{ width: "13px", height: "13px",}}/>
         //  </button>
       )}
+      */}
 
       {isedit && (
         <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs">
@@ -1014,6 +1015,18 @@ const DroppableCard: React.FC<{
             }}
           >
             Show Info
+          </button>
+          <button
+            // onClick={updateDetails}
+            onClick={() => onRemove(card)}
+            className=" py-1 px-3 rounded-lg mb-2 transition h-8 w-[%70]"
+            style={{
+              backgroundColor: "rgb(235, 134, 2)",
+              fontFamily: "Montserrat",
+              fontSize: "70%",
+            }}
+          >
+            Remove
           </button>
         </div>
       )}

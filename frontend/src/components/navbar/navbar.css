@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+
+.navbar {
+    width: 100vw;
+    height: 10vh;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    background: aqua;
+
+}
+
+.navlist {
+    display: flex;
+    justify-content: space-around;
+    font-family: "Montserrat";
+    color: white;
+    background: aquamarine                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ;
+}
