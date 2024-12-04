@@ -7,12 +7,14 @@ interface PlayerStats {
 interface PlayerStore {
   teamLogos: string[] | null;
   playerNames: string[];
+  playerTeamMap: Record<string, string>[];
   playerStats: PlayerStats[];
   best11Players: string[];
   matchDate: string;
   model: string;
   setTeamLogos: (logos: string[] | null) => void;
   setPlayerNames: (names: string[]) => void;
+  setPlayerTeamMap: (map: Record<string, string>[]) => void;
   fetchBest11: () => Promise<Record<string, number>>;
   setMatchDate: (date: string) => void;
   setModel: (model: string) => void;
@@ -25,6 +27,8 @@ const usePlayerStore = create<PlayerStore>((set, get) => ({
   best11Players: [],
   matchDate: "",
   model: "",
+  playerTeamMap: [],
+  setPlayerTeamMap: (map) => set({ playerTeamMap: map }),
   setTeamLogos: (logos) => set({ teamLogos: logos }),
   setPlayerNames: (names) => set({ playerNames: names }),
   fetchBest11: async () => {

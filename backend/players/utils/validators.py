@@ -112,6 +112,7 @@ def validate_uploaded_csv(file, players_csv_path, teams_csv_path):
     errors = []
     team_logos = {}
     final_players_unique_names = []
+    final_selected_players = [] # list with all the selected players and team names (cricsheet_unique_name, team_name)
 
     try:
         # Load the uploaded CSV file
@@ -185,6 +186,7 @@ def validate_uploaded_csv(file, players_csv_path, teams_csv_path):
             unique_name = get_player_unique_name(player_name, valid_players)
             if unique_name:
                 final_players_unique_names.append(unique_name)
+                final_selected_players.append({unique_name: team_name})
             else:
                 errors.append(f"Row {index + 1}: Player '{player_name}' does not exist.")
 
@@ -210,4 +212,4 @@ def validate_uploaded_csv(file, players_csv_path, teams_csv_path):
     except Exception as e:
         errors.append(f"Error processing file: {str(e)}")
 
-    return {"errors": errors, "team_logos": team_logos, "final_players_unique_names": final_players_unique_names}
+    return {"errors": errors, "team_logos": team_logos, "final_players_unique_names": final_players_unique_names, "final_selected_players": final_selected_players}

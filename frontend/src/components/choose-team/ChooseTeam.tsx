@@ -15,8 +15,14 @@ const ChooseTeam = () => {
   const [manualSelection, setManualSelection] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { setPlayerNames, setTeamLogos, teamLogos, setMatchDate, setModel } =
-    usePlayerStore();
+  const {
+    setPlayerTeamMap,
+    setPlayerNames,
+    setTeamLogos,
+    teamLogos,
+    setMatchDate,
+    setModel,
+  } = usePlayerStore();
 
   const validateCSV = (data: any[]) => {
     // Check if headers match the required format
@@ -112,6 +118,7 @@ const ChooseTeam = () => {
       if (logoData.status === "success") {
         setTeamLogos(logoData.team_logos);
         setPlayerNames(logoData.final_players_unique_names);
+        setPlayerTeamMap(logoData.final_selected_players);
       } else {
         const fullError = logoData.errors.join(", ");
         setUploadError(

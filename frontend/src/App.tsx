@@ -10,9 +10,7 @@ import SlidingPanels from "./SlidingPanels";
 import VideoPage from "./components/video_player/videopage";
 
 const App = () => {
-  return (
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-    
+  return (   
     <BrowserRouter>
       <div style={{ width: "100%"}}>
         <Routes>

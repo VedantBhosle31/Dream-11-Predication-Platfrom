@@ -125,10 +125,11 @@ def verify_csv(request):
             errors = result["errors"]
             logos = result["team_logos"]
             final_players_unique_names = result["final_players_unique_names"]
+            final_selected_players = result["final_selected_players"]
             if errors:
                 return JsonResponse({"status": "error", "errors": errors}, status=400)
             return JsonResponse(
-                {"status": "success", "message": "File is valid.", "team_logos": logos, "final_players_unique_names": final_players_unique_names}
+                {"status": "success", "message": "File is valid.", "team_logos": logos, "final_players_unique_names": final_players_unique_names, "final_selected_players": final_selected_players}
             )
         return JsonResponse(
             {
