@@ -167,3 +167,11 @@ def fetch_all_player_features(player_names, match_date, format):
         }
 
     return player_stats
+
+def player_names():
+    player_names = model_mapping("PlayerNames")
+    return list(player_names.objects.all().values())
+
+def team_names():
+    team_names = model_mapping("TeamDetails")
+    return list(team_names.objects.all().values())
