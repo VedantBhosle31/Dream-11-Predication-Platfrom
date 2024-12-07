@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 .comparison-section {
@@ -13,8 +12,6 @@
     position: absolute;
     bottom: 0;
     font-family: "Montserrat";
-    
-
 }
 
 .comparison-wrapper {
@@ -25,12 +22,10 @@
     overflow: clip;
     display: flex;
     flex-direction: column;
-
 }
 
 .row1 {
     height: 50%;
-    
     width: 100%;
     display: flex;
 }
@@ -40,7 +35,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-
 }
 
 .selector-container {

@@ -97,7 +97,7 @@ const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  
       }
       <Modal open={isExplainExpanded} onClose={handleExplainClose}>
         <Box sx={style}>
-          <h3>{title.split('_').join(' ')}</h3>
+          <h3>{title.split('_').join(' ').toUpperCase()}</h3>
           <div></div>
           <div style={{width:"90%", height:"60%"}}>
             {graphdescription}
