@@ -13,8 +13,8 @@ import {
 
 
 type RunData = {
-  Date: string; // ISO 8601 date string
-  Previous_Runs: number; // Integer representing runs
+  Date: string;
+  Previous_Runs: number;
 };
 
 interface ChartData {
@@ -107,9 +107,9 @@ interface VenueGraphProps {
 const VenueGraph: React.FC<VenueGraphProps> = ({ selected, maindata }) => {
 
   const queryColors: { [key: string]: string } = {
-    venuescore: "#3498db", // Blue for Fantasy Points
-    playerScore: "#2ecc71", // Green for Player Score
-    runRate: "#e74c3c", // Red for Run Rate
+    venuescore: "#3498db",
+    playerScore: "#2ecc71",
+    runRate: "#e74c3c",
   };
 
 
@@ -120,7 +120,6 @@ const VenueGraph: React.FC<VenueGraphProps> = ({ selected, maindata }) => {
     return (sum as number/ filteredValues.length);
   };
 
-  // Get the average for the selected filter
   const average = calculateAverage(maindata, selected);
 
   return (
@@ -192,14 +191,14 @@ const VenueGraph: React.FC<VenueGraphProps> = ({ selected, maindata }) => {
               }}
             />
             <ReferenceLine
-              y={average} // Specify the Y-axis value for the line
-              stroke="red" // Line color
+              y={average}
+              stroke="red"
               label={{
                 value: "Average",
                 position: "insideTopRight",
                 fill: "red",
                 fontSize: "10px",
-              }} // Optional label for the line
+              }}
             />
 
             {/* Area Chart with Gradient */}

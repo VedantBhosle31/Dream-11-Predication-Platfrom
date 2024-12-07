@@ -3,7 +3,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { CardData } from "../SlidingPanels";
 
 interface PlayerStats {
-  [key: string]: Record<string, string>;
+  // [key: string]: Record<string, string>;
+  [key: string]: any;
 }
 
 interface PlayerStore {
@@ -21,8 +22,16 @@ interface PlayerStore {
   fetchBest11: () => Promise<Record<string, number>>;
   setMatchDate: (date: string) => void;
   setModel: (model: string) => void;
+
+  allPlayersData: any[];
+
+  setAllPlayersData: (playerName: string, playerData: any) => void; // Setter to add player data
+
   allmaindata: any[];
   setallmaindata: (data: any[]) => void;
+
+  comparisondata: any[];
+  setcomparisondata: (data: any[]) => void;
 
   displayscreencards: CardData[];
   setdisplayscreencards: (data: any[]) => void;
@@ -80,8 +89,22 @@ const usePlayerStore = create<PlayerStore>()(
       },
       setMatchDate: (date) => set({ matchDate: date }),
       setModel: (model) => set({ model: model }),
+
+      allPlayersData: [],
+
+      setAllPlayersData: (playerName, playerData) =>
+        set((state) => ({
+          allPlayersData: {
+            ...state.allPlayersData,
+            [playerName]: playerData,
+          },
+        })),
+
       allmaindata: [],
       setallmaindata: (data) => set({ allmaindata: data }),
+
+      comparisondata: [],
+      setcomparisondata: (data) => set({ comparisondata: data }),
 
       displayscreencards: [],
       setdisplayscreencards: (data) => set({ displayscreencards: data }),

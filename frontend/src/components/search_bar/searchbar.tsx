@@ -35,10 +35,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleSearch = async () => {
     if (searchTerm.trim() !== "") {
-      // Directly using the searchTerm as user_task
       const updatedUserTask = searchTerm;
 
-      // Call the fetchData function with updated user_task
       await fetchData(updatedUserTask);
       
       setSearchTerm("");
@@ -49,7 +47,6 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const handleSuggestionClick = (suggestion: string) => {
     setSearchTerm(suggestion);
     setShowSuggestions(false);
-    // Call the fetchData function with the selected suggestion as user_task
     fetchData(suggestion);
   };
 
@@ -70,7 +67,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         model: model,
         player_opponents: player_opponents,
         player_type: player_type,
-      }), // Convert the data to a JSON string
+      }),
     });
 
     if (!response.ok) {

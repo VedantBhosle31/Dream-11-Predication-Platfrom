@@ -1,17 +1,13 @@
 import React, { useRef, useState } from "react";
 import { useDrop } from "react-dnd";
 import "./DropZone.css";
-import MyImage from "../../assets/images/virat_kohli.png";
-import milogo from "../../assets/images/mumbai_indians.png";
-import rcblogo from "../../assets/images/rcb_logo.png";
 import { IconButton } from "@mui/material";
 import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
 import { CardData } from "../../SlidingPanels";
 import DisplayCardExpanded from "../player_display_card/displayCardExpanded2";
-import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
-import { DisplayCardData } from "../../pages/player_display_card/displayCard";
+import playerImage from "../../assets/images/virat_kohli.png";
 import usePlayerStore from "../../store/playerStore";
-import defaultimg from "../../assets/images/default.png"; // Replace with your player image
+import defaultimg from "../../assets/images/default.png";
 
 interface DropZoneProps {
   cards: CardData[];
@@ -120,7 +116,6 @@ const DroppableCard: React.FC<{
   selectedCard: CardData | null;
   handleSetCVC: (id: string, role: "C" | "VC") => void;
 }> = ({ card, onRemove, isedit, onSelectCard, selectedCard, handleSetCVC }) => {
-  // const [ishovered, setShowButtons] = useState(false);
   var [isCardExpanded, setCardExpanded] = useState(false);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -132,12 +127,12 @@ const DroppableCard: React.FC<{
   interface Stats {
     title: string;
     stats: Stat[];
-  } //
+  }
 
   interface Graphs {
     title: string;
     description: string;
-  } //
+  }
 
   // graphs
 
@@ -248,12 +243,12 @@ const DroppableCard: React.FC<{
   type Stat = {
     key: string;
     value: string;
-  }; //
+  };
 
   type TypeData = {
     title: string;
     stats: Stat[];
-  }; //
+  };
 
   const typesMap: { [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData } = {
     BATTING: {
@@ -286,7 +281,7 @@ const DroppableCard: React.FC<{
         { key: "Stumps", value: "3" },
       ],
     },
-  }; //
+  };
 
   const piedata = [
     { name: "0", value: 400 },
@@ -295,7 +290,7 @@ const DroppableCard: React.FC<{
     { name: "3", value: 200 },
     { name: "4", value: 100 },
     { name: "6", value: 50 },
-  ]; //
+  ];
 
   const venuedata: ChartData[] = [
     {
@@ -427,6 +422,12 @@ const DroppableCard: React.FC<{
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentIndexTypes, setCurrentIndexTypes] = useState(0);
 
+  const {
+    playerTeamMap,
+  } = usePlayerStore();
+
+  console.log("playerTeamMap", playerTeamMap);
+
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
       const response = await fetch(
@@ -438,18 +439,14 @@ const DroppableCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: card.name,
-            player_opponents:
-              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents:Object.keys(playerTeamMap).filter(player => playerTeamMap[player] !== playerTeamMap[card.name]).join(","),
             date: matchDate,
             model: model,
-          }), // Convert the data to a JSON string
+          }),
         }
       );
 
       const matchupsdata = await response.json();
-
-      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
-
       setnewmatchupsdata(matchupsdata);
     }
     setCurrentIndex((prev) => (prev === 0 ? data.length - 1 : prev - 1));
@@ -466,17 +463,16 @@ const DroppableCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: card.name,
-            player_opponents:
-              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents:Object.keys(playerTeamMap).filter(player => playerTeamMap[player] !== playerTeamMap[card.name]).join(","),
             date: matchDate,
             model: model,
-          }), // Convert the data to a JSON string
+          }),
         }
       );
 
       const matchupsdata = await response.json();
 
-      console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
+      console.log("response matchups herenhere", matchupsdata);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -501,44 +497,40 @@ const DroppableCard: React.FC<{
     "React Native",
     "JavaScript",
     "Node.js",
-  ]; //
+  ];
 
   const handleSearch = (query: string) => {
     console.log("Search Query:", query);
     alert(`You searched for: ${query}`);
-  }; //
+  };
 
-  //for filterBar(All,T20I, T20)
-  const [selectedFilter, setSelectedFilter] = useState("All"); // State for the selected filter
-  const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // State for the selected filter
-  const [selectedFilter3, setSelectedFilter3] = useState("venue"); // State for the selected filter
+  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [selectedFilter2, setSelectedFilter2] = useState("Overall");
+  const [selectedFilter3, setSelectedFilter3] = useState("venue");
 
   // const [format, setformat] = useState("Odi");//
 
   const { model } = usePlayerStore();
   const { matchDate } = usePlayerStore();
-  // const { model } = usePlayerStore();
 
-  // const filters = ["All", "T20I", "T20"]; // Filter options
   const filters =
     model === "T20"
       ? ["All", "T20I", "T20"]
       : model === "Odi"
         ? ["All", "OdiI", "Odi"]
-        : ["All", "TestI", "Test"]; // Filter options
-  const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
+        : ["All", "TestI", "Test"];
+  const filters2 = ["Overall", "Powerplay", "Middle", "Death"];
   const filters3 = ["venue", "opposition", "form"]; // Filter options
-  //
 
   const handleFilterChange = (filter: string) => {
     setSelectedFilter(filter); // Update the selected filter
-  }; //
+  };
   const handleFilterChange2 = (filter: string) => {
     setSelectedFilter2(filter); // Update the selected filter
-  }; //
+  };
   const handleFilterChange3 = (filter: string) => {
     setSelectedFilter3(filter); // Update the selected filter
-  }; //
+  };
 
   interface somecarddata {
     name: string;
@@ -555,15 +547,10 @@ const DroppableCard: React.FC<{
     id: number;
   }
 
-  // const { details } = useUserContext();
+  const {allPlayersData, setAllPlayersData} = usePlayerStore();
 
-  // const { setDetails } = useUserContext();
+  const [team, setteam] = useState<string>("");
 
-  // const updateDetails = () => {
-  //   setDetails(["newDetail1", "newDetail2"]);
-  // };
-
-  const { allmaindata, setallmaindata } = usePlayerStore();
 
   const fetchData = async (url: string) => {
     setCardExpanded(true);
@@ -576,18 +563,10 @@ const DroppableCard: React.FC<{
           "Content-Type": "application/json", // Tell the server it's JSON
         },
         body: JSON.stringify({
-          // name: "V Kohli",
-          // name: "GJ Maxwell",
-          // name: "MS Dhoni",
-          // name: "G Gambhir",
-          // name: "JJ Bumrah",
-          // name: "RG Sharma",
-          // name: "R Ashwin",
           name: card.name,
-          // name: "HH Pandya",
           date: matchDate,
           model: model,
-        }), // Convert the data to a JSON string
+        }),
       }
     );
 
@@ -597,19 +576,17 @@ const DroppableCard: React.FC<{
 
     const fetcheddata = await response.json();
 
-    console.log("fetcheddata", fetcheddata);
-
     maindata = fetcheddata;
 
-    // storing the fetched data to maindata
-    setallmaindata(maindata);
+    setAllPlayersData(card.name, maindata);
 
-    console.log(maindata);
+    setteam(maindata["stats"]["batting"] !== null ? maindata["stats"]["batting"][0]["team"] : (maindata["stats"]["bowling"] !== null ? maindata["stats"]["bowling"][0]["team_name"] : ""));
+
 
     setmyData({
       BATTING: {
         title: "BATTING",
-        stats: [
+        stats: maindata["stats"]["batting"].length !== 0 ?[
           {
             key: "MATCHES",
             value: maindata["stats"]["batting"][0]["innings_played"],
@@ -644,11 +621,11 @@ const DroppableCard: React.FC<{
             key: "50/100",
             value: `${maindata["stats"]["batting"][0]["previous_fifties"]}/${maindata["stats"]["batting"][0]["previous_centuries"]}`,
           },
-        ],
+        ] : [],
       },
       BOWLING: {
         title: "BOWLING",
-        stats: [
+        stats: maindata["stats"]["bowling"].length !== 0 ? [
           {
             key: "MATCHES",
             value: maindata["stats"]["bowling"][0]["innings_played"],
@@ -684,11 +661,11 @@ const DroppableCard: React.FC<{
             key: "3/4/5 WICKETS",
             value: `${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}`,
           },
-        ],
+        ]: [],
       },
       FIELDING: {
         title: "FIELDING",
-        stats: [
+        stats: maindata["stats"]["bowling"].length !== 0 ? [
           {
             key: "MATCHES",
             value: maindata["stats"]["bowling"][0]["innings_played"],
@@ -705,17 +682,14 @@ const DroppableCard: React.FC<{
             key: "CATCHES",
             value: maindata["stats"]["fielding"][0]["previous_catches"],
           },
-        ],
+        ]: [],
       },
     });
 
     let sums = { "0": 0, "4": 0, "6": 0 };
-    // let sumsrecent = { "form": 0, "opposition": 0, "venue": 0 };
 
     maindata["stats"]["batting"].forEach((battingData: any) => {
       sums["0"] += battingData["dots"];
-      // sums["4"] += battingData["previous_4s"];
-      // sums["6"] += battingData["sixes"];
     });
 
     var formRatio = 0;
@@ -853,7 +827,7 @@ const DroppableCard: React.FC<{
         <img
           className="team-logo"
           src={card.team_url}
-          alt={defaultimg}
+          alt="team"
         />
       </div>
 
@@ -945,47 +919,47 @@ const DroppableCard: React.FC<{
         </div>
       )}
 
-      <img className="card-image" src={card.img_url} alt={defaultimg} />
+      <img className="card-image" src={card.img_url} alt="player" onError={(e) => {e.currentTarget.src = defaultimg}} />
     </div>
   ) : (
     // <div></div>
     <DisplayCardExpanded
-      containerRef={containerRef}
-      isExpanded={isCardExpanded}
-      setExpanded={setCardExpanded}
-      playerImage={playerImage}
-      card={card}
-      handleLeftClick={handleLeftClick}
-      handleRightClick={handleRightClick}
-      handleLeftClickTypes={handleLeftClickTypes}
-      handleRightClickTypes={handleRightClickTypes}
-      data={data}
-      typeData={typeData}
-      typeData_2={typeData_2}
-      currentIndex={currentIndex}
-      currentIndexTypes={currentIndexTypes}
-      suggestions={suggestions}
-      handleSearch={handleSearch}
-      handleClose={handleClose}
-      open={isCardExpanded}
-      selectedFilter={selectedFilter}
-      selectedFilter2={selectedFilter2}
-      selectedFilter3={selectedFilter3}
-      filters={filters}
-      filters2={filters2}
-      filters3={filters3}
-      handleFilterChange={handleFilterChange}
-      handleFilterChange2={handleFilterChange2}
-      handleFilterChange3={handleFilterChange3}
-      newpiedata={newpiedata}
-      venuechartdata={newvenuedata}
-      radarnumbers={newradardata}
-      // fantasygraphdata={newfantasygraphdata}
-      fantasygraphdata={fantasygraphdata}
-      percentages={newpercentages}
-      impactdata={newimpactdata}
-      matchupsdata={newmatchupsdata}
-    />
+        containerRef={containerRef}
+        isExpanded={isCardExpanded}
+        setExpanded={setCardExpanded}
+        playerImage={playerImage}
+        card={card}
+        handleLeftClick={handleLeftClick}
+        handleRightClick={handleRightClick}
+        handleLeftClickTypes={handleLeftClickTypes}
+        handleRightClickTypes={handleRightClickTypes}
+        data={data}
+        typeData={typeData}
+        typeData_2={typeData_2}
+        currentIndex={currentIndex}
+        currentIndexTypes={currentIndexTypes}
+        suggestions={suggestions}
+        handleSearch={handleSearch}
+        handleClose={handleClose}
+        open={isCardExpanded}
+        selectedFilter={selectedFilter}
+        selectedFilter2={selectedFilter2}
+        selectedFilter3={selectedFilter3}
+        filters={filters}
+        filters2={filters2}
+        filters3={filters3}
+        handleFilterChange={handleFilterChange}
+        handleFilterChange2={handleFilterChange2}
+        handleFilterChange3={handleFilterChange3}
+        newpiedata={newpiedata}
+        venuechartdata={newvenuedata}
+        radarnumbers={newradardata}
+        fantasygraphdata={newfantasygraphdata}
+        percentages={newpercentages}
+        impactdata={newimpactdata}
+        matchupsdata={newmatchupsdata} 
+        team={team} 
+      />
   );
 };
 

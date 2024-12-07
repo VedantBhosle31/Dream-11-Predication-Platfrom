@@ -59,7 +59,6 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
     );
   }
   if (filter === "Powerplay") {
-    // Calculate averages for required metrics
     tbaHs_economy_avg = calculateAverage(
       battingStats.map((item: any) => item["tbahs_economy_1"])
     );
@@ -86,7 +85,6 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
     );
   }
   if (filter === "Middle") {
-    // Calculate averages for required metrics
     tbaHs_economy_avg = calculateAverage(
       battingStats.map((item: any) => item["tbahs_economy_2"])
     );
@@ -113,7 +111,6 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
     );
   }
   if (filter === "Death") {
-    // Calculate averages for required metrics
     tbaHs_economy_avg = calculateAverage(
       battingStats.map((item: any) => item["tbahs_economy_3"])
     );
@@ -140,27 +137,26 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
     );
   }
 
-  // Calculate data for the chart
   const calculatedData = [
     {
       category: "Strike Rate",
       values: [
-        -1 * (tbaHs_economy_avg * 100), // vs Spin
-        tbaHp_economy_avg * 100, // vs Pace
+        -1 * (tbaHs_economy_avg * 100),
+        tbaHp_economy_avg * 100,
       ],
     },
     {
       category: "Boundaries",
       values: [
-        -1 * (tbaHs_4s_avg + tbaHs_6s_avg), // vs Spin
-        tbaHp_4s_avg + tbaHp_6s_avg, // vs Pace
+        -1 * (tbaHs_4s_avg + tbaHs_6s_avg),
+        tbaHp_4s_avg + tbaHp_6s_avg,
       ],
     },
     {
       category: "Dismissals",
       values: [
-        -1 * tbaHs_dismissals_avg, // vs Spin
-        tbaHp_dismissals_avg, // vs Pace
+        -1 * tbaHs_dismissals_avg,
+        tbaHp_dismissals_avg,
       ],
     },
   ];
@@ -187,11 +183,10 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
           {/* <CartesianGrid strokeDasharray="3 3" horizontal={false} /> */}
           <XAxis
             type="number"
-            // hide
+            hide
             tick={{ fill: "#FFFFFF" }}
             fontSize={15}
-            // domain={[-200, 200]} // Adjust this based on your data
-            tickFormatter={(value) => Math.abs(value).toString()} // Show positive values on both sides
+            tickFormatter={(value) => Math.abs(value).toString()}
           />
           <YAxis
             type="category"
@@ -207,29 +202,28 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
               border: "none",
               borderRadius: "5px",
               padding: "5px",
-              fontSize: "10px", // Decrease font size
+              fontSize: "10px",
             }}
             contentStyle={{
               color: "black",
-              padding: "5px", // Decrease padding inside the tooltip
+              padding: "5px",
             }}
             
-            labelStyle={{ color: "#black", fontSize: "10px" }} // Customize label styling
+            labelStyle={{ color: "#black", fontSize: "10px" }}
           />
 
           <Bar dataKey="values" fill="#FA2433" />
           {/* <Bar dataKey="vsPace" fill="#A00000" name="vs Pace" /> */}
 
           <ReferenceLine
-            x={0} // Specify the Y-axis value for the line
-            stroke="white" // Line color
-            // strokeDasharray="3 3" // Optional: Dashed line
+            x={0}
+            stroke="white"
             label={{
               // value: "Average",
               position: "top",
               fill: "white",
               fontSize: "10px",
-            }} // Optional label for the line
+            }}
           />
 
           <LabelList
@@ -237,8 +231,8 @@ const ImpactChart: React.FC<ImpactChartProps> = ({ battingStats, filter }) => {
             position="top"
 
             formatter={(value: any) => {
-              const numericValue = Math.abs(parseFloat(value)); // Get the absolute value
-              return numericValue.toFixed(2); // Format to 2 decimal places
+              const numericValue = Math.abs(parseFloat(value));
+              return numericValue.toFixed(2);
             }}
             fill="black"
           />

@@ -1,11 +1,10 @@
-// Filter.tsx
 import React from 'react';
 import './filterBar.css';
 
 interface FilterProps {
   filters: string[]; // Array of filter options
   selected: string;  // Currently selected filter
-  onFilterChange: (filter: string) => void; // Callback to handle filter change
+  onFilterChange: (filter: string) => void;
 }
 
 const FilterBar: React.FC<FilterProps> = ({ filters, selected, onFilterChange }) => {

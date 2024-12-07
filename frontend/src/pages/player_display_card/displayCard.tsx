@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import playerImage from "../../assets/images/virat_kohli.png"; // Replace with your player image
-import milogo from "../../assets/images/mumbai_indians.png";
-import rcblogo from "../../assets/images/rcb_logo.png";
+import playerImage from "../../assets/images/virat_kohli.png";
 import "./displayCard.css";
 import DisplayCardExpanded from "../../components/player_display_card/displayCardExpanded2";
 import usePlayerStore from "../../store/playerStore";
@@ -32,102 +30,80 @@ interface Stat {
 interface Stats {
   title: string;
   stats: Stat[];
-}//
+}
 
 interface Graphs {
   title: string;
   description: string;
-}//
+}
 
 const DisplayScreen: React.FC = () => {
+  const { displayscreencards } = usePlayerStore();
 
-
-
-
-  const {displayscreencards} = usePlayerStore();
-
-  
   const sortedCards = [...displayscreencards].sort((a, b) => {
     if (a.cvc === "C" && b.cvc !== "C") return -1; // Prioritize "C"
     if (a.cvc === "VC" && b.cvc !== "VC" && b.cvc !== "C") return -1;
     return 0;
   });
 
+  const row1 = sortedCards.slice(0, 3);
+  const row2 = sortedCards.slice(3, 7);
+  const row3 = sortedCards.slice(7, 11);
 
-  const row1 = sortedCards.slice(0, 3); // First 3 cards
-  const row2 = sortedCards.slice(3, 7); // Next 4 cards
-  const row3 = sortedCards.slice(7, 11); // Last 4 cards
-
-  
   return (
-    
-      <div className="main-display">
-        <div className="display-container">
-          <div className="display-card-row">
-            {row1.map((card) => (
-
-
-                <DisplayCard key={card.id} card={card} />
-              
-            ))}
-          </div>
-        </div>
-        <div className="display-container">
-          <div className="display-card-row-2">
-            {row2.map((card) => (
-              <DisplayCard key={card.id} card={card} />
-            ))}
-          </div>
-        </div>
-        <div className="display-container">
-          <div className="display-card-row-2">
-            {row3.map((card) => (
-              <DisplayCard key={card.id} card={card} />
-            ))}
-          </div>
+    <div className="main-display">
+      <div className="display-container">
+        <div className="display-card-row">
+          {row1.map((card) => (
+            <DisplayCard key={card.id} card={card} />
+          ))}
         </div>
       </div>
+      <div className="display-container">
+        <div className="display-card-row-2">
+          {row2.map((card) => (
+            <DisplayCard key={card.id} card={card} />
+          ))}
+        </div>
+      </div>
+      <div className="display-container">
+        <div className="display-card-row-2">
+          {row3.map((card) => (
+            <DisplayCard key={card.id} card={card} />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
-
 
 const DisplayCard: React.FC<{
   card: CardData;
 }> = ({ card }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null); //
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  
+  // const {allmaindata} = usePlayerStore();
+  const { allPlayersData, setAllPlayersData } = usePlayerStore();
 
+  console.log("here we got allPlayersData", allPlayersData);
 
-  const {allmaindata} = usePlayerStore();
-  console.log("here we got allmaindata", allmaindata);
+  const { displayscreencards } = usePlayerStore();
 
-  const {displayscreencards} = usePlayerStore();
+  var [isExpanded, setExpanded] = useState(false);
+  const handleOpen = () => setExpanded(true);
+  const handleClose = () => setExpanded(false);
 
-
-
-
-  var [isExpanded, setExpanded] = useState(false); //
-  const handleOpen = () => setExpanded(true); //
-  const handleClose = () => setExpanded(false); //
-
-  // put in context
-
-  // Detect clicks outside the container to reset expanded card
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         containerRef.current &&
         !containerRef.current.contains(event.target as Node)
       ) {
-        setExpanded(false); // Reset to initial state
+        setExpanded(false);
       }
     };
 
-    // Add event listener for clicks outside
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Clean up the event listener when the component unmounts
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -167,7 +143,7 @@ const DisplayCard: React.FC<{
       description:
         "Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum",
     },
-  ];//
+  ];
 
   // batting , bowling AND fielder
   const typeData: Stats[] = [
@@ -217,43 +193,45 @@ const DisplayCard: React.FC<{
         { key: "R", value: "300" },
       ],
     },
-  ]; //
+  ];
 
   interface BattingProps {
     average: number;
     strikeRate: number;
     centuries: number;
     halfCenturies: number;
-  }//
+  }
 
   interface BowlingProps {
     average: number;
     economyRate: number;
     wickets: number;
     fiveWicketHauls: number;
-  }//
+  }
 
   interface FieldingProps {
     catches: number;
     runOuts: number;
     stumpings: number;
-  }//
+  }
 
   type Stat = {
     key: string;
     value: string;
-  };//
+  };
 
   type TypeData = {
     title: string;
     stats: Stat[];
-  };//
+  };
 
-  const [currentIndex, setCurrentIndex] = useState(0);//
-  const [currentIndexTypes, setCurrentIndexTypes] = useState(0);//
+  const [currentIndex, setCurrentIndex] = useState(0); //
+  const [currentIndexTypes, setCurrentIndexTypes] = useState(0); //
 
   const { model } = usePlayerStore();
   const { matchDate } = usePlayerStore();
+
+  const { playerTeamMap } = usePlayerStore();
 
   const handleLeftClick = async () => {
     if (currentIndex === 3) {
@@ -266,15 +244,18 @@ const DisplayCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: card.name,
-            player_opponents:"RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents: Object.keys(playerTeamMap)
+              .filter(
+                (player) => playerTeamMap[player] !== playerTeamMap[card.name]
+              )
+              .join(","),
             date: matchDate,
             model: model,
           }),
         }
       );
-      
+
       const matchupsdata = await response.json();
-      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -282,7 +263,6 @@ const DisplayCard: React.FC<{
   };
 
   const handleRightClick = async () => {
-
     if (currentIndex === 1) {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/players/get-player-matchups`,
@@ -293,20 +273,23 @@ const DisplayCard: React.FC<{
           },
           body: JSON.stringify({
             player_name: card.name,
-            player_opponents:
-              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            // player_opponents:
+            //   "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents: Object.keys(playerTeamMap)
+              .filter(
+                (player) => playerTeamMap[player] !== playerTeamMap[card.name]
+              )
+              .join(","),
+
             date: matchDate,
             model: model,
           }), // Convert the data to a JSON string
         }
       );
-      
+
       const matchupsdata = await response.json();
 
-
-
-
-      console.log("response herenhere",matchupsdata["stats"]["AK Markram"]);
+      // console.log("response herenhere", matchupsdata["stats"]["AK Markram"]);
 
       setnewmatchupsdata(matchupsdata);
     }
@@ -317,7 +300,7 @@ const DisplayCard: React.FC<{
     setCurrentIndexTypes((prev) =>
       prev === 0 ? typeData_2.length - 1 : prev - 1
     );
-  };//
+  };
 
   const handleRightClickTypes = () => {
     setCurrentIndexTypes((prev) =>
@@ -331,19 +314,17 @@ const DisplayCard: React.FC<{
     "React Native",
     "JavaScript",
     "Node.js",
-  ];//
+  ];
 
   const handleSearch = (query: string) => {
     console.log("Search Query:", query);
     alert(`You searched for: ${query}`);
-  };//
+  };
 
-  // const format= "";
-  const [format, setformat] = useState("Odi");//
+  const [format, setformat] = useState("Odi");
 
-  //for filterBar(All,T20I, T20)
   const [selectedFilter, setSelectedFilter] = useState("All"); //// State for the selected filter
-  const [selectedFilter2, setSelectedFilter2] = useState("Overall");// // State for the selected filter
+  const [selectedFilter2, setSelectedFilter2] = useState("Overall"); // // State for the selected filter
   const [selectedFilter3, setSelectedFilter3] = useState("venue"); //// State for the selected filter
 
   const filters =
@@ -351,20 +332,19 @@ const DisplayCard: React.FC<{
       ? ["All", "T20I", "T20"]
       : model === "Odi"
       ? ["All", "OdiI", "Odi"]
-      : ["All", "TestI", "Test"]; // Filter options
-  const filters2 = ["Overall", "Powerplay", "Middle", "Death"]; // Filter options
-  const filters3 = ["venue", "opposition", "form"]; // Filter options
-//
+      : ["All", "TestI", "Test"];
+  const filters2 = ["Overall", "Powerplay", "Middle", "Death"];
+  const filters3 = ["venue", "opposition", "form"];
 
   const handleFilterChange = (filter: string) => {
-    setSelectedFilter(filter); // Update the selected filter
-  };//
+    setSelectedFilter(filter);
+  };
   const handleFilterChange2 = (filter: string) => {
-    setSelectedFilter2(filter); // Update the selected filter
-  };//
+    setSelectedFilter2(filter);
+  };
   const handleFilterChange3 = (filter: string) => {
-    setSelectedFilter3(filter); // Update the selected filter
-  };//
+    setSelectedFilter3(filter);
+  };
 
   interface ChartData {
     match: string;
@@ -373,8 +353,6 @@ const DisplayCard: React.FC<{
     form: number;
     id: number;
   }
-
-
 
   const typesMap: { [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData } = {
     BATTING: {
@@ -389,7 +367,7 @@ const DisplayCard: React.FC<{
       title: "FIELDING",
       stats: [],
     },
-  };//
+  };
 
   const piedata = [
     { name: "0", value: 400 },
@@ -398,7 +376,7 @@ const DisplayCard: React.FC<{
     { name: "3", value: 200 },
     { name: "4", value: 100 },
     { name: "6", value: 50 },
-  ];//
+  ];
 
   const venuedata: ChartData[] = [
     {
@@ -497,9 +475,9 @@ const DisplayCard: React.FC<{
   const [mydata, setmyData] =
     useState<{ [key in "BATTING" | "BOWLING" | "FIELDING"]: TypeData }>(
       typesMap
-    );//
+    );
 
-    const [newpiedata, setnewpieData] =
+  const [newpiedata, setnewpieData] =
     useState<{ name: string; value: number }[]>(piedata);
 
   const [newradardata, setnewradarData] = useState<number[]>(radardata);
@@ -507,8 +485,8 @@ const DisplayCard: React.FC<{
   const [newfantasygraphdata, setnewfantasygraphData] =
     useState<{ date: string; value: number }[]>(fantasygraphdata);
 
-    const [newvenuedata, setnewvenueData] = useState<ChartData[]>(venuedata);
-  
+  const [newvenuedata, setnewvenueData] = useState<ChartData[]>(venuedata);
+
   const [newpercentages, setnewpercentages] = useState<number[]>(percentages);
 
   const [newimpactdata, setnewimpactdata] = useState<any>([]);
@@ -520,22 +498,56 @@ const DisplayCard: React.FC<{
   const typeData_2 = Object.values(mydata).map((type) => ({
     title: type.title,
     stats: type.stats,
-  }));//
+  }));
 
   interface DisplayCardExpandedProps {
     typeData_2: TypeData[];
-  }//
+  }
+
+  const [team, setteam] = useState<string>("");
+
+var maindata: any = [];
+
+  const fetchData = async () => {
+    setExpanded(true);
+
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Tell the server it's JSON
+        },
+        body: JSON.stringify({
+          name: card.name,
+          date: matchDate,
+          model: model,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    const fetcheddata = await response.json();
+
+    maindata = fetcheddata;
+
+    setAllPlayersData(card.name, maindata);
+
+    console.log("addPlayerData player here here" ,allPlayersData);
 
 
+    console.log("maindata player here here" ,maindata);
 
-  useEffect(() => {
+    setteam(maindata["stats"]["batting"] !== null ? maindata["stats"]["batting"][0]["team"] : (maindata["stats"]["bowling"] !== null ? maindata["stats"]["bowling"][0]["team_name"] : ""));
 
-    const maindata:any = allmaindata;
 
     setmyData({
       BATTING: {
         title: "BATTING",
-        stats: [
+        stats: maindata["stats"]["batting"].length !== 0 ?[
           {
             key: "MATCHES",
             value: maindata["stats"]["batting"][0]["innings_played"],
@@ -556,9 +568,7 @@ const DisplayCard: React.FC<{
           {
             key: "STRIKE RATE",
             value:
-              maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(
-                2
-              ),
+              maindata["stats"]["batting"][0]["previous_strike_rate"].toFixed(2),
           },
           {
             key: "HIGHEST SCORE",
@@ -572,11 +582,11 @@ const DisplayCard: React.FC<{
             key: "50/100",
             value: `${maindata["stats"]["batting"][0]["previous_fifties"]}/${maindata["stats"]["batting"][0]["previous_centuries"]}`,
           },
-        ],
+        ] : [],
       },
       BOWLING: {
         title: "BOWLING",
-        stats: [
+        stats: maindata["stats"]["bowling"].length !== 0 ? [
           {
             key: "MATCHES",
             value: maindata["stats"]["bowling"][0]["innings_played"],
@@ -592,9 +602,7 @@ const DisplayCard: React.FC<{
           {
             key: "STRIKE RATE",
             value:
-              maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(
-                2
-              ),
+              maindata["stats"]["bowling"][0]["previous_strike_rate"].toFixed(2),
           },
           {
             key: "MAIDENS",
@@ -614,11 +622,11 @@ const DisplayCard: React.FC<{
             key: "3/4/5 WICKETS",
             value: `${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}/${maindata["stats"]["bowling"][0]["previous_wickets"]}`,
           },
-        ],
+        ]: [],
       },
       FIELDING: {
         title: "FIELDING",
-        stats: [
+        stats: maindata["stats"]["bowling"].length !== 0 ? [
           {
             key: "MATCHES",
             value: maindata["stats"]["bowling"][0]["innings_played"],
@@ -635,7 +643,7 @@ const DisplayCard: React.FC<{
             key: "CATCHES",
             value: maindata["stats"]["fielding"][0]["previous_catches"],
           },
-        ],
+        ]: [],
       },
     });
 
@@ -659,9 +667,7 @@ const DisplayCard: React.FC<{
       let oppositionSum = 0;
       let venueSum = 0;
 
-      // Loop through the data to find max values and sum the corresponding fields
       data.forEach((item) => {
-        // Max value for form
         if (item.form > formMax) {
           formMax = item.form;
         }
@@ -708,107 +714,32 @@ const DisplayCard: React.FC<{
       },
     ]);
 
-
     setnewradarData([
-      maindata["stats"]["batting"][0]["previous_strike_rate"],
-      maindata["stats"]["bowling"][0]["previous_wickets"],
-      maindata["stats"]["bowling"][0]["previous_economy"],
+      maindata["stats"]["batting"].length ===0?0:  maindata["stats"]["batting"][0]["previous_strike_rate"],
+      maindata["stats"]["bowling"].length ===0?0: maindata["stats"]["bowling"][0]["previous_wickets"],
+      maindata["stats"]["bowling"].length ===0?0: maindata["stats"]["bowling"][0]["previous_economy"],
 
-      maindata["stats"]["batting"][0]["opposition"],
+      maindata["stats"]["batting"].length ===0?0: maindata["stats"]["batting"][0]["opposition"],
 
-      maindata["stats"]["fielding"][0]["pfa_catches"],
-      maindata["stats"]["batting"][0]["previous_average"],
+      maindata["stats"]["fielding"].length ===0?0: maindata["stats"]["fielding"][0]["pfa_catches"],
+      maindata["stats"]["batting"].length ===0?0:  maindata["stats"]["batting"][0]["previous_average"],
     ]);
 
     const result = [];
 
     for (let i = 0; i < maindata["stats"]["batting"].length; i++) {
-      const format = model; // Replace with the actual model value
+      const format = model;
 
       result.push({
         date: maindata["stats"]["batting"][i]["date"],
         value: maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`] < 0
-            ? 0
-            : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
+          ? 0
+          : maindata["stats"]["batting"][i][`${model.toLowerCase()}_match_fantasy_points`],
       });
     }
-    // console.log('result here',result);
-    // console.log('result here2',model.toLowerCase);
+
 
     setnewfantasygraphData(result);
-
-    // setnewfantasygraphData([
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][0]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][0]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][1]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][1]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][2]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][2]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][3]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][3]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][4]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][4]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][5]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][5]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][6]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][6]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][7]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][7]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][8]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][8]["odi_match_fantasy_points"],
-    //   },
-    //   {
-    //     date: "13 Nov",
-    //     value:
-    //       maindata["stats"]["batting"][9]["odi_match_fantasy_points"] < 0
-    //         ? 0
-    //         : maindata["stats"]["batting"][9]["odi_match_fantasy_points"],
-    //   },
-    // ]);
 
     setnewvenueData(
       Array.from({ length: 10 }, (_, index) => {
@@ -834,198 +765,143 @@ const DisplayCard: React.FC<{
     setnewimpactdata(battingStats);
 
     console.log("maindata", maindata["stats"]);
-  }, []);
+  };
 
+  return !isExpanded ? (
+    <div
+      ref={containerRef}
+      className={`display-card ${
+        card.cvc === "C"
+          ? "big"
+          : card.id === "5" ||
+            card.id === "6" ||
+            card.id === "9" ||
+            card.id === "10"
+          ? "middle"
+          : ""
+      }`}
+    >
+      <div className="background-overlay"></div>
 
+      <div className="display-card-overlay">
+        {card.name}
 
-  return (
-      !isExpanded ? (
-        <div
-          ref={containerRef}
-          className={`display-card ${
-            card.cvc === "C"
-              ? "big"
-              : card.id === "5" ||
-                card.id === "6" ||
-                card.id === "9" ||
-                card.id === "10"
-              ? "middle"
-              : ""
-          }`}
-        >
-          <div className="background-overlay"></div>
-
-          <div className="display-card-overlay">
-            {card.name}
-
-            <div className="display-card-overlay-row">
-              <div
-                className="overlay-row-section"
-                style={{
-                  borderTopLeftRadius: "15px",
-                  borderBottomLeftRadius: "15px",
-                }}
-              >
-                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
-                  RUNS
-                </div>
-                {parseFloat(card.runs).toFixed(0)}
-              </div>
-              {/* <div className="divider"></div> */}
-              <div className="overlay-row-section">
-                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
-                  AVERAGE
-                </div>
-                {/* {card.average} */}
-                54
-              </div>
-              {/* <div className="divider"></div> */}
-              <div
-                className="overlay-row-section"
-                style={{
-                  borderTopRightRadius: "15px",
-                  borderBottomRightRadius: "15px",
-                }}
-              >
-                <div style={{ fontSize: "13px", marginBottom: "10px" }}>
-                  STRIKE RATE
-                </div>
-                {parseFloat(card.strike_rate).toFixed(0)}
-              </div>
-            </div>
-          </div>
-
-          <div className="display-card-points">
-            <div>
-              207
-              <div style={{ fontSize: 20 }}>PTS</div>
-            </div>
-
-            <img
-              className="display-card-team-logo"
-              src={card.team_url}
-              alt="Player"
-            />
-
-            <div style={{ fontSize: 13 }}>{card.type}</div>
-          </div>
-
-          <button
-            className="info-button"
-            onClick={
-              () => {
-                setExpanded(true);
-                // handleClick();
-              }
-              // fetchData("http://127.0.0.1:8000/players/get-player-data")
-            }
-            aria-label="Info Button"
+        <div className="display-card-overlay-row">
+          <div
+            className="overlay-row-section"
+            style={{
+              borderTopLeftRadius: "15px",
+              borderBottomLeftRadius: "15px",
+            }}
           >
-            i
-          </button>
-
-          {card.cvc === "C" && <div className="display-card-c">C</div>}
-
-          {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
-
-          <img className="display-card-image" src={card.img_url} alt={defaultimg} />
+            <div style={{ fontSize: "13px", marginBottom: "10px" }}>RUNS</div>
+            {parseFloat(card.runs).toFixed(0)}
+          </div>
+          {/* <div className="divider"></div> */}
+          <div className="overlay-row-section">
+            <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+              AVERAGE
+            </div>
+            {/* {card.average} */}
+            54
+          </div>
+          {/* <div className="divider"></div> */}
+          <div
+            className="overlay-row-section"
+            style={{
+              borderTopRightRadius: "15px",
+              borderBottomRightRadius: "15px",
+            }}
+          >
+            <div style={{ fontSize: "13px", marginBottom: "10px" }}>
+              STRIKE RATE
+            </div>
+            {parseFloat(card.strike_rate).toFixed(0)}
+          </div>
         </div>
-      ) : (
-        <DisplayCardExpanded
-          containerRef={containerRef}
-          isExpanded={isExpanded}
-          setExpanded={setExpanded}
-          playerImage={playerImage}
-          card={card}
-          handleLeftClick={handleLeftClick}
-          handleRightClick={handleRightClick}
-          handleLeftClickTypes={handleLeftClickTypes}
-          handleRightClickTypes={handleRightClickTypes}
-          data={data}
-          typeData={typeData}
-          typeData_2={typeData_2}
-          currentIndex={currentIndex}
-          currentIndexTypes={currentIndexTypes}
-          suggestions={suggestions}
-          handleSearch={handleSearch}
-          handleClose={handleClose}
-          open={isExpanded}
-          selectedFilter={selectedFilter}
-          selectedFilter2={selectedFilter2}
-          selectedFilter3={selectedFilter3}
-          filters={filters}
-          filters2={filters2}
-          filters3={filters3}
-          handleFilterChange={handleFilterChange}
-          handleFilterChange2={handleFilterChange2}
-          handleFilterChange3={handleFilterChange3}
-          newpiedata={newpiedata}
-        venuechartdata={newvenuedata}
-        radarnumbers={newradardata}
-        fantasygraphdata={newfantasygraphdata}
-        percentages={newpercentages}
-        impactdata={newimpactdata} 
-        matchupsdata={newmatchupsdata}        
+      </div>
+
+      <div className="display-card-points">
+        <div>
+          {parseFloat(card.points).toFixed()}
+          <div style={{ fontSize: 20 }}>PTS</div>
+        </div>
+
+        <img
+          className="display-card-team-logo"
+          src={card.team_url}
+          alt="Team"
         />
-      )
+
+        <div style={{ fontSize: 13 }}>{card.type}</div>
+      </div>
+
+      <button
+        className="info-button"
+        onClick={
+          () => {
+            fetchData();
+            // setExpanded(true);
+          }
+          // fetchData("http://127.0.0.1:8000/players/get-player-data")
+        }
+        aria-label="Info Button"
+      >
+        i
+      </button>
+
+      {card.cvc === "C" && <div className="display-card-c">C</div>}
+
+      {card.cvc === "VC" && <div className="display-card-vc">VC</div>}
+
+      <img
+        className="display-card-image"
+        src={card.img_url}
+        alt="Player"
+        onError={(e) => {
+          e.currentTarget.src = defaultimg;
+        }}
+      />
+    </div>
+  ) : (
+    <DisplayCardExpanded
+      containerRef={containerRef}
+      isExpanded={isExpanded}
+      setExpanded={setExpanded}
+      playerImage={playerImage}
+      card={card}
+      handleLeftClick={handleLeftClick}
+      handleRightClick={handleRightClick}
+      handleLeftClickTypes={handleLeftClickTypes}
+      handleRightClickTypes={handleRightClickTypes}
+      data={data}
+      typeData={typeData}
+      typeData_2={typeData_2}
+      currentIndex={currentIndex}
+      currentIndexTypes={currentIndexTypes}
+      suggestions={suggestions}
+      handleSearch={handleSearch}
+      handleClose={handleClose}
+      open={isExpanded}
+      selectedFilter={selectedFilter}
+      selectedFilter2={selectedFilter2}
+      selectedFilter3={selectedFilter3}
+      filters={filters}
+      filters2={filters2}
+      filters3={filters3}
+      handleFilterChange={handleFilterChange}
+      handleFilterChange2={handleFilterChange2}
+      handleFilterChange3={handleFilterChange3}
+      newpiedata={newpiedata}
+      venuechartdata={newvenuedata}
+      radarnumbers={newradardata}
+      fantasygraphdata={newfantasygraphdata}
+      percentages={newpercentages}
+      impactdata={newimpactdata}
+      matchupsdata={newmatchupsdata}
+      team={team}
+    />
   );
-
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default DisplayScreen;

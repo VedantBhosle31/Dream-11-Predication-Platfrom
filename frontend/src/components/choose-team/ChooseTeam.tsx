@@ -16,6 +16,7 @@ const ChooseTeam = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
+    playerTeamMap,
     setPlayerTeamMap,
     setPlayerNames,
     setTeamLogos,
@@ -119,6 +120,8 @@ const ChooseTeam = () => {
         setTeamLogos(logoData.team_logos);
         setPlayerNames(logoData.final_players_unique_names);
         setPlayerTeamMap(logoData.final_selected_players);
+
+        console.log("playerTeamMap", playerTeamMap)
       } else {
         const fullError = logoData.errors.join(", ");
         setUploadError(

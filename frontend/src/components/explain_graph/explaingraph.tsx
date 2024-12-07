@@ -18,15 +18,10 @@ const style = {
   p: 4,
   display: "flex",
   flexDirection: "column",
-  // justifyContent: "space-between",
   fontFamily: "Montserrat",
-  //   color:"white"
   borderRadius: "10px",
-  overflowY: "auto", // Enable vertical scrolling
-  overflowX: "hidden", // Hide horizontal overflow
-  // overflow: 'auto', // Hide text overflow
-  // textOverflow: 'ellipsis',  // Show ellipsis when the text overflows
-  // whiteSpace: 'nowrap',  // Prevent the text from wrapping
+  overflowY: "auto",
+  overflowX: "hidden",
   color: "white",
 };
 
@@ -48,7 +43,6 @@ const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  
 
   const fetchExplainData = async () => {
     setisLoading(true);
-    // setExplainExpanded(true);
 
     console.log("here got details", title, explaindate,  opponents, typeofplayer, model, player_name );
 
@@ -103,12 +97,11 @@ const ExplainGraphButton: React.FC<ExplainGraphProps> = ({ title, explaindate,  
       }
       <Modal open={isExplainExpanded} onClose={handleExplainClose}>
         <Box sx={style}>
-          <h3>{title}</h3>
+          <h3>{title.split('_').join(' ')}</h3>
+          <div></div>
           <div style={{width:"90%", height:"60%"}}>
             {graphdescription}
           </div>
-          {/* {graphdescription} */}
-          {/* Lorem Ipsum Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum */}
         </Box>
       </Modal>
     </div>

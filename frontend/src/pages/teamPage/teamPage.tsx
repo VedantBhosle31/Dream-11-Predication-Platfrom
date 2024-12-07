@@ -60,8 +60,6 @@ const TeamPage: React.FC<TeamPageProps> = ({
     }
   }, []);
 
-  // if (!fetchedData) return <div>No data available. Go back to the home page to fetch data.</div>;
-
   return (
     <DndProvider backend={HTML5Backend}>
         {

@@ -219,6 +219,8 @@
 .video-card {
 
   width: 100%;
+  background-image: url('../../assets/Listen.png');
+  background-size: cover;
   height: calc(80% - 4vh);
   align-content: center;
   background-color: #1A1A1A;

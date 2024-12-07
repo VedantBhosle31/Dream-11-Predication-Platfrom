@@ -4,7 +4,6 @@ import "../teamPage/teamPage.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useNavigate } from "react-router-dom";
-import Slideshow from "../../components/slide-show/SlideShow";
 import { CardData } from "../../SlidingPanels";
 import {motion} from 'framer-motion'
 import usePlayerStore from "../../store/playerStore";
@@ -46,7 +45,6 @@ const EditComponent: React.FC<EditComponentProps> = ({
       return;
     }
 
-    // Check if 11 players are selected in the drag zone
     if (dragZoneCards.length > 11) {
       alert("Complete 11 players of your dream team!");
       return;
@@ -63,7 +61,8 @@ const EditComponent: React.FC<EditComponentProps> = ({
         <div className="video-wrapper">
 
           <div className="video-card">
-            <Slideshow />
+           {/* <img src={listenImage} alt="Player" /> */}
+            {/* <Slideshow /> */}
           </div>
 
           <motion.button   whileTap={{

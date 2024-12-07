@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
-import { BackendData } from "../../api/fetchData";
-import { getSessionData, setSessionData } from "../../utils/sessionStorageUtils";
-import { Numbers } from "@mui/icons-material";
-
 
 interface RadarChartProps {
   numbers: number[];
@@ -12,6 +8,14 @@ interface RadarChartProps {
 
 const RadarChart: React.FC<RadarChartProps> = ({numbers}) => {
 
+  const minValues = [0,0,0,0, 0, 0];
+  const maxValues = [1,1,1,1, 1, 1];
+
+  const normalizedNumbers = numbers.map((value, index) => {
+    const min = minValues[index];
+    const max = maxValues[index];
+    return (value - min) / (max - min); // Normalize to range [0, 1]
+  });
 
   const chartOptions: ApexOptions = {
     chart: {
@@ -20,9 +24,6 @@ const RadarChart: React.FC<RadarChartProps> = ({numbers}) => {
         show: false,
       },
     },
-    // title: {
-    //   text: "Radar Chart - Vertex Point Up",
-    // },
     xaxis: {
       categories: [
         "STRIKE RATE",
@@ -50,7 +51,7 @@ const RadarChart: React.FC<RadarChartProps> = ({numbers}) => {
     },
     plotOptions: {
       radar: {
-        size: 80,
+        // size: 80,
         polygons: {
           strokeColors: "#e9e9e9",
           connectorColors: "#e9e9e9",
@@ -88,7 +89,7 @@ const RadarChart: React.FC<RadarChartProps> = ({numbers}) => {
   const chartSeries = [
     {
       name: "Value",
-      data: numbers,
+      data: normalizedNumbers,
     },
   ];
 
@@ -98,7 +99,7 @@ const RadarChart: React.FC<RadarChartProps> = ({numbers}) => {
         options={chartOptions}
         series={chartSeries}
         type="radar"
-        height={300}
+        height={250}
       />
     </div>
   );

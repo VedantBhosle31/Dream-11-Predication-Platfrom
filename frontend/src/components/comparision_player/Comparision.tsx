@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import playerImg from "../../assets/images/virat_kohli.png";
 import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import "./Comparison.css";
+import usePlayerStore from "../../store/playerStore";
+import defaultimg from "../../assets/images/default.png";
 
-
-interface Player {
+export interface Player {
   id: number;
   name: string;
   role: string;
@@ -25,49 +26,9 @@ interface Player {
   };
 }
 
-const players: Player[] = [
-  {
-    id: 1,
-    name: "Virat Kohli sadsdg",
-    role: "Batsman",
-    imageUrl: playerImg,
-    stats: {
-      runs: 49,
-      strikeRate: 20,
-      boundaries: 12,
-      wickets: 2,
-      economy: 12,
-      catches: 2,
-      runOuts: 1,
-      form: 92,
-      matchup: 90,
-      fielding: 80,
-      average: 50,
-    },
-  },
-  {
-    id: 2,
-    name: "MS Dhoni sdasfddsfds",
-    role: "Batsman",
-    imageUrl: playerImg,
-    stats: {
-      runs: 6300,
-      strikeRate: 15,
-      boundaries: 15,
-      wickets: 5,
-      economy: 18,
-      catches: 1,
-      runOuts: 1,
-      form: 73,
-      matchup: 85,
-      fielding: 85,
-      average: 48,
-    },
-  },
-];
 
 const CustomDropdown: React.FC<{
-  options: Player[];
+  options: any[];
   selected: Player;
   onSelect: (player: Player) => void;
   card: string;
@@ -97,7 +58,7 @@ const CustomDropdown: React.FC<{
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 w-full bg-black shadow-lg z-10">
+        <div className="absolute left-0 w-full bg-black shadow-lg z-10 max-h-48 overflow-y-scroll overflow-x-hidden">
           {[
             selected,
             ...options.filter((player) => player.id !== selected.id),
@@ -167,14 +128,165 @@ const StatRow: React.FC<{
   );
 };
 
-const Comparision: React.FC = () => {
-  const [leftPlayer, setLeftPlayer] = useState<Player>(players[0]);
-  const [rightPlayer, setRightPlayer] = useState<Player>(players[1]);
+const fetchPlayerData = async (
+  name: string,
+  model: string,
+  matchDate: string
+) => {
+  const response = await fetch(
+    `${process.env.REACT_APP_BACKEND_URL}/players/get-player-data`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Tell the server it's JSON
+      },
+      body: JSON.stringify({
+        name: name,
+        model: model,
+        date: matchDate,
+      }), // Send required data
+    }
+  );
 
-  const filteredLeftPlayers = players.filter(
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data for ${name}: ${response.statusText}`);
+  }
+
+  return await response.json();
+};
+
+const Comparision: React.FC = () => {
+  const { playerStats } = usePlayerStore();
+  const { model } = usePlayerStore();
+  const { matchDate } = usePlayerStore();
+
+  const [playersData, setPlayersData] = useState<{ [key: string]: any }>({});
+
+  useEffect(() => {
+    const fetchDataForAllPlayers = async () => {
+      const playerNames = Object.keys(playerStats); // Get player names from playerStats
+
+      try {
+        
+        const results = await Promise.all(
+          playerNames.map((playerName) =>
+            fetchPlayerData(playerName, model, matchDate)
+              .then((data) => ({ name: playerName, data }))
+              .catch((error) => {
+                console.error(error);
+                return { name: playerName, data: null };
+              })
+          )
+        );
+
+        
+        const playersMap = results.reduce(
+          (acc, { name, data }) => ({ ...acc, [name]: data }),
+          {}
+        );
+
+        console.log("playersMap", playersMap);
+
+        setPlayersData(playersMap); // Update state with the fetched data
+      } catch (error) {
+        console.error("Error fetching player data:", error);
+      }
+    };
+
+    fetchDataForAllPlayers();
+  }, [playerStats, model, matchDate]);
+
+  const extractComparisonPlayers = (): Player[] => {
+    const playersStats = Object.keys(playerStats);
+
+    return playersStats?.map((playerName: any, index: number) => {
+      const playerStatsData: any = playerStats[playerName] || [];
+
+      const fetchedData: any = playersData[playerName] || [];
+
+      const espnId = playerStatsData.player_id2 || "";
+
+      return {
+        id: index, // Unique ID for remaining players
+        name: playerName,
+        role: playerStatsData.position || "N/A",
+        imageUrl: espnId
+          ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png`
+          : "",
+        stats: {
+          runs:
+            parseFloat(Math.abs(parseFloat(playerStatsData.runs)).toFixed(2)) ||
+            0,
+          strikeRate:
+            parseFloat(
+              Math.abs(parseFloat(playerStatsData.strike_rate)).toFixed(2)
+            ) || 0.0,
+          boundaries: parseFloat(
+            Math.abs(
+              parseFloat(playerStatsData["4s"]) +
+                parseFloat(playerStatsData["6s"])
+            ).toFixed(2)
+          ),
+          wickets:
+            parseFloat(
+              Math.abs(parseFloat(playerStatsData.wickets)).toFixed(2)
+            ) || 0,
+          economy:
+            parseFloat(
+              Math.abs(parseFloat(playerStatsData.economy)).toFixed(2)
+            ) || 0,
+          catches:
+            parseFloat(
+              Math.abs(parseFloat(playerStatsData.catches)).toFixed(2)
+            ) || 0,
+          runOuts:
+            parseFloat(
+              Math.abs(parseFloat(playerStatsData.runouts)).toFixed(2)
+            ) || 0,
+
+          form:
+            fetchedData.length !== 0 &&
+            fetchedData["stats"]["batting"].length > 0 &&
+            fetchedData["stats"]["batting"][0]["form"] === 0
+              ? fetchedData["stats"]["bowling"][0].length > 0
+                ? fetchedData["stats"]["bowling"][0]["form"] * 10
+                : 0
+              : fetchedData["stats"]["batting"].length > 0
+              ? fetchedData["stats"]["batting"][0]["form"] * 10
+              : 0,
+
+          matchup:
+            fetchedData.length !== 0
+              ? fetchedData["stats"]["batting"].length !== 0
+                ? fetchedData["stats"]["batting"][0]["opposition"] * 10
+                : 0
+              : 0,
+          fielding:
+            fetchedData.length !== 0
+              ? fetchedData["stats"]["fielding"].length !== 0
+                ? fetchedData["stats"]["fielding"][0]["pfa_catches"] * 10
+                : 0
+              : 0,
+          average:
+            fetchedData.length !== 0
+              ? fetchedData["stats"]["batting"].length !== 0
+                ? fetchedData["stats"]["batting"][0]["previous_average"]
+                : 0
+              : 0,
+        },
+      };
+    });
+  };
+
+  const ComparisonPlayers = extractComparisonPlayers();
+
+  const [leftPlayer, setLeftPlayer] = useState<Player>(ComparisonPlayers[0]);
+  const [rightPlayer, setRightPlayer] = useState<Player>(ComparisonPlayers[1]);
+
+  const filteredLeftPlayers = ComparisonPlayers.filter(
     (player) => player.id !== rightPlayer.id
   );
-  const filteredRightPlayers = players.filter(
+  const filteredRightPlayers = ComparisonPlayers.filter(
     (player) => player.id !== leftPlayer.id
   );
 
@@ -265,62 +377,61 @@ const Comparision: React.FC = () => {
   return (
     <div className="comparison-section">
       <div className="comparison-wrapper">
-
         <div className="row1">
-
           <div className="selector-container">
+            <div className="selector-wrapper">
+              <div className="compare-title">COMPARE PLAYERS</div>
+              {/* Left Card */}
+              <div className="selector-top">
+                <div className="sel-col-1">
+                  <div className="h-full w-[1vh] bg-red-600"></div>
+                  {/* Increased the width of the gap container */}
 
-              <div className="selector-wrapper">
+                  <img
+                    src={leftPlayer.imageUrl}
+                    alt={leftPlayer.name}
+                    onError={(e) => {
+                      e.currentTarget.src = defaultimg;
+                    }}
+                    className="h-full w-[90%]"
+                  />
+                </div>
+                <div className="flex h-full justify-center items-end flex-col text-white w-full">
+                  <CustomDropdown
+                    options={filteredLeftPlayers}
+                    card="left"
+                    selected={leftPlayer}
+                    onSelect={setLeftPlayer}
+                  />
+                  {/* <div className="font-semibold uppercase">{leftPlayer.role}</div> */}
+                </div>
+              </div>
 
-                  <div className="compare-title">COMPARE PLAYERS</div>
-                  {/* Left Card */}
-                  <div className="selector-top">
-                    <div className="sel-col-1">
-                      <div className="h-full w-[1vh] bg-red-600"></div>
-                      {/* Increased the width of the gap container */}
-                  
-                      <img
-                        src={leftPlayer.imageUrl}
-                        alt={leftPlayer.name}
-                        className="h-full"
-                      />
-                    </div>
-                    <div className="flex h-full justify-center items-end flex-col text-white w-full">
-                      <CustomDropdown
-                        options={filteredLeftPlayers}
-                        card="left"
-                        selected={leftPlayer}
-                        onSelect={setLeftPlayer}
-                      />
-                      {/* <div className="font-semibold uppercase">{leftPlayer.role}</div> */}
-                    </div>
-                  </div>
-
-                  {/* Right Card (Reversed Order) */}
-                  <div className="selector-bottom">
-                                    
-                      <div className="sel-col-1">
-                        <div className="h-full w-[1vh] bg-[#8B24FA]"></div>
-                        <img  
-                          src={rightPlayer.imageUrl}
-                          alt={rightPlayer.name}
-                          className="h-full"
-                        />
-                      </div>
-                      {/* Increased the width of the gap container */}
-                      <div className="flex h-full justify-center items-end flex-col text-white w-full">
-                      <CustomDropdown
-                        options={filteredRightPlayers}
-                        selected={rightPlayer}
-                        card="right"
-                        onSelect={setRightPlayer}
-                      />
-                      {/* <div className="font-semibold uppercase">{rightPlayer.role}</div> */}
-                    
-                    </div>
-                  </div>
+              {/* Right Card (Reversed Order) */}
+              <div className="selector-bottom">
+                <div className="sel-col-1">
+                  <div className="h-full w-[1vh] bg-[#8B24FA]"></div>
+                  <img
+                    src={rightPlayer.imageUrl}
+                    alt={rightPlayer.name}
+                    onError={(e) => {
+                      e.currentTarget.src = defaultimg;
+                    }}
+                    className="h-full w-[90%]"
+                  />
+                </div>
+                {/* Increased the width of the gap container */}
+                <div className="flex h-full justify-center items-end flex-col text-white w-full">
+                  <CustomDropdown
+                    options={filteredRightPlayers}
+                    selected={rightPlayer}
+                    card="right"
+                    onSelect={setRightPlayer}
+                  />
+                  {/* <div className="font-semibold uppercase">{rightPlayer.role}</div> */}
+                </div>
+              </div>
             </div>
-            
           </div>
 
           {/* Radar Chart */}
@@ -330,72 +441,60 @@ const Comparision: React.FC = () => {
               series={chartSeries}
               type="radar"
               height="100%"
-              
             />
           </div>
         </div>
 
         <div className="row2">
+          <div className="flex items-center justify-center w-full">
+            <div className="flex-1 h-[0.3vh] bg-[#363636] ml-[2vh]"></div>
+            <span className="stats-title">STATISTICS</span>
+            <div className="flex-1 h-[0.3vh] bg-[#363636] mr-[2vh]"></div>
+          </div>
 
-        <div className="flex items-center justify-center w-full">
-          <div className="flex-1 h-[0.3vh] bg-[#363636] ml-[2vh]"></div>
-          <span className="stats-title">
-            STATISTICS
-          </span>
-          <div className="flex-1 h-[0.3vh] bg-[#363636] mr-[2vh]"></div>
+          <div className="flex flex-col px-8">
+            <StatRow
+              label="Runs"
+              leftValue={leftPlayer.stats.runs}
+              rightValue={rightPlayer.stats.runs}
+            />
+            <StatRow
+              label="Strike Rate"
+              leftValue={leftPlayer.stats.strikeRate}
+              rightValue={rightPlayer.stats.strikeRate}
+            />
+            <StatRow
+              label="Boundaries"
+              leftValue={leftPlayer.stats.boundaries}
+              rightValue={rightPlayer.stats.boundaries}
+            />
+            <StatRow
+              label="Wickets"
+              leftValue={leftPlayer.stats.wickets}
+              rightValue={rightPlayer.stats.wickets}
+            />
+            <StatRow
+              label="Economy"
+              leftValue={leftPlayer.stats.economy}
+              rightValue={rightPlayer.stats.economy}
+            />
+            <StatRow
+              label="Catches"
+              leftValue={leftPlayer.stats.catches}
+              rightValue={rightPlayer.stats.catches}
+            />
+            <StatRow
+              label="Run Outs"
+              leftValue={leftPlayer.stats.runOuts}
+              rightValue={rightPlayer.stats.runOuts}
+            />
+            <StatRow
+              label="Form"
+              leftValue={leftPlayer.stats.form}
+              rightValue={rightPlayer.stats.form}
+            />
+          </div>
         </div>
-
-        <div className="flex flex-col px-8">
-          <StatRow
-            label="Runs"
-            leftValue={leftPlayer.stats.runs}
-            rightValue={rightPlayer.stats.runs}
-          />
-          <StatRow
-            label="Strike Rate"
-            leftValue={leftPlayer.stats.strikeRate}
-            rightValue={rightPlayer.stats.strikeRate}
-          />
-          <StatRow
-            label="Boundaries"
-            leftValue={leftPlayer.stats.boundaries}
-            rightValue={rightPlayer.stats.boundaries}
-          />
-          <StatRow
-            label="Wickets"
-            leftValue={leftPlayer.stats.wickets}
-            rightValue={rightPlayer.stats.wickets}
-          />
-          <StatRow
-            label="Economy"
-            leftValue={leftPlayer.stats.economy}
-            rightValue={rightPlayer.stats.economy}
-          />
-          <StatRow
-            label="Catches"
-            leftValue={leftPlayer.stats.catches}
-            rightValue={rightPlayer.stats.catches}
-          />
-          <StatRow
-            label="Run Outs"
-            leftValue={leftPlayer.stats.runOuts}
-            rightValue={rightPlayer.stats.runOuts}
-          />
-          <StatRow
-            label="Form"
-            leftValue={leftPlayer.stats.form}
-            rightValue={rightPlayer.stats.form}
-          />
-        </div>
-
-        </div>
-
-        
-
-      
-
-      
-        
       </div>
     </div>
   );

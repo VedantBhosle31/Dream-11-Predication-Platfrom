@@ -1,12 +1,9 @@
-import rcblogo from "../../assets/images/rcb_logo.png";
-import bccilogo from "../../assets/images/bcci_logo.png";
 import dream11background from "../../assets/images/dream11bg.png";
 import "./displayCard2.css";
 import RadarChart from "../radar_chart/radar";
 import SearchBar from "../search_bar/searchbar";
 import VenueGraph from "../points_chart/pointschart";
 import { Box, Modal, Skeleton } from "@mui/material";
-import player2Image from "../../assets/images/virat_kohli.png"; // Replace with your player image
 import { useEffect } from "react";
 import {
   Bar,
@@ -26,7 +23,6 @@ import ImpactChart from "../impactindexchart/impactchart";
 import ExplainGraphButton from "../explain_graph/explaingraph";
 import usePlayerStore from "../../store/playerStore";
 import { CardData } from "../../SlidingPanels";
-// import defaultimg from "../../assets/images/default.png"; // Replace with your player image
 import defaultimg from "../../assets/images/default.png";
 
 const COLORS = [
@@ -39,7 +35,6 @@ const COLORS = [
 ];
 
 const exampleQueries = [
-  // "Recent Form of `${card.name}`",
   "Top Scorers in IPL 2024",
   "Fastest Bowler Stats",
   "Most Runs by a Player",
@@ -117,6 +112,7 @@ interface DisplayCardExpandedProps {
   percentages: number[];
   impactdata: any;
   matchupsdata: any;
+  team: string;
 }
 
 const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
@@ -154,18 +150,20 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   percentages,
   impactdata,
   matchupsdata,
+  team,
 }) => {
-
   const { model } = usePlayerStore();
   const { matchDate } = usePlayerStore();
 
   var temptitleexplain: string = "";
   var explaindate: string = matchDate;
-  var opponents: string =
-    "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson";
+  var opponents: string = "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson";
   var typeofplayer: string = "";
 
   const { playerdescription, setplayerdescription } = usePlayerStore();
+  const {
+    playerTeamMap,
+  } = usePlayerStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -174,7 +172,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json", // Tell the server it's JSON
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             feature_name: "player_description",
@@ -182,10 +180,9 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
             player_name: card.name,
             date: matchDate,
             model: model,
-            player_opponents:
-              "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson",
+            player_opponents:Object.keys(playerTeamMap).filter(player => playerTeamMap[player] !== playerTeamMap[card.name]).join(","),
             player_type: card.type,
-          }), // Convert the data to a JSON string
+          }),
         }
       );
 
@@ -202,13 +199,12 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
     fetchData();
   }, []);
 
-  const containsBat = (str:string) => str.includes("bat");
-  const containsbowl = (str:string) => str.includes("bowl");
-  const containsall = (str:string) => str.includes("all");
-  const containswk = (str:string) => str.includes("wicketkeeper");
+  const containsBat = (str: string) => str.includes("bat");
+  const containsbowl = (str: string) => str.includes("bowl");
+  const containsall = (str: string) => str.includes("all");
+  const containswk = (str: string) => str.includes("wicketkeeper");
 
-
-  if ( containsBat(card.type)) {
+  if (containsBat(card.type)) {
     typeofplayer = "BATTER";
     if (currentIndex === 0) {
       temptitleexplain = "fantasy_points_vs_matches";
@@ -219,21 +215,21 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
     } else if (currentIndex === 3) {
       temptitleexplain = "demography_bat";
     } else if (currentIndex === 4) {
-      if (selectedFilter2 === "venue") {
+      if (selectedFilter3 === "venue") {
         temptitleexplain = "differential_exp_venue";
-      } else if (selectedFilter2 === "opposition") {
+      } else if (selectedFilter3 === "opposition") {
         temptitleexplain = "differential_exp_opposition";
-      } else if (selectedFilter2 === "form") {
+      } else if (selectedFilter3 === "form") {
         temptitleexplain = "differential_exp_form";
       }
     } else if (currentIndex === 5) {
-      if (selectedFilter3 === "Overall") {
+      if (selectedFilter2 === "Overall") {
         temptitleexplain = "impact_index_overall_bat";
-      } else if (selectedFilter3 === "Powerplay") {
+      } else if (selectedFilter2 === "Powerplay") {
         temptitleexplain = "impact_index_pp_bat";
-      } else if (selectedFilter3 === "Middle") {
+      } else if (selectedFilter2 === "Middle") {
         temptitleexplain = "impact_index_middle_bat";
-      } else if (selectedFilter3 === "Death") {
+      } else if (selectedFilter2 === "Death") {
         temptitleexplain = "impact_index_death_bat";
       }
     } else {
@@ -281,26 +277,25 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
     } else if (currentIndex === 3) {
       temptitleexplain = "demography_bat";
     } else if (currentIndex === 4) {
-      if (selectedFilter2 === "venue") {
+      if (selectedFilter3 === "venue") {
         temptitleexplain = "differential_exp_venue";
-      } else if (selectedFilter2 === "opposition") {
+      } else if (selectedFilter3 === "opposition") {
         temptitleexplain = "differential_exp_opposition";
-      } else if (selectedFilter2 === "form") {
+      } else if (selectedFilter3 === "form") {
         temptitleexplain = "differential_exp_form";
       }
     } else if (currentIndex === 5) {
-      if (selectedFilter3 === "Overall") {
+      if (selectedFilter2 === "Overall") {
         temptitleexplain = "impact_index_overall_bat";
-      } else if (selectedFilter3 === "Powerplay") {
+      } else if (selectedFilter2 === "Powerplay") {
         temptitleexplain = "impact_index_pp_bat";
-      } else if (selectedFilter3 === "Middle") {
+      } else if (selectedFilter2 === "Middle") {
         temptitleexplain = "impact_index_middle_bat";
-      } else if (selectedFilter3 === "Death") {
+      } else if (selectedFilter2 === "Death") {
         temptitleexplain = "impact_index_death_bat";
       }
     }
-  const containswk = (str:string) => str.includes("wicketkeeper");
-} else if (containswk(card.type)) {
+  } else if (containswk(card.type)) {
     typeofplayer = "WICKETKEEPER";
     if (currentIndex === 0) {
       temptitleexplain = "fantasy_points_vs_matches";
@@ -332,7 +327,34 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
       temptitleexplain = "Graph not relevant for Batter";
     }
   } else {
-    temptitleexplain = "recent_performance";
+    typeofplayer = "ALLROUNDER";
+    if (currentIndex === 0) {
+      temptitleexplain = "fantasy_points_vs_matches";
+    } else if (currentIndex === 1) {
+      temptitleexplain = "recent_performance";
+    } else if (currentIndex === 2) {
+      temptitleexplain = "matchups_bat";
+    } else if (currentIndex === 3) {
+      temptitleexplain = "demography_bat";
+    } else if (currentIndex === 4) {
+      if (selectedFilter3 === "venue") {
+        temptitleexplain = "differential_exp_venue";
+      } else if (selectedFilter3 === "opposition") {
+        temptitleexplain = "differential_exp_opposition";
+      } else if (selectedFilter3 === "form") {
+        temptitleexplain = "differential_exp_form";
+      }
+    } else if (currentIndex === 5) {
+      if (selectedFilter2 === "Overall") {
+        temptitleexplain = "impact_index_overall_bat";
+      } else if (selectedFilter2 === "Powerplay") {
+        temptitleexplain = "impact_index_pp_bat";
+      } else if (selectedFilter2 === "Middle") {
+        temptitleexplain = "impact_index_middle_bat";
+      } else if (selectedFilter2 === "Death") {
+        temptitleexplain = "impact_index_death_bat";
+      }
+    }
   }
 
   return (
@@ -373,7 +395,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 {card.name}
               </div>
               <div style={{ fontSize: "14px", color: "gray" }}>
-                {card.country}
+                {team.toUpperCase()}
               </div>
             </div>
 
@@ -383,10 +405,10 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
               style={{
                 width: "15%",
                 height: "auto",
-                objectFit: "contain", // Ensures the image scales properly
+                objectFit: "contain",
               }}
               src={card.team_url}
-              alt={defaultimg}
+              alt="Team"
             />
           </div>
 
@@ -410,7 +432,10 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
             <img
               className="display-card-expanded-player-image"
               src={card.img_url}
-              alt={defaultimg}
+              alt="PLayer"
+              onError={(e) => {
+                e.currentTarget.src = defaultimg;
+              }}
               style={{
                 position: "absolute",
                 left: "50%",
@@ -519,17 +544,14 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   width: "100%",
                   maxHeight: 200,
                   padding: "16px",
-                  // display: "flex",
-                  // flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "stretch",
-                  // gap: "8px",
                   boxSizing: "border-box",
-                  overflowY: "auto", // Enable vertical scrolling
-  overflowX: "hidden",
-  marginTop: "25px",
-  scrollbarColor:"grey",
-  scrollbarWidth:"5px"
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                  marginTop: "25px",
+                  scrollbarColor: "grey",
+                  scrollbarWidth: "5px",
                 }}
               >
                 {playerdescription !== "" ? (
@@ -571,9 +593,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 player_name={card.name}
                 date={matchDate}
                 model={model}
-                player_opponents={
-                  "RR Hendricks, Q de Kock,AK Markram, T Stubbs,DA Miller, M Jansen,KA Maharaj, K Rabada,A Nortje, T Shamsi,KS Williamson"
-                }
+                player_opponents={Object.keys(playerTeamMap).filter(player => playerTeamMap[player] !== playerTeamMap[card.name]).join(",")}
                 player_type={card.type}
               />
             </div>
@@ -738,9 +758,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                   <ResponsiveContainer width="90%" height={250}>
                     <BarChart
                       data={fantasygraphdata}
-                      //   width={600}
-                      //   height={30}
-                      // margin={{ top: 20, right: 30, bottom: 50, left: 50 }}
                     >
                       <XAxis
                         dataKey="date"
@@ -841,18 +858,19 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      justifyContent: "center",
                       alignItems: "center",
                       justifyItems: "center",
                       alignContent: "center",
                       width: "100%",
                       height: "70%",
-                      overflow: "auto",
-                      overflowY: "auto",
+                      overflowY: "scroll",
                       marginTop: "10px",
                     }}
                   >
-                    <MatchupsComponent matchupsdata={matchupsdata} />
+                    <MatchupsComponent
+                      key={card.name}
+                      matchupsdata={matchupsdata}
+                    />
 
                     <div></div>
                   </div>
@@ -871,10 +889,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                         data={newpiedata}
                         dataKey="value"
                         nameKey="name"
-                        // cx="50%"
-                        // cy="50%"
                         outerRadius={90}
-                        //   label
                       >
                         {data.map((entry, index) => (
                           <Cell
@@ -945,18 +960,15 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     width: "100%",
                     height: "25px",
                     bottom: "10px",
-                    // right: "15px",
                     display: "flex",
                     position: "relative",
                     zIndex: "10",
-                    // backgroundColor:"white",
                     justifyContent: "end",
                     paddingRight: "10px",
                     paddingBottom: "2px",
                   }}
                 >
                   <ExplainGraphButton
-                    // title={data[currentIndex].title}
                     title={temptitleexplain}
                     explaindate={explaindate}
                     opponents={opponents}
@@ -1062,7 +1074,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                 style={{
                   display: "flex",
                   width: "100%",
-                  height: "90%",
+                  maxHeight: "90%",
                   alignItems: "center",
                   justifyContent: "center",
                   backgroundColor: "#1A1A1A",
@@ -1070,37 +1082,20 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
               >
                 <RadarChart numbers={radarnumbers} />
 
-                <div
-                  style={{
-                    width: "100%",
-                    height: "25px",
-                    bottom: "10px",
-                    // right: "15px",
-                    display: "flex",
-                    position: "relative",
-                    zIndex: "10",
-                    // backgroundColor:"white",
-                    justifyContent: "end",
-                    paddingRight: "10px",
-                    paddingBottom: "2px",
-                  }}
-                >
-                  <ExplainGraphButton
-                    // title={data[currentIndex].title}
-                    title={
-                      card.type === "BAT"
-                        ? "spider_chart_bat"
-                        : card.type === "BOWL"
-                        ? "spider_chart_bowl"
-                        : "spider_chart_all"
-                    }
-                    player_name={card.name}
-                    explaindate={explaindate}
-                    model={model}
-                    opponents={opponents}
-                    typeofplayer={typeofplayer}
-                  />
-                </div>
+                <ExplainGraphButton
+                  title={
+                    card.type === "BAT"
+                      ? "spider_chart_bat"
+                      : card.type === "BOWL"
+                      ? "spider_chart_bowl"
+                      : "spider_chart_all"
+                  }
+                  player_name={card.name}
+                  explaindate={explaindate}
+                  model={model}
+                  opponents={opponents}
+                  typeofplayer={typeofplayer}
+                />
               </div>
             </div>
           </div>
@@ -1110,56 +1105,6 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
   );
 };
 
-// interface PlayerStats {
-//   previous_runs?: number | null;
-//   previous_wickets?: number | null;
-//   previous_avg_strike_rate?: number | null;
-//   balls?: number | null;
-// }
-
-// interface Stats {
-//   [playerName: string]: PlayerStats | null;
-// }
-
-// interface RootObject {
-//   stats: Stats;
-// }
-
-// const MatchupsData: RootObject = {
-//   stats: {
-//     // "RR Hendricks": null,
-//     // " Q de Kock": null,
-//     // "AK Markram": {
-//     //   previous_runs: 44,
-//     //   previous_wickets: 0,
-//     //   previous_avg_strike_rate: 95.65217391304348,
-//     //   balls: 7,
-//     // },
-//     // " T Stubbs": null,
-//     // "DA Miller": null,
-//     // " M Jansen": null,
-//     // "KA Maharaj": {
-//     //   previous_runs: 72,
-//     //   previous_wickets: 2,
-//     //   previous_avg_strike_rate: 60.50420168067227,
-//     //   balls: 29,
-//     // },
-//     // " K Rabada": null,
-//     // "A Nortje": null,
-//     // " T Shamsi": null,
-//     // "KS Williamson": {
-//     //   previous_runs: 14,
-//     //   previous_wickets: 0,
-//     //   previous_avg_strike_rate: 116.66666666666669,
-//     //   balls: 4,
-//     // },
-//   },
-// };
-
-// interface MatchupsComponentProps {
-//   matchupsdata:any;
-// }
-
 const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
   matchupsdata,
 }) => {
@@ -1168,20 +1113,20 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
   return (
     <>
       {Object.keys(stats).map((playerName, index) => {
-        const playerStats = stats[playerName]; // Access the stats for the player
+        const playerStats = stats[playerName];
 
         return playerStats !== null ? (
           <div
             key={index}
             style={{
               display: "flex",
-              justifyContent: "center",
-              fontSize: "10px",
+              justifyContent: "space-around",
+              fontSize: "9px",
               backgroundColor: "#333333",
               width: "90%",
               height: "25%",
               borderRadius: "10px",
-              marginTop: "15px",
+              marginBottom: "10px",
             }}
           >
             {/* Player Name and Image */}
@@ -1195,7 +1140,10 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
               <div style={{ width: "50%", height: "100%" }}>
                 <img
                   src={defaultimg}
-                  alt={defaultimg}
+                  alt="Player"
+                  onError={(e) => {
+                    e.currentTarget.src = defaultimg;
+                  }}
                   style={{
                     width: "100%",
                     height: "100%",
@@ -1206,7 +1154,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
               </div>
               <div
                 style={{
-                  fontSize: "15px",
+                  fontSize: "12px",
                   width: "50%",
                   color: "white",
                   alignContent: "center",
@@ -1233,7 +1181,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
                 color: "white",
                 justifyItems: "center",
                 alignContent: "center",
-                fontSize: "15px",
+                fontSize: "11px",
               }}
             >
               BALLS
@@ -1266,7 +1214,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
                 color: "white",
                 justifyItems: "center",
                 alignContent: "center",
-                fontSize: "15px",
+                fontSize: "11px",
               }}
             >
               RUNS
@@ -1290,7 +1238,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
                 color: "white",
                 justifyItems: "center",
                 alignContent: "center",
-                fontSize: "15px",
+                fontSize: "11px",
               }}
             >
               OUT
@@ -1314,7 +1262,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
                 color: "white",
                 justifyItems: "center",
                 alignContent: "center",
-                fontSize: "15px",
+                fontSize: "11px",
               }}
             >
               STRIKE RATE
@@ -1326,7 +1274,7 @@ const MatchupsComponent: React.FC<{ matchupsdata: any }> = ({
             </div>
           </div>
         ) : (
-          <div></div>
+          <div key={index}></div>
         );
       })}
     </>
