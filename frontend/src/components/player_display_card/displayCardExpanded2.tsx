@@ -486,7 +486,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     color: "gray",
                   }}
                 >
-                  157
+                  {parseFloat(card.runs).toFixed()}
                   <div
                     style={{
                       fontSize: "8px",
@@ -506,7 +506,7 @@ const DisplayCardExpanded: React.FC<DisplayCardExpandedProps> = ({
                     color: "grey",
                   }}
                 >
-                  5
+                  {parseFloat(card.boundaries).toFixed()}
                   <div
                     style={{
                       fontSize: "8px",

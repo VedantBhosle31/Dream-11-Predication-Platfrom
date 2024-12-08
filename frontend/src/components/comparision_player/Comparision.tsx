@@ -20,7 +20,7 @@ export interface Player {
     catches: number;
     runOuts: number;
     form: number;
-    matchup: number; // Added for radar comparison
+    matchup: number;
     fielding: number; // Added for radar comparison
     average: number; // Added for radar comparison
   };
@@ -199,12 +199,16 @@ const Comparision: React.FC = () => {
   const extractComparisonPlayers = (): Player[] => {
     const playersStats = Object.keys(playerStats);
 
+    console.log("asdhuio",playerStats);
+
     return playersStats?.map((playerName: any, index: number) => {
       const playerStatsData: any = playerStats[playerName] || [];
 
       const fetchedData: any = playersData[playerName] || [];
 
       const espnId = playerStatsData.player_id2 || "";
+
+      console.log("wguiehfjierbgn",fetchedData["stats"]);
 
       return {
         id: index, // Unique ID for remaining players
@@ -244,16 +248,19 @@ const Comparision: React.FC = () => {
               Math.abs(parseFloat(playerStatsData.runouts)).toFixed(2)
             ) || 0,
 
-          form:
-            fetchedData.length !== 0 &&
-            fetchedData["stats"]["batting"].length > 0 &&
-            fetchedData["stats"]["batting"][0]["form"] === 0
-              ? fetchedData["stats"]["bowling"][0].length > 0
-                ? fetchedData["stats"]["bowling"][0]["form"] * 10
-                : 0
-              : fetchedData["stats"]["batting"].length > 0
-              ? fetchedData["stats"]["batting"][0]["form"] * 10
-              : 0,
+
+          
+
+          form:0,
+            // fetchedData.length !== 0 &&
+            // fetchedData["stats"]["batting"].length > 0 &&
+            // fetchedData["stats"]["batting"][0]["form"] === 0
+            //   ? fetchedData["stats"]["bowling"][0].length > 0
+            //     ? fetchedData["stats"]["bowling"][0]["form"] * 10
+            //     : 0
+            //   : fetchedData["stats"]["batting"].length > 0
+            //   ? fetchedData["stats"]["batting"][0]["form"] * 10
+            //   : 0,
 
           matchup:
             fetchedData.length !== 0
@@ -268,11 +275,7 @@ const Comparision: React.FC = () => {
                 : 0
               : 0,
           average:
-            fetchedData.length !== 0
-              ? fetchedData["stats"]["batting"].length !== 0
-                ? fetchedData["stats"]["batting"][0]["previous_average"]
-                : 0
-              : 0,
+            fetchedData.length !== 0 ? (fetchedData["stats"]["batting"].length !== 0 ? fetchedData["stats"]["batting"][0]["previous_average"]: 0): 0,
         },
       };
     });
@@ -488,11 +491,11 @@ const Comparision: React.FC = () => {
               leftValue={leftPlayer.stats.runOuts}
               rightValue={rightPlayer.stats.runOuts}
             />
-            <StatRow
+            {/* <StatRow
               label="Form"
               leftValue={leftPlayer.stats.form}
               rightValue={rightPlayer.stats.form}
-            />
+            /> */}
           </div>
         </div>
       </div>

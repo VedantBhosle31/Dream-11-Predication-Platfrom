@@ -22,6 +22,7 @@ export interface CardData {
   team_url: string;
   espn_id: string;
   img_url: string;
+  boundaries:string;
 }
 
 const SlidingPanels = () => {
@@ -63,6 +64,11 @@ const SlidingPanels = () => {
         img_url: espnId
           ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png`
           : "",
+        boundaries: 
+          Math.abs(
+            parseFloat(playerStats["4s"]) +
+              parseFloat(playerStats["6s"])
+          ).toFixed(2),
       };
     });
   };
@@ -101,6 +107,11 @@ const SlidingPanels = () => {
         img_url: espnId
           ? `https://a.espncdn.com/i/headshots/cricket/players/full/${espnId}.png`
           : "",
+        boundaries: 
+          Math.abs(
+            parseFloat(playerStats["4s"]) +
+              parseFloat(playerStats["6s"])
+          ).toFixed(2),
       };
     });
   };
