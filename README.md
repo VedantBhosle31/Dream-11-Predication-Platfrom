@@ -119,3 +119,12 @@ Then run the streamlit
 ```bash
 streamlit model_ui_app.py
 ```
+
+
+## Data download
+There are download scripts given in the data processing folder
+
+```bash
+python __.py
+
+```
