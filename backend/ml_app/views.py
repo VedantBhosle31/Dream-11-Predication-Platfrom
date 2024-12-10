@@ -13,7 +13,8 @@ def get_predictions(request):
         names = body['names']
         date = body['date']
         model = body['model']
-        pred = predict(names,date,model)
+        pred = predict(names,date,model.capitalize())
+        print("perdict",pred)
         return JsonResponse(pred)
     
 @csrf_exempt
@@ -23,7 +24,7 @@ def get_all_player_features(request):
         names = body['names'].split(',')
         date = body['date']
         model = body['model']
-        features = fetch_all_player_features(names, date, model)
+        features = fetch_all_player_features(names, date, model.capitalize())
         return JsonResponse(features)
     else:
         return JsonResponse({'error':'Only POST request allowed'})

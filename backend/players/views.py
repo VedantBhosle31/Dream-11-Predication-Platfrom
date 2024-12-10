@@ -130,7 +130,7 @@ def get_player_data(request):
         date = body['date']
         model = body['model']
         # stats = player_features(player_name,date,model)
-        stats = get_player_stats(player_name,date,model)
+        stats = get_player_stats(player_name,date,model.capitalize())
         return JsonResponse({'stats':stats})
 
     

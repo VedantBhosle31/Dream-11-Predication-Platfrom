@@ -68,6 +68,7 @@ def get_player_stats(name,match_date,format):
         take player_name and format(type of match + gender)
         get the mapped mapped model and use it to get relevant stats 
     '''
+    format=format.capitalize()
     model_batter = model_mapping("Batter" + format)
     model_bowler = model_mapping("Bowler" + format)
     model_fielder = model_mapping("Fielder"+format) 
@@ -78,7 +79,7 @@ def get_player_stats(name,match_date,format):
     return stats
 
 def matchup_stats_two_players(player_1, player_2, format, match_date):
-    matchUp = model_mapping(f"Matchup{format}")
+    matchUp = model_mapping(f"Matchup{format.capitalize()}")
     
     def fetch_stats(batsman, bowler):
         return (
